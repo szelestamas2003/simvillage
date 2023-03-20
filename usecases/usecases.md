@@ -1,0 +1,19 @@
+-pause
+-set time: normal
+-set time: fast
+-set time: very fast
+-save
+-load
+-view finances
+-select zone
+- -view zone info
+- -change zone
+- - -residental
+- - -forest
+- - -fire department
+- - -police department
+- - -industrial
+- - -store
+- - -school
+- - -stadium
+- - -powerplant
