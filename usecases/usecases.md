@@ -6,8 +6,8 @@
 - load
 - view finances
 - select zone
-- - view zone info
-- - change zone
+    - view zone info
+    - change zone
 - - - residental
 - - - forest
 - - - fire department
