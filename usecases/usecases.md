@@ -8,12 +8,12 @@
 - select zone
     - view zone info
     - change zone
-- - - residental
-- - - forest
-- - - fire department
-- - - police department
-- - - industrial
-- - - store
-- - - school
-- - - stadium
-- - - powerplant
+        - residental
+        - forest
+        - fire department
+        - police department
+        - industrial
+        - store
+        - school
+        - stadium
+        - powerplant
