@@ -16,7 +16,7 @@
 
         private Zone[,] Zones;
 
-        private Citizen[] Citizens = null!;
+        private List<Citizen> Citizens = null!;
 
         public EventHandler? gameAdvanced;
 

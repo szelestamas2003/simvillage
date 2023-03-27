@@ -11,7 +11,7 @@ namespace SimVillage.Model.Building
         public Stadium(List<Tile> tile)
         {
             SetTiles(tile);
-            SetPowerConsumption(60);s
+            SetPowerConsumption(60);
         }
     }
 }

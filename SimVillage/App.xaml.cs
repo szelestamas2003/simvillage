@@ -15,17 +15,23 @@ namespace SimVillage
     /// </summary>
     public partial class App : Application
     {
-        private Timer timer;
+        private Timer timer = null!;
 
-        private City city;
+        private MainWindow view = null!;
 
-        private SimVillage.Model.Persistence persistence;
+        private City city = null!;
 
         public App()
         {
-            InitializeComponent();
-            persistence = new SimVillage.Model.Persistence();
-            city = new City(persistence, "asd");
+            Startup += new StartupEventHandler(App_Startup);
+        }
+
+        public void App_Startup(object? sender, StartupEventArgs e)
+        {
+            city = new City(new Model.Persistence, "asd");
+
+            view =new MainWindow();
+            view.Show();
         }
     }
 }
