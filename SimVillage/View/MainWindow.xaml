@@ -7,6 +7,16 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="30"/>
+        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,0,0,0" Width="50" Height="30"/>
+        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,0,0,0" Width="50" Height="30"/>
+        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,0,0,0" Width="50" Height="30"/>
+        <TextBox HorizontalAlignment="Left" Margin="600,0,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="121" Height="30"/>
+        <TextBox HorizontalAlignment="Left" Margin="400,0,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="200" Height="30"/>
+        <TextBox HorizontalAlignment="Left" Margin="200,0,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="200" Height="30"/>
+        <Rectangle HorizontalAlignment="Center" Height="50" Margin="0,374,0,0" Stroke="Black" VerticalAlignment="Top" Width="780" Fill="#FF91B0AB"/>
+        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="760,0,0,0" Width="40" Height="30"/>
+        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="720,0,0,0" Width="40" Height="30"/>
 
     </Grid>
 </Window>
