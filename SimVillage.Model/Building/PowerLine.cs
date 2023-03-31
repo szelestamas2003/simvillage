@@ -8,9 +8,8 @@ namespace SimVillage.Model.Building
 {
     public class PowerLine : Building
     {
-        public PowerLine(List<Tile> tile)
+        public PowerLine()
         {
-            SetTiles(tile);
             SetPowerConsumption(0);
             Size = (1, 1);
             cost = 20;

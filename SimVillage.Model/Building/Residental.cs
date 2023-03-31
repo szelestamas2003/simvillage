@@ -10,9 +10,8 @@ namespace SimVillage.Model.Building
     {
         int MaxInhabitants;
         int Inhabitans;
-        public Residental(List<Tile> tile)
+        public Residental()
         {
-            SetTiles(tile);
             SetPowerConsumption(30);
             SetDensity(1);
             Size = (1, 1);
