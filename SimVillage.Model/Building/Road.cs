@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace SimVillage.Model.Building
 {
-    internal class Road : Building
+    public class Road : Building
     {
-        public Road(List<Tile> tile)
+        public Road(int x, int y)
         {
-            SetTiles(tile);
-            SetPowerConsumption(4);
+            PowerConsumption = 4;
+            Size = (1, 1);
+            X = x;
+            Y = y;
         }
     }
 }

@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 
 namespace SimVillage.Model.Building
 {
-    internal class Industrial : Building
+    public class Industrial : Building
     {
         int MaxWorkers;
         int Workers;
-        public Industrial(List<Tile> tile)
+        public Industrial()
         {
-            SetTiles(tile);
-            SetPowerConsumption(30);
-            SetDensity(1);
+            PowerConsumption = 30;
+            Density = 1;
             MaxWorkers = 10;
         }
         public int GetMaxWorkers() { return MaxWorkers; }

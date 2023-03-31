@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace SimVillage.Model.Building
 {
-    internal class Stadium : Building
+    public class Stadium : Building
     {
-        public Stadium(List<Tile> tile)
+        public Stadium(int x, int y)
         {
-            SetTiles(tile);
-            SetPowerConsumption(60);
+            PowerConsumption = 60;
+            Size = (2, 2);
+            Cost = 2000;
+            X = x;
+            Y = y;
         }
     }
 }

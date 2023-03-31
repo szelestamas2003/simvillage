@@ -28,7 +28,7 @@ namespace SimVillage
 
         public void App_Startup(object? sender, StartupEventArgs e)
         {
-            city = new City(new Model.Persistence, "asd");
+            city = new City(new Model.Persistence(), "SimCity");
 
             view =new MainWindow();
             view.Show();

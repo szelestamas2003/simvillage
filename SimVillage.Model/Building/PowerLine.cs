@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace SimVillage.Model.Building
 {
-    internal class PowerLine : Building
+    public class PowerLine : Building
     {
-        public PowerLine(List<Tile> tile)
+        public PowerLine()
         {
-            SetTiles(tile);
             SetPowerConsumption(0);
         }
     }
