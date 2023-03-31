@@ -14,6 +14,8 @@
 
         private Persistence dataAccess;
 
+        private Finances Finances;
+
         private Zone[,] Zones;
 
         private List<Citizen> Citizens = null!;
@@ -24,6 +26,7 @@
         {
             this.dataAccess = dataAccess;
             cityName = name;
+            Finances = new Finances(5000);
 
             Zones = new Zone[mapHeight, mapWidth];
             
@@ -49,7 +52,7 @@
         {
             if (Zones[x, y].DownGrade())
             {
-
+                Finances.addIncome("Demolished a " + Zones[x, y].ToString(), Zones[x, y].getCost(), date);
             }
         }
 
@@ -67,7 +70,7 @@
         {
             if (Zones[x, y].UpGrade(zoneType))
             {
-
+                Finances.addExpenses("Built a " + Zones[x, y].ToString(), Zones[x, y].getCost(), date);
             } else
             {
 
