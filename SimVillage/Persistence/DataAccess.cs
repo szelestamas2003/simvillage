@@ -16,7 +16,8 @@ namespace SimVillage.Persistence
             {
                 string jsonString = File.ReadAllText(path);
                 MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(jsonString));
-                return JsonSerializer.DeserializeAsync<GameState>(stream).Result;
+                var result = await JsonSerializer.DeserializeAsync<GameState>(stream);
+                return result == null ? throw new GameStateException() : result;
             }
             catch
             {
