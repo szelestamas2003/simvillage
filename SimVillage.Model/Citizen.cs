@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SimVillage.Model
 {
-    internal class Citizen
+    public class Citizen
     {
         int Age;
         int Salary;
@@ -14,6 +14,11 @@ namespace SimVillage.Model
         public int calcHappiness()
         {
             return 0;
+        }
+
+        public override string ToString()
+        {
+            return Age.ToString() + "," + Salary.ToString();
         }
     }
 }
