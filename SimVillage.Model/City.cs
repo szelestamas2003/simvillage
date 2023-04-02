@@ -2,17 +2,17 @@
 {
     public class City
     {
-        private const int mapWidth = 50;
+        private const int mapWidth = 60;
 
-        private const int mapHeight = 40;
+        private const int mapHeight = 30;
 
         private readonly string cityName;
 
         private DateTime date = new DateTime(2000, 1, 1);
 
-        private int Budget = 5000000;
-
         private Persistence dataAccess;
+
+        private Finances Finances;
 
         private Zone[,] Zones;
 
@@ -20,10 +20,14 @@
 
         public EventHandler? gameAdvanced;
 
+        public EventHandler? failedBuilding;
+
         public City(Persistence dataAccess, string name)
         {
             this.dataAccess = dataAccess;
             cityName = name;
+            Finances = new Finances(5000);
+            Citizens = new List<Citizen>();
 
             Zones = new Zone[mapHeight, mapWidth];
             
@@ -49,7 +53,7 @@
         {
             if (Zones[x, y].DownGrade())
             {
-
+                Finances.addIncome("Demolished a " + Zones[x, y].ToString(), Zones[x, y].getCost() / 2, date);
             }
         }
 
@@ -67,22 +71,32 @@
         {
             if (Zones[x, y].UpGrade(zoneType))
             {
-
+                Finances.addExpenses("Built a " + Zones[x, y].ToString(), Zones[x, y].getCost(), date);
             } else
             {
-
+                OnBuildFailed();
             }
         }
 
         public void AdvanceTime()
         {
+            DateTime previous_date = date;
             date.AddDays(1);
+            if (date.Year > previous_date.Year)
+            {
+
+            }
             OnTimeAdvanced();
         }
 
         private void OnTimeAdvanced()
         {
             gameAdvanced?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnBuildFailed()
+        {
+            failedBuilding?.Invoke(this, EventArgs.Empty);
         }
     }
 }

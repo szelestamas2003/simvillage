@@ -10,13 +10,33 @@
 
         public ZoneType ZoneType { get; private set; }
 
+        private Building.Building building = null!;
+
+        private List<Citizen> citizens = null!;
+
         private const int cost = 50000;
 
         public int getCost() { return cost; }
 
+        public int getPeople()
+        {
+            return citizens.Count;
+        }
+
         public Zone(ZoneType zoneType = ZoneType.General)
         {
             ZoneType = zoneType;
+            citizens = new List<Citizen>();
+        }
+
+        public int getHappiness()
+        {
+            int happiness = 0;
+            foreach (Citizen i in citizens)
+            {
+                happiness += i.calcHappiness();
+            }
+            return happiness;
         }
 
         public bool DownGrade()
@@ -37,6 +57,11 @@
                 return true;
             }
             return false;
+        }
+
+        public override string ToString()
+        {
+            return ZoneType.ToString() + " Zone" + building != null ? " with " + building.GetType().Name + " on it" : "";
         }
     }
 }
