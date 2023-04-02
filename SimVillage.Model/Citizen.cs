@@ -15,5 +15,10 @@ namespace SimVillage.Model
         {
             return 0;
         }
+
+        public override string ToString()
+        {
+            return Age.ToString() + "," + Salary.ToString();
+        }
     }
 }
