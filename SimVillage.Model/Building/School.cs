@@ -32,16 +32,9 @@ namespace SimVillage.Model.Building
         {
             Students = students;
         }
-        public int GetType()
+        public SchoolTypes GetType()
         {
-            if(Type == SchoolTypes.University) 
-            { 
-                return 2; 
-            }
-            else
-            {
-                return 1;
-            }
+            return Type;
         }
 
 
