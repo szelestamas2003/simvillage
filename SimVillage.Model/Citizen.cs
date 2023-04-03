@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SimVillage.Model
 {
-    internal class Citizen
+    public class Citizen
     {
         int Age;
         int Salary;
@@ -18,7 +18,7 @@ namespace SimVillage.Model
         Building.Building WorkPlace;
 
 
-        public Citizen(int Age, Building.Residental Home) 
+        public Citizen(int Age, Building.Residental Home)
         {
             this.Age = Age;
             this.Home = Home;
@@ -74,7 +74,7 @@ namespace SimVillage.Model
         static public Citizen ReGen(Building.Residental home)
         {
             Random r = new Random();
-            int age = r.Next(18, 60);
+            int age = r.Next(18,60);
             Citizen citizen = new Citizen(age, home);
             return citizen;
         }
@@ -86,7 +86,7 @@ namespace SimVillage.Model
             {
                 chance *= 0.95;
             }
-            if (r.Next(0, 100) > chance)
+            if (r.Next(0,100) > chance)
             {
                 return true;
             }

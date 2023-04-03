@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SimVillage.Model.Building
 {
-    internal class School : Building
+    public class School : Building
     {
         int MaxStudents;
         int Students;

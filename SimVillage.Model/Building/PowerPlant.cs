@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SimVillage.Model.Building
 {
-    internal class PowerPlant : Building
+    public class PowerPlant : Building
     {
         int GeneratedPower = 1000;
         public PowerPlant(List<Tile> tile)

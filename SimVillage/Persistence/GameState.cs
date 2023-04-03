@@ -11,6 +11,7 @@ namespace SimVillage.Persistence
     {
         public string Name;
         public DateTime Date;
+        public Finances Finances;
         public List<Citizen> Citizens;
         public List<List<Zone>> Zones;
     }
