@@ -78,6 +78,11 @@ namespace SimVillage.Model
             Citizen citizen = new Citizen(age, home);
             return citizen;
         }
+        static public Citizen ReGen18(Building.Residental home)
+        {
+            Citizen citizen = new Citizen(18, home);
+            return citizen;
+        }
         public bool ChanceToPassAway()
         {
             Random r = new Random();
