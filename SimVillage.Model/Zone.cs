@@ -29,6 +29,31 @@
             citizens = new List<Citizen>();
         }
 
+        public void BuildBuilding(Building.Building? building = null)
+        {
+            Occupied = true;
+            if (building == null)
+            {
+                switch (ZoneType)
+                {
+                    case ZoneType.Residental:
+                        this.building = new Building.Residental();
+                        break;
+                    case ZoneType.Industrial:
+                        this.building = new Building.Industrial();
+                        break;
+                    case ZoneType.Store:
+                        this.building = new Building.Store();
+                        break;
+                    default:
+                        throw new ArgumentNullException();
+                }
+            } else
+            {
+                this.building = building;
+            }
+        }
+
         public int getHappiness()
         {
             int happiness = 0;
@@ -39,21 +64,25 @@
             return happiness;
         }
 
-        public bool DownGrade()
+        public bool DowngradeZone()
         {
             if (ZoneType != ZoneType.General)
             {
                 ZoneType = ZoneType.General;
+                building = null!;
+                Occupied = false;
                 return true;
             }
             return false;
         }
 
-        public bool UpGrade(ZoneType zoneType)
+        public bool SetZone(ZoneType zoneType)
         {
             if (zoneType == ZoneType.General)
             {
                 ZoneType = zoneType;
+                if (ZoneType != ZoneType.Residental)
+                    BuildBuilding();
                 return true;
             }
             return false;
