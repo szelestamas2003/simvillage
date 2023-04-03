@@ -37,13 +37,13 @@
                 switch (ZoneType)
                 {
                     case ZoneType.Residental:
-                        this.building = new Building.Residental();
+                        this.building = new Building.Residental(null);
                         break;
                     case ZoneType.Industrial:
-                        this.building = new Building.Industrial();
+                        this.building = new Building.Industrial(null);
                         break;
                     case ZoneType.Store:
-                        this.building = new Building.Store();
+                        this.building = new Building.Store(null);
                         break;
                     default:
                         throw new ArgumentNullException();
