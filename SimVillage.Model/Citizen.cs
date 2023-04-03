@@ -34,7 +34,7 @@ namespace SimVillage.Model
         public bool AgeUp()
         {
             Age++;
-            if(Age >= 65) 
+            if (Age >= 65)
             {
                 if (!Pensioner)
                 {
@@ -74,7 +74,7 @@ namespace SimVillage.Model
         static public Citizen ReGen(Building.Residental home)
         {
             Random r = new Random();
-            int age = r.Next(18,60);
+            int age = r.Next(18, 60);
             Citizen citizen = new Citizen(age, home);
             return citizen;
         }
@@ -82,11 +82,11 @@ namespace SimVillage.Model
         {
             Random r = new Random();
             double chance = 100;
-            for(int i = 65; i < Age; i++)
+            for (int i = 65; i < Age; i++)
             {
                 chance *= 0.95;
             }
-            if(r.Next(0,100) > chance)
+            if (r.Next(0, 100) > chance)
             {
                 return true;
             }
