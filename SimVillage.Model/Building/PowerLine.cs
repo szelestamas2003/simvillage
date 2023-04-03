@@ -12,6 +12,7 @@ namespace SimVillage.Model.Building
         {
             SetTiles(tile);
             SetPowerConsumption(0);
+            Size = (1, 1);
         }
     }
 }

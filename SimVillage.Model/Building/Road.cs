@@ -11,6 +11,7 @@ namespace SimVillage.Model.Building
         public Road(List<Tile> tile)
         {
             SetTiles(tile);
+            Size = (1, 1);
             SetPowerConsumption(4);
         }
     }

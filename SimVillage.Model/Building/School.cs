@@ -32,7 +32,7 @@ namespace SimVillage.Model.Building
         {
             Students = students;
         }
-        public SchoolTypes GetType()
+        public SchoolTypes GetSchoolType()
         {
             return Type;
         }

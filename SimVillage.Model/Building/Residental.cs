@@ -15,6 +15,7 @@ namespace SimVillage.Model.Building
             SetTiles(tile);
             SetPowerConsumption(30);
             SetDensity(1);
+            Size = (1, 1);
             MaxInhabitants = 6;
         }
         public int GetMaxInhabitants() { return MaxInhabitants; }
