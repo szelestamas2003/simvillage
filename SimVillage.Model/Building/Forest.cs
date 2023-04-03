@@ -12,6 +12,7 @@ namespace SimVillage.Model.Building
         public Forest(List<Tile> tile) {
             SetTiles(tile);
             Age = 0;
+            Size = (1, 1);
             SetPowerConsumption(3);
 
         }

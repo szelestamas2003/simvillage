@@ -13,6 +13,7 @@ namespace SimVillage.Model.Building
         {
             SetTiles(tile);
             SetPowerConsumption(0);
+            Size = (2, 2);
         }
         public int GetGeneratedPower() {  return GeneratedPower; }
         public void SetGeneratedPower(int value) {  GeneratedPower = value; }

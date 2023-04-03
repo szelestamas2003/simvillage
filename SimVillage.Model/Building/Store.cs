@@ -16,6 +16,7 @@ namespace SimVillage.Model.Building
             SetPowerConsumption(30);
             SetDensity(1);
             MaxWorkers = 10;
+            Size = (1, 1);
         }
         public int GetMaxWorkers() { return MaxWorkers; }
         public int GetWorkers() { return Workers; }

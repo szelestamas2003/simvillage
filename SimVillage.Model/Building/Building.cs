@@ -8,11 +8,11 @@ namespace SimVillage.Model.Building
 {
     public abstract class Building
     {
-        List<Tile> Tiles;
-        (int, int) Size;
-        bool Occupied;
-        int Density;
-        int PowerConsumption;
+        protected List<Tile> Tiles;
+        protected (int, int) Size;
+        protected bool Occupied;
+        protected int Density;
+        protected int PowerConsumption;
 
 
         public Building(List<Tile> tiles, (int, int) size, bool occupied, int density, int powerConsumption)
