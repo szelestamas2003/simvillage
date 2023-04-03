@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SimVillage.Model.Building
 {
-    internal class Forest : Building
+    public class Forest : Building
     {
         int Age;
         public Forest(List<Tile> tile) {

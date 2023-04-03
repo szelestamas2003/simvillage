@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SimVillage.Model.Building
 {
-    internal class School : Building
+    public class School : Building
     {
         int MaxStudents;
         int Students;
@@ -32,16 +32,9 @@ namespace SimVillage.Model.Building
         {
             Students = students;
         }
-        public int GetType()
+        public SchoolTypes GetType()
         {
-            if(Type == SchoolTypes.University) 
-            { 
-                return 2; 
-            }
-            else
-            {
-                return 1;
-            }
+            return Type;
         }
 
 

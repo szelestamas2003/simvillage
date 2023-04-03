@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SimVillage.Model.Building
 {
-    internal class PoliceDepartment : Building
+    public class PoliceDepartment : Building
     {
         public PoliceDepartment (List<Tile> tile)
         {

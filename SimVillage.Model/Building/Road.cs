@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SimVillage.Model.Building
 {
-    internal class Road : Building
+    public class Road : Building
     {
         public Road(List<Tile> tile)
         {

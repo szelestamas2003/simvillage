@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SimVillage.Model.Building
 {
-    internal class FireDepartment : Building
+    public class FireDepartment : Building
     {
         bool UnitAvailable;
         public FireDepartment(List<Tile> tile)
