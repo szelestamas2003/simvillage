@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SimVillage.Model.Building
 {
-    abstract class Building
+    public abstract class Building
     {
         List<Tile> Tiles;
         (int, int) Size;
