@@ -8,7 +8,7 @@ namespace SimVillage.Model.Building
 {
     public class Tile
     {
-        private  int X;
+        private int X;
         private int Y;
         private Building Building;
 

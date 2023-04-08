@@ -1,4 +1,7 @@
-﻿namespace SimVillage.Model
+﻿using SimVillage.Model.Building;
+using System.Net.Http.Json;
+
+namespace SimVillage.Model
 {
     public class City
     {
@@ -90,13 +93,55 @@
             }
         }
 
-        private int calcDistance(int x1, int y1, int x2, int y2)
+        private int calcDistance(Building.Building from, Building.Building to)
         {
-            if (x1 < x2)
+            List<int> distances = new List<int>();
+            int n = 0;
+            distancesFromTo(null, from, to, distances, n);
+            distances.Sort();
+            return distances.Count != 0 ? distances[0] : -1;
+        }
+
+        private void distancesFromTo(Building.Building from, Building.Building current, Building.Building to, List<int> distances, int n)
+        {
+            bool found = false;
+            for (int i = -1; i < 2; i++)
             {
-                return x1;
+                for (int j = -1; j < 2; j++)
+                {
+                    foreach (Tile tile in current.GetTiles())
+                    {
+                        if (tile.GetX() + i >= 0 && tile.GetX() + i < mapHeight && tile.GetY() + j >= 0 && tile.GetY() + j < mapWidth)
+                        {
+                            if (map[tile.GetX() + i, tile.GetY() + j].getBuilding() == to)
+                            {
+                                distances.Add(n);
+                                found = true;
+                            }
+                        }
+                    }
+                }
             }
-            return x2;
+
+            if (!found)
+            {
+                for (int i = -1; i < 2; i++)
+                {
+                    for (int j = -1; j < 2; j++)
+                    {
+                        foreach (Tile tile in current.GetTiles())
+                        {
+                            if (!(Math.Abs(i) == Math.Abs(j)) && tile.GetX() + i >= 0 && tile.GetX() + i < mapHeight && tile.GetY() + j >= 0 && tile.GetY() + j < mapWidth)
+                            {
+                                if (map[tile.GetX() + i, tile.GetY() + j].getBuilding() != from && map[tile.GetX() + i, tile.GetY() + j].getBuilding() != null && map[tile.GetX() + i, tile.GetY() + j].getBuilding().GetType() == typeof(Building.Road))
+                                {
+                                    distancesFromTo(current, map[tile.GetX() + i, tile.GetY() + j].getBuilding(), to, distances, ++n);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public int getHappiness()

@@ -16,6 +16,8 @@
 
         private const int cost = 50000;
 
+        public Building.Building getBuilding() { return building; }
+
         public int getCost() { return cost; }
 
         public int getPeople()
@@ -37,13 +39,13 @@
                 switch (ZoneType)
                 {
                     case ZoneType.Residental:
-                        this.building = new Building.Residental(null);
+                        this.building = new Building.Residental(new List<Building.Tile> { new Building.Tile(X, Y)});
                         break;
                     case ZoneType.Industrial:
-                        this.building = new Building.Industrial(null);
+                        this.building = new Building.Industrial(new List<Building.Tile> { new Building.Tile(X, Y) });
                         break;
                     case ZoneType.Store:
-                        this.building = new Building.Store(null);
+                        this.building = new Building.Store(new List<Building.Tile> { new Building.Tile(X, Y) });
                         break;
                     default:
                         throw new ArgumentNullException();
@@ -78,7 +80,7 @@
 
         public bool SetZone(ZoneType zoneType)
         {
-            if (zoneType == ZoneType.General)
+            if (ZoneType == ZoneType.General)
             {
                 ZoneType = zoneType;
                 if (ZoneType != ZoneType.Residental)
