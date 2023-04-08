@@ -18,9 +18,9 @@ namespace SimVillage
     /// <summary>
     /// Interaction logic for Persistence.xaml
     /// </summary>
-    public partial class Persistence : Page
+    public partial class PersistenceView : Page
     {
-        public Persistence()
+        public PersistenceView()
         {
             InitializeComponent();
         }
