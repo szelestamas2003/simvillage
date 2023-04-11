@@ -23,6 +23,10 @@ namespace SimVillage.Model
 
         private List<Citizen> Citizens = null!;
 
+        private List<Building.Industrial> avaibleIndustrials = null!;
+
+        private List<Building.Store> avaibleStores = null!;
+
         public EventHandler? gameAdvanced;
 
         public EventHandler? failedBuilding;
@@ -35,6 +39,8 @@ namespace SimVillage.Model
             cityName = name;
             Finances = new Finances(5000);
             Citizens = new List<Citizen>();
+            avaibleStores = new List<Building.Store>();
+            avaibleIndustrials = new List<Building.Industrial>();
 
             map = new Zone[mapHeight, mapWidth];
             
@@ -93,16 +99,17 @@ namespace SimVillage.Model
             }
         }
 
-        private int calcDistance(Building.Building from, Building.Building to)
+        private int CalcDistance(Building.Building from, Building.Building to)
         {
             List<int> distances = new List<int>();
+            HashSet<Road> visited = new HashSet<Road>();
             int n = 0;
-            distancesFromTo(null, from, to, distances, n);
+            distancesFromTo(null, from, to, distances, visited, n);
             distances.Sort();
             return distances.Count != 0 ? distances[0] : -1;
         }
 
-        private void distancesFromTo(Building.Building from, Building.Building current, Building.Building to, List<int> distances, int n)
+        private void distancesFromTo(Building.Building from, Building.Building current, Building.Building to, List<int> distances, HashSet<Road> visited, int n)
         {
             bool found = false;
             for (int i = -1; i < 2; i++)
@@ -133,9 +140,11 @@ namespace SimVillage.Model
                         {
                             if (!(Math.Abs(i) == Math.Abs(j)) && tile.GetX() + i >= 0 && tile.GetX() + i < mapHeight && tile.GetY() + j >= 0 && tile.GetY() + j < mapWidth)
                             {
-                                if (map[tile.GetX() + i, tile.GetY() + j].getBuilding() != from && map[tile.GetX() + i, tile.GetY() + j].getBuilding() != null && map[tile.GetX() + i, tile.GetY() + j].getBuilding().GetType() == typeof(Building.Road))
+                                Building.Building building = map[tile.GetX() + i, tile.GetY() + j].getBuilding();
+                                if (building != from && building != null && building.GetType() == typeof(Road) && !visited.Contains(building))
                                 {
-                                    distancesFromTo(current, map[tile.GetX() + i, tile.GetY() + j].getBuilding(), to, distances, ++n);
+                                    visited.Add((Road)building);
+                                    distancesFromTo(current, building, to, distances, visited, ++n);
                                 }
                             }
                         }
@@ -158,6 +167,10 @@ namespace SimVillage.Model
         {
             if (map[x, y].SetZone(zoneType))
             {
+                if (zoneType == ZoneType.Industrial)
+                    avaibleIndustrials.Add((Industrial)map[x, y].getBuilding());
+                else if (zoneType == ZoneType.Store)
+                    avaibleStores.Add((Store)map[x, y].getBuilding());
                 Finances.addExpenses("Built a " + map[x, y].ToString(), map[x, y].getCost(), date);
                 OnGameChanged();
             } else

@@ -52,7 +52,10 @@
                 }
             } else
             {
-                this.building = building;
+                if (ZoneType == ZoneType.General)
+                    this.building = building;
+                else
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
