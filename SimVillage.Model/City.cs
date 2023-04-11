@@ -99,7 +99,7 @@ namespace SimVillage.Model
             }
         }
 
-        private int CalcDistance(Building.Building from, Building.Building to)
+        static public int calcDistance(Building.Building from, Building.Building to)
         {
             List<int> distances = new List<int>();
             HashSet<Road> visited = new HashSet<Road>();
@@ -109,7 +109,7 @@ namespace SimVillage.Model
             return distances.Count != 0 ? distances[0] : -1;
         }
 
-        private void distancesFromTo(Building.Building from, Building.Building current, Building.Building to, List<int> distances, HashSet<Road> visited, int n)
+        static private void distancesFromTo(Building.Building from, Building.Building current, Building.Building to, List<int> distances, int n)
         {
             bool found = false;
             for (int i = -1; i < 2; i++)

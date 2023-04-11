@@ -29,7 +29,25 @@ namespace SimVillage.Model
         }
         public int calcHappiness()
         {
-            return 0;
+            Happiness = 0;
+            int work_distance = City.calcDistance(Home, WorkPlace);
+            work_distance = 15 - work_distance;
+            Happiness += work_distance;
+            Happiness += Salary / 10;
+            if(EducationLevel == EducationLevel.Basic)
+            {
+                Happiness -= 5;
+            }
+            else if(EducationLevel == EducationLevel.Middle) 
+            {
+                Happiness += 5;
+            }
+            else
+            {
+                Happiness += 10;
+            }
+            return Happiness;
+
         }
         public bool AgeUp()
         {
