@@ -1,5 +1,4 @@
 ﻿using SimVillage.Model.Building;
-using System.Net.Http.Json;
 
 namespace SimVillage.Model
 {
@@ -19,7 +18,7 @@ namespace SimVillage.Model
 
         private Finances Finances;
 
-        private Zone[,] map;
+        private static Zone[,] map = null!;
 
         private List<Citizen> Citizens = null!;
 
@@ -109,8 +108,13 @@ namespace SimVillage.Model
             return distances.Count != 0 ? distances[0] : -1;
         }
 
-        static private void distancesFromTo(Building.Building from, Building.Building current, Building.Building to, List<int> distances, int n)
+        static private void distancesFromTo(Building.Building from, Building.Building current, Building.Building to, List<int> distances, HashSet<Road> visited, int n)
         {
+            if (map == null)
+            {
+                return;
+            }
+
             bool found = false;
             for (int i = -1; i < 2; i++)
             {
