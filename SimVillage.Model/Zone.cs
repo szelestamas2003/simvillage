@@ -1,4 +1,6 @@
-﻿namespace SimVillage.Model
+﻿using SimVillage.Model.Building;
+
+namespace SimVillage.Model
 {
     public class Zone
     {
@@ -23,6 +25,16 @@
         public int getPeople()
         {
             return citizens.Count;
+        }
+
+        public void addCitizen(Citizen person)
+        {
+            citizens.Add(person);
+            Residental house = (Residental)building;
+            if (house.FreeSpace())
+            {
+                house.MoveIn();
+            }
         }
 
         public Zone(ZoneType zoneType = ZoneType.General)

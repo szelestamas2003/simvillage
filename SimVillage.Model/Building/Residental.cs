@@ -33,14 +33,7 @@ namespace SimVillage.Model.Building
 
         public bool FreeSpace()
         {
-            if (Inhabitans == MaxInhabitants)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return Inhabitans < MaxInhabitants;
         }
     }
 }
