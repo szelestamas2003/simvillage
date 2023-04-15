@@ -107,7 +107,7 @@ namespace SimVillage.Model
 
         public override string ToString()
         {
-            return ZoneType.ToString() + " Zone" + building != null ? " with " + building.GetType().Name + " on it" : "";
+            return ZoneType.ToString() + " Zone" + (building != null ? " with " + building.GetType().Name + " on it" : "");
         }
     }
 }

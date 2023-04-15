@@ -28,10 +28,20 @@ namespace SimVillage
 
         public void App_Startup(object? sender, StartupEventArgs e)
         {
-            city = new City(new Model.Persistence(), "asd");
+            city = new City(new Model.Persistence(), "SimVillage");
 
             view =new MainWindow();
             view.Show();
+
+            timer = new Timer();
+            timer.Interval = 5000;
+            timer.Elapsed += new ElapsedEventHandler(Timer_Tick);
+            timer.Start();
+        }
+
+        private void Timer_Tick(object? sender, ElapsedEventArgs e)
+        {
+            city.AdvanceTime();
         }
     }
 }

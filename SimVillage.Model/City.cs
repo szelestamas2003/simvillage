@@ -1,5 +1,4 @@
 ﻿using SimVillage.Model.Building;
-using System.Numerics;
 
 namespace SimVillage.Model
 {
@@ -46,7 +45,7 @@ namespace SimVillage.Model
             avaibleHouses = new List<Residental>();
 
             map = new Zone[mapHeight, mapWidth];
-            
+
             for (int i = 0; i < mapHeight; i++)
             {
                 for (int j = 0; j < mapWidth; j++)
@@ -59,6 +58,7 @@ namespace SimVillage.Model
                     };
                 }
             }
+            BuildBuilding(new Forest(new List<Tile> { new Tile(0, 0) }));
         }
 
         public string Name { get { return cityName; } }
@@ -194,6 +194,29 @@ namespace SimVillage.Model
                     avaibleStores.Add((Store)map[x, y].getBuilding());
                 Finances.addExpenses("Built a " + map[x, y].ToString(), map[x, y].getCost(), date);
                 OnGameChanged();
+            } else
+            {
+                OnBuildFailed();
+            }
+        }
+
+        public void BuildBuilding(Building.Building building)
+        {
+            if (building == null)
+                return;
+
+            bool freeZone = true;
+            foreach (Tile tile in building.GetTiles())
+            {
+                Zone zone = map[tile.GetX(), tile.GetY()];
+                freeZone = freeZone && (zone.ZoneType == ZoneType.General && zone.getBuilding() == null);
+            }
+            if (freeZone)
+            {
+                foreach (Tile tile in building.GetTiles())
+                {
+                    map[tile.GetX(), tile.GetY()].BuildBuilding(building);
+                }
             } else
             {
                 OnBuildFailed();
@@ -382,7 +405,7 @@ namespace SimVillage.Model
                             }
                         }
                     }
-                    if (building != null && minDist < 10 && !found && AVGhappiness > 5)
+                    if (building != null && minDist < 30 && !found && AVGhappiness > 5)
                     {
                         Citizen citizen = Citizen.ReGen(house);
                         building.NewWorker();
@@ -424,7 +447,7 @@ namespace SimVillage.Model
                             }
                         }
                     }
-                    if (building != null && minDist < 10 && !found && AVGhappiness > 5)
+                    if (building != null && minDist < 30 && !found && AVGhappiness > 5)
                     {
                         Citizen citizen = Citizen.ReGen(house);
                         building.NewWorker();
