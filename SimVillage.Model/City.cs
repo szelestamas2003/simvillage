@@ -69,11 +69,24 @@ namespace SimVillage.Model
 
         public void demolishZone(int x, int y)
         {
-            if (map[x, y].DowngradeZone())
+            Building.Building building = map[x, y].getBuilding();
+            if (building != null)
             {
-                Finances.addIncome("Demolished a " + map[x, y].ToString(), map[x, y].getCost() / 2, date);
-                OnGameChanged();
+                foreach (Tile tile in building.GetTiles())
+                {
+                    if (map[tile.GetX(), tile.GetY()].DowngradeZone())
+                    {
+                        Finances.addIncome("Demolished a " + map[x, y].ToString(), map[x, y].getCost() / 2, date);
+                    }
+                }
+            } else
+            {
+                if (map[x, y].DowngradeZone())
+                {
+                    Finances.addIncome("Demolished a " + map[x, y].ToString(), map[x, y].getCost() / 2, date);
+                }
             }
+            OnGameChanged();
         }
 
         public async Task Save()
@@ -424,6 +437,7 @@ namespace SimVillage.Model
                     }
                 }
             }
+            OnGameChanged();
         }
 
         private void OnTimeAdvanced()
