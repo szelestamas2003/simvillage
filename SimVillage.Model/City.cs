@@ -286,7 +286,7 @@ namespace SimVillage.Model
                     foreach (Industrial industrial in avaibleIndustrials)
                     {
                         int dist = calcDistance(house, industrial);
-                        if (dist != -1 && dist < minDist && building.FreeSpace())
+                        if (dist != -1 && dist < minDist && industrial.FreeSpace())
                         {
                             minDist = dist;
                             building = industrial;
@@ -313,7 +313,7 @@ namespace SimVillage.Model
                     foreach (Store store in avaibleStores)
                     {
                         int dist = calcDistance(house, store);
-                        if (dist != -1 && dist < minDist && building.FreeSpace())
+                        if (dist != -1 && dist < minDist && store.FreeSpace())
                         {
                             minDist = dist;
                             building = store;
@@ -382,7 +382,7 @@ namespace SimVillage.Model
                     foreach (Industrial industrial in avaibleIndustrials)
                     {
                         int dist = calcDistance(house, industrial);
-                        if (dist != -1 && dist < minDist && building.FreeSpace())
+                        if (dist != -1 && dist < minDist && industrial.FreeSpace())
                         {
                             minDist = dist;
                             building = industrial;
@@ -424,7 +424,7 @@ namespace SimVillage.Model
                     foreach (Store store in avaibleStores)
                     {
                         int dist = calcDistance(house, store);
-                        if (dist != -1 && dist < minDist && building.FreeSpace())
+                        if (dist != -1 && dist < minDist && store.FreeSpace())
                         {
                             minDist = dist;
                             building = store;
