@@ -65,7 +65,13 @@ namespace SimVillage.ViewModel
                 new Option {Text = "Industrial", Number = 1, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
                 new Option { Text = "Store" , Number = 2, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
                 new Option { Text = "Road" , Number = 3, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
-                new Option { Text = "Forest", Number = 4, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))}
+                new Option { Text = "Forest", Number = 4, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
+                new Option { Text = "Police", Number = 5, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
+                new Option { Text = "Fire Department", Number = 6, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
+                new Option { Text = "Power Line", Number = 7, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
+                new Option { Text = "Power Plant", Number = 8, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
+                new Option { Text = "School", Number = 9, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
+                new Option { Text = "Stadium", Number = 10, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))}
             };
 
             PauseGameCommand = new DelegateCommand(param => OnPauseGame());
@@ -130,6 +136,38 @@ namespace SimVillage.ViewModel
                         break;
                     case "Store":
                         field.Text = "Store";
+                        model.newZone(field.X, field.Y, ZoneType.Store);
+                        break;
+                    case "Forest":
+                        field.Text = "Forest";
+                        model.newZone(field.X, field.Y, ZoneType.Store);
+                        break;
+                    case "Road":
+                        field.Text = "Road";
+                        model.newZone(field.X, field.Y, ZoneType.Store);
+                        break;
+                    case "Police":
+                        field.Text = "Police";
+                        model.newZone(field.X, field.Y, ZoneType.Store);
+                        break;
+                    case "Fire Department":
+                        field.Text = "Fire Department";
+                        model.newZone(field.X, field.Y, ZoneType.Store);
+                        break;
+                    case "Power Line":
+                        field.Text = "Fire Department";
+                        model.newZone(field.X, field.Y, ZoneType.Store);
+                        break;
+                    case "Power Plant":
+                        field.Text = "Fire Department";
+                        model.newZone(field.X, field.Y, ZoneType.Store);
+                        break;
+                    case "School":
+                        field.Text = "School";
+                        model.newZone(field.X, field.Y, ZoneType.Store);
+                        break;
+                    case "Staddium":
+                        field.Text = "Stadium";
                         model.newZone(field.X, field.Y, ZoneType.Store);
                         break;
                 }

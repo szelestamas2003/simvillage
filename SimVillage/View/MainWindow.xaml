@@ -51,6 +51,10 @@
                                         <Setter Property="BorderBrush" Value="Lime"/>
                                         <Setter Property="BorderThickness" Value="1"/>
                                     </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Police">
+                                        <Setter Property="Background" Value="DarkBlue"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Button.Style>
