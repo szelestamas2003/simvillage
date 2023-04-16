@@ -54,13 +54,22 @@
                                         <Setter Property="BorderBrush" Value="Yellow"/>
                                         <Setter Property="BorderThickness" Value="1"/>
                                     </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Industrial Building">
+                                        <Setter Property="Background" Value="Yellow"/>
+                                    </DataTrigger>
                                     <DataTrigger Binding="{Binding Text}" Value="Store">
                                         <Setter Property="BorderBrush" Value="Blue"/>
                                         <Setter Property="BorderThickness" Value="1"/>
                                     </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Store Building">
+                                        <Setter Property="Background" Value="Blue"/>
+                                    </DataTrigger>
                                     <DataTrigger Binding="{Binding Text}" Value="Residental">
                                         <Setter Property="BorderBrush" Value="Green"/>
                                         <Setter Property="BorderThickness" Value="1"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Residental Building">
+                                        <Setter Property="Background" Value="Green"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Text}" Value="Police">
                                         <Setter Property="Background" Value="DarkBlue"/>
@@ -97,8 +106,8 @@
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemContainerStyle>
                 <Style>
-                    <Setter Property="Grid.Row" Value="{Binding Y}"/>
-                    <Setter Property="Grid.Column" Value="{Binding X}"/>
+                    <Setter Property="Grid.Row" Value="{Binding X}"/>
+                    <Setter Property="Grid.Column" Value="{Binding Y}"/>
                 </Style>
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
@@ -115,7 +124,7 @@
                             <Style TargetType="Button">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsClicked}" Value="True">
-                                        <Setter Property="Background" Value="DarkBlue"/>
+                                        <Setter Property="Background" Value="LightBlue"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding IsClicked}" Value="False">
                                         <Setter Property="Background" Value="White"/>

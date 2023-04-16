@@ -108,16 +108,16 @@ namespace SimVillage.ViewModel
         private void GenerateMap()
         {
             Fields.Clear();
-            for (int i = 0; i < Width; i++)
+            for (int i = 0; i < Height; i++)
             {
-                for (int j = 0; j < Height; j++)
+                for (int j = 0; j < Width; j++)
                 {
                     Fields.Add(new Field
                     {
                         X = i,
                         Y = j,
                         Text = string.Empty,
-                        Number = i * Height + j,
+                        Number = i * Width + j,
                         Clicked = new DelegateCommand(param => OnFieldClicked(Convert.ToInt32(param)))
                     });
                 }
@@ -146,40 +146,31 @@ namespace SimVillage.ViewModel
                             field.Text = "Store";
                         break;
                     case "Forest":
-                        if (model.BuildBuilding(new Forest(new List<Tile> { new Tile(field.X, field.Y) })))
-                            field.Text = "Forest";
+                        model.BuildBuilding(new Forest(new List<Tile> { new Tile(field.X, field.Y) }));
                         break;
                     case "Road":
-                        if (model.BuildBuilding(new Road(new List<Tile> { new Tile(field.X, field.Y) })))
-                            field.Text = "Road";
+                        model.BuildBuilding(new Road(new List<Tile> { new Tile(field.X, field.Y) }));
                         break;
                     case "Police":
-                        if (model.BuildBuilding(new PoliceDepartment(new List<Tile> { new Tile(field.X, field.Y) })))
-                            field.Text = "Police";
+                        model.BuildBuilding(new PoliceDepartment(new List<Tile> { new Tile(field.X, field.Y) }));
                         break;
                     case "Fire Department":
-                        if (model.BuildBuilding(new FireDepartment(new List<Tile> { new Tile(field.X, field.Y) })))
-                            field.Text = "Fire Department";
+                        model.BuildBuilding(new FireDepartment(new List<Tile> { new Tile(field.X, field.Y) }));
                         break;
                     case "Power Line":
-                        if (model.BuildBuilding(new PowerLine(new List<Tile> { new Tile(field.X, field.Y) })))
-                            field.Text = "Power Line";
+                        model.BuildBuilding(new PowerLine(new List<Tile> { new Tile(field.X, field.Y) }));
                         break;
                     case "Power Plant":
-                        if (model.BuildBuilding(new PowerPlant(new List<Tile> { new Tile(field.X, field.Y), new Tile(field.X, field.Y + 1), new Tile(field.X + 1, field.Y), new Tile(field.X + 1, field.Y + 1) })))
-                            field.Text = "Power Plant";
+                        model.BuildBuilding(new PowerPlant(new List<Tile> { new Tile(field.X, field.Y), new Tile(field.X, field.Y + 1), new Tile(field.X + 1, field.Y), new Tile(field.X + 1, field.Y + 1) }));
                         break;
                     case "School":
-                        if (model.BuildBuilding(new School(new List<Tile> { new Tile(field.X, field.Y), new Tile(field.X, field.Y + 1) }, SchoolTypes.Elementary)))
-                            field.Text = "School";
+                        model.BuildBuilding(new School(new List<Tile> { new Tile(field.X, field.Y), new Tile(field.X, field.Y + 1) }, SchoolTypes.Elementary));
                         break;
                     case "University":
-                        if (model.BuildBuilding(new School(new List<Tile> { new Tile(field.X, field.Y), new Tile(field.X + 1, field.Y), new Tile(field.X, field.Y + 1), new Tile(field.X + 1, field.Y + 1)}, SchoolTypes.University)))
-                            field.Text = "University";
+                        model.BuildBuilding(new School(new List<Tile> { new Tile(field.X, field.Y), new Tile(field.X + 1, field.Y), new Tile(field.X, field.Y + 1), new Tile(field.X + 1, field.Y + 1) }, SchoolTypes.University));
                         break;
                     case "Stadium":
-                        if (model.BuildBuilding(new Stadium(new List<Tile> { new Tile(field.X, field.Y), new Tile(field.X, field.Y + 1), new Tile(field.X + 1, field.Y), new Tile(field.X + 1, field.Y + 1)})))
-                            field.Text = "Stadium";
+                        model.BuildBuilding(new Stadium(new List<Tile> { new Tile(field.X, field.Y), new Tile(field.X, field.Y + 1), new Tile(field.X + 1, field.Y), new Tile(field.X + 1, field.Y + 1) }));
                         break;
                     case "Demolish":
                         field.Text = "";
@@ -221,9 +212,59 @@ namespace SimVillage.ViewModel
             {
                 IsMoneyNegative = false;
             }
+
+            foreach (Zone zone in model.Map)
+            {
+                if (zone.getBuilding() != null)
+                {
+                    switch (zone.getBuilding())
+                    {
+                        case Road:
+                            Fields[zone.X * Width + zone.Y].Text = "Road";
+                            break;
+                        case Forest:
+                            Fields[zone.X * Width + zone.Y].Text = "Forest";
+                            break;
+                        case PoliceDepartment:
+                            Fields[zone.X * Width + zone.Y].Text = "Police";
+                            break;
+                        case FireDepartment:
+                            Fields[zone.X * Width + zone.Y].Text = "Fire Department";
+                            break;
+                        case PowerLine:
+                            Fields[zone.X * Width + zone.Y].Text = "Power Line";
+                            break;
+                        case PowerPlant:
+                            Fields[zone.X * Width + zone.Y].Text = "Power Plant";
+                            break;
+                        case School s:
+                            if (s.GetSchoolType() == SchoolTypes.Elementary)
+                                Fields[zone.X * Width + zone.Y].Text = "School";
+                            else
+                                Fields[zone.X * Width + zone.Y].Text = "University";
+                            break;
+                        case Stadium:
+                            Fields[zone.X * Width + zone.Y].Text = "Stadium";
+                            break;
+                        case Residental:
+                            Fields[zone.X * Width + zone.Y].Text = "Residental Building";
+                            break;
+                        case Industrial:
+                            Fields[zone.X * Width + zone.Y].Text = "Industrial Building";
+                            break;
+                        case Store:
+                            Fields[zone.X * Width + zone.Y].Text = "Store Building";
+                            break;
+                        default:
+                            Fields[zone.X * Width + zone.Y].Text = string.Empty;
+                            break;
+                    }
+                }
+            }
             OnPropertyChanged(nameof(CitizenCount));
             OnPropertyChanged(nameof(IsMoneyNegative));
             OnPropertyChanged(nameof(Money));
+            OnPropertyChanged(nameof(Fields));
         }
 
         private void Model_GameAdvanced(object? sender, EventArgs e)

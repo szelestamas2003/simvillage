@@ -95,7 +95,7 @@ namespace SimVillage.Model
 
         public bool SetZone(ZoneType zoneType)
         {
-            if (ZoneType == ZoneType.General)
+            if (ZoneType == ZoneType.General && building == null)
             {
                 ZoneType = zoneType;
                 if (ZoneType != ZoneType.Residental)

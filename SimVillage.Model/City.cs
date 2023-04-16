@@ -61,11 +61,11 @@ namespace SimVillage.Model
             }
             
 
-            map = new Zone[mapWidth, mapHeight];
+            map = new Zone[mapHeight, mapWidth];
 
-            for (int i = 0; i < mapWidth; i++)
+            for (int i = 0; i < mapHeight; i++)
             {
-                for (int j = 0; j < mapHeight; j++)
+                for (int j = 0; j < mapWidth; j++)
                 {
                     map[i, j] = new Zone
                     {
@@ -271,7 +271,8 @@ namespace SimVillage.Model
         {
             if (peopleAtStart > 0)
             {
-                Citizen citizen = null!;
+                Citizen citizen;
+                Zone houseZone = null!;
                 Residental house = null!;
                 if (avaibleHouses.Count == 0)
                 {
@@ -279,10 +280,7 @@ namespace SimVillage.Model
                     {
                         if (zone.ZoneType == ZoneType.Residental && !zone.Occupied)
                         {
-                            zone.Occupied = true;
-                            zone.BuildBuilding();
-                            house = (Residental)zone.getBuilding();
-                            avaibleHouses.Add(house);
+                            houseZone = zone;
                             break;
                         }
                     }
@@ -292,7 +290,6 @@ namespace SimVillage.Model
                     {
                         if (houses.FreeSpace())
                         {
-                            citizen = Citizen.ReGen(houses);
                             house = houses;
                             break;
                         } else
@@ -311,6 +308,10 @@ namespace SimVillage.Model
                 {
                     inIndustrial += industrial.GetWorkers();
                 }
+                if (houseZone != null)
+                {
+                    house = new Residental(new List<Tile> { new Tile(houseZone.X, houseZone.Y) });
+                }
                 if (house != null && inIndustrial <= inStores)
                 {
                     Industrial building = null!;
@@ -328,7 +329,14 @@ namespace SimVillage.Model
                     }
                     if (building != null)
                     {
+                        if (houseZone != null)
+                        {
+                            houseZone.Occupied = true;
+                            houseZone.BuildBuilding();
+                            avaibleHouses.Add(house);
+                        }
                         citizen = Citizen.ReGen(house);
+                        house.MoveIn();
                         foreach (Tile tile in house.GetTiles())
                         {
                             map[tile.GetX(), tile.GetY()].addCitizen(citizen);
@@ -354,7 +362,14 @@ namespace SimVillage.Model
                     }
                     if (building != null)
                     {
+                        if (houseZone != null)
+                        {
+                            houseZone.Occupied = true;
+                            houseZone.BuildBuilding();
+                            avaibleHouses.Add(house);
+                        }
                         citizen = Citizen.ReGen(house);
+                        house.MoveIn();
                         foreach (Tile tile in house.GetTiles())
                         {
                             map[tile.GetX(), tile.GetY()].addCitizen(citizen);
@@ -369,16 +384,14 @@ namespace SimVillage.Model
             {
                 int AVGhappiness = getHappiness() / citizens.Count;
                 Residental house = null!;
+                Zone houseZone = null!;
                 if (avaibleHouses.Count == 0)
                 {
                     foreach (Zone zone in map)
                     {
                         if (zone.ZoneType == ZoneType.Residental && !zone.Occupied)
                         {
-                            zone.Occupied = true;
-                            zone.BuildBuilding();
-                            house = (Residental)zone.getBuilding();
-                            avaibleHouses.Add(house);
+                            houseZone = zone;
                             break;
                         }
                     }
@@ -406,6 +419,10 @@ namespace SimVillage.Model
                 foreach (Industrial industrial in avaibleIndustrials)
                 {
                     inIndustrial += industrial.GetWorkers();
+                }
+                if (houseZone != null)
+                {
+                    house = new Residental(new List<Tile> { new Tile(houseZone.X, houseZone.Y) });
                 }
                 if (house != null && inIndustrial < inStores)
                 {
@@ -439,7 +456,14 @@ namespace SimVillage.Model
                     }
                     if (building != null && minDist < 30 && !found && AVGhappiness > 5)
                     {
+                        if (houseZone != null)
+                        {
+                            houseZone.Occupied = true;
+                            houseZone.BuildBuilding();
+                            avaibleHouses.Add(house);
+                        }
                         Citizen citizen = Citizen.ReGen(house);
+                        house.MoveIn();
                         building.NewWorker();
                         citizen.SetWorkPlace(building);
                         citizens.Add(citizen);
@@ -481,7 +505,14 @@ namespace SimVillage.Model
                     }
                     if (building != null && minDist < 30 && !found && AVGhappiness > 5)
                     {
+                        if (houseZone != null)
+                        {
+                            houseZone.Occupied = true;
+                            houseZone.BuildBuilding();
+                            avaibleHouses.Add(house);
+                        }
                         Citizen citizen = Citizen.ReGen(house);
+                        house.MoveIn();
                         building.NewWorker();
                         citizen.SetWorkPlace(building);
                         citizens.Add(citizen);
