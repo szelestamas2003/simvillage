@@ -200,7 +200,7 @@ namespace SimVillage.Model
             return happiness;
         }
 
-        public void newZone(int x, int y, ZoneType zoneType)
+        public bool newZone(int x, int y, ZoneType zoneType)
         {
             if (map[x, y].SetZone(zoneType))
             {
@@ -210,18 +210,17 @@ namespace SimVillage.Model
                     avaibleStores.Add((Store)map[x, y].getBuilding());
                 Finances.addExpenses("Built a " + map[x, y].ToString(), map[x, y].getCost(), date);
                 OnGameChanged();
+                return true;
             } else
             {
-                OnBuildFailed();
+                return false;
             }
         }
 
-       
-
-        public void BuildBuilding(Building.Building building)
+        public bool BuildBuilding(Building.Building building)
         {
             if (building == null)
-                return;
+                return false;
 
             bool freeZone = true;
             foreach (Tile tile in building.GetTiles())
@@ -235,9 +234,10 @@ namespace SimVillage.Model
                 {
                     map[tile.GetX(), tile.GetY()].BuildBuilding(building);
                 }
+                return true;
             } else
             {
-                OnBuildFailed();
+                return false;
             }
         }
 

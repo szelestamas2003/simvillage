@@ -127,16 +127,16 @@ namespace SimVillage.ViewModel
                 switch (building.Text)
                 {
                     case "Residental":
-                        field.Text = "Residental";
-                        model.newZone(field.X, field.Y, ZoneType.Residental);
+                        if (model.newZone(field.X, field.Y, ZoneType.Residental))
+                            field.Text = "Residental";
                         break;
                     case "Industrial":
-                        field.Text = "Industrial";
-                        model.newZone(field.X, field.Y, ZoneType.Industrial);
+                        if (model.newZone(field.X, field.Y, ZoneType.Industrial))
+                            field.Text = "Industrial";
                         break;
                     case "Store":
-                        field.Text = "Store";
-                        model.newZone(field.X, field.Y, ZoneType.Store);
+                        if (model.newZone(field.X, field.Y, ZoneType.Store))
+                            field.Text = "Store";
                         break;
                     case "Forest":
                         field.Text = "Forest";
