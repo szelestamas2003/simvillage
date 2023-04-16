@@ -93,11 +93,17 @@ namespace SimVillage.Model
             Building.Building building = map[x, y].getBuilding();
             if (building != null)
             {
+                bool added_money = false;
                 foreach (Tile tile in building.GetTiles())
                 {
                     if (map[tile.GetX(), tile.GetY()].DowngradeZone())
                     {
                         Finances.addIncome("Demolished a " + map[x, y].ToString(), map[x, y].getCost() / 2, date);
+                    }
+                    if(building != null && added_money == false)
+                    {
+                        Finances.addIncome("Demolished a " + map[x, y].ToString(), building.GetCost() / 2, date);
+                        added_money = true;
                     }
                 }
             } else
@@ -226,7 +232,7 @@ namespace SimVillage.Model
         {
             if (building == null)
                 return false;
-
+            
             bool freeZone = true;
             foreach (Tile tile in building.GetTiles())
             {
@@ -235,13 +241,16 @@ namespace SimVillage.Model
             }
             if (freeZone)
             {
+                Finances.addExpenses("Built a ", building.GetCost(), date);
                 foreach (Tile tile in building.GetTiles())
                 {
                     map[tile.GetX(), tile.GetY()].BuildBuilding(building);
                 }
+                OnGameChanged();
                 return true;
             } else
             {
+                OnGameChanged();
                 return false;
             }
         }
