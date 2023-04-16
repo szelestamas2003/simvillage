@@ -302,7 +302,7 @@ namespace SimVillage.Model
                 {
                     inIndustrial += industrial.GetWorkers();
                 }
-                if (inIndustrial <= inStores)
+                if (house != null && inIndustrial <= inStores)
                 {
                     Industrial building = null!;
                     int minDist = int.MaxValue;
@@ -329,7 +329,7 @@ namespace SimVillage.Model
                         building.NewWorker();
                         citizen.SetWorkPlace(building);
                     }
-                } else
+                } else if (house != null)
                 {
                     Store building = null!;
                     int minDist = int.MaxValue;
@@ -398,7 +398,7 @@ namespace SimVillage.Model
                 {
                     inIndustrial += industrial.GetWorkers();
                 }
-                if (inIndustrial < inStores)
+                if (house != null && inIndustrial < inStores)
                 {
                     Industrial building = null!;
                     int minDist = int.MaxValue;
@@ -440,7 +440,7 @@ namespace SimVillage.Model
                         }
                     }
                 }
-                else
+                else if (house != null)
                 {
                     Store building = null!;
                     int minDist = int.MaxValue;
