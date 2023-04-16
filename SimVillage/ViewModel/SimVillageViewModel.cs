@@ -24,6 +24,10 @@ namespace SimVillage.ViewModel
 
         public int CitizenCount { get; private set; }
 
+        public bool IsMoneyNegative { get; private set; }
+
+        public int Money { get; private set; }
+
         private Option building = null!;
 
         public event EventHandler? NewGame;
@@ -54,6 +58,7 @@ namespace SimVillage.ViewModel
             model.gameAdvanced += new EventHandler(Model_GameAdvanced);
             model.gameChanged += new EventHandler(Model_GameChanged);
             Date = model.Date.ToString("d");
+            Money = model.GetBudget();
 
             Fields = new ObservableCollection<Field>();
 
@@ -175,6 +180,10 @@ namespace SimVillage.ViewModel
                         if (model.BuildBuilding(new Stadium(new List<Tile> { new Tile(field.X, field.Y), new Tile(field.X, field.Y + 1), new Tile(field.X + 1, field.Y), new Tile(field.X + 1, field.Y + 1)})))
                             field.Text = "Stadium";
                         break;
+                    case "Demolish":
+                        field.Text = "";
+                        model.demolishZone(field.X,field.Y);
+                        break;
                 }
             }
         }
@@ -202,7 +211,18 @@ namespace SimVillage.ViewModel
         private void Model_GameChanged(object? sender, EventArgs e)
         {
             CitizenCount = model.Citizens.Count;
+            Money = model.GetBudget();
+            if(Money < 0)
+            {
+                IsMoneyNegative = true;
+            }
+            else
+            {
+                IsMoneyNegative = false;
+            }
             OnPropertyChanged(nameof(CitizenCount));
+            OnPropertyChanged(nameof(IsMoneyNegative));
+            OnPropertyChanged(nameof(Money));
         }
 
         private void Model_GameAdvanced(object? sender, EventArgs e)

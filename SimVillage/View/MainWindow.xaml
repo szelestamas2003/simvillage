@@ -20,6 +20,17 @@
             <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Path=Date, Mode=OneWay}" Width="121" Height="30"/>
             <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Name, Mode=OneWay}" Width="200" Height="30"/>
             <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding CitizenCount, Mode=OneWay}" Width="200" Height="30"/>
+            <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Money, Mode=OneWay}" Width="200" Height="30">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMoneyNegative}" Value="True">
+                                <Setter Property="Foreground" Value="Red" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
             <Button Content="Button" Width="40" Height="30"/>
             <Button Content="Button" Width="40" Height="30"/>
             <Button Content="Button" Width="40" Height="30"/>

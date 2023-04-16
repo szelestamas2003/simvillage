@@ -77,6 +77,11 @@ namespace SimVillage.Model
             }
         }
 
+        public int GetBudget()
+        {
+            return Finances.getBudget();
+        }
+
         public string Name { get { return cityName; } }
 
         public DateTime Date { get { return date; } }
