@@ -16,6 +16,7 @@ namespace SimVillage.Model.Building
         {
             this.X = X;
             this.Y = Y;
+            Building = null!;
         }
         public int GetX()
         {

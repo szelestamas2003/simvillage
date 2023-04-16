@@ -24,6 +24,8 @@ namespace SimVillage.Model
 
         public int Height() { return mapHeight;}
 
+        public Building.Tile[,] tiles = null!;
+
         private List<Citizen> citizens = null!;
 
         private List<Industrial> avaibleIndustrials = null!;
@@ -49,6 +51,15 @@ namespace SimVillage.Model
             avaibleStores = new List<Store>();
             avaibleIndustrials = new List<Industrial>();
             avaibleHouses = new List<Residental>();
+            tiles = new Tile[mapWidth, mapHeight];
+            for(int i = 0; i < mapWidth; i++)
+            {
+                for(int j = 0; j < mapHeight; j++)
+                {
+                    tiles[i, j] = new Tile(i, j);
+                }
+            }
+            
 
             map = new Zone[mapWidth, mapHeight];
 
