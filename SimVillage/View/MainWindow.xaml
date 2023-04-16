@@ -14,9 +14,9 @@
         </Grid.RowDefinitions>
         <DockPanel HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Top">
             <Button Content="Pause" Command="{Binding PauseGameCommand}" Width="50" Height="30"/>
-            <Button Content="1" Command="{Binding OneSpeedCommand}" Width="50" Height="30"/>
-            <Button Content="5" Command="{Binding FiveSpeedCommand}" Width="50" Height="30"/>
-            <Button Content="10" Command="{Binding TenSpeedCommand}" Width="50" Height="30"/>
+            <Button Content="1x" Command="{Binding OneSpeedCommand}" Width="50" Height="30"/>
+            <Button Content="5x" Command="{Binding FiveSpeedCommand}" Width="50" Height="30"/>
+            <Button Content="10x" Command="{Binding TenSpeedCommand}" Width="50" Height="30"/>
             <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Path=Date, Mode=OneWay}" Width="121" Height="30"/>
             <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Name, Mode=OneWay}" Width="200" Height="30"/>
             <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding CitizenCount, Mode=OneWay}" Width="200" Height="30"/>
@@ -119,7 +119,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="{Binding Text}" Width="60" Height="50" Margin="0, 0, 10, 0" Command="{Binding Clicked}" CommandParameter="{Binding Number}">
+                    <Button Content="{Binding Text}" Width="100" Height="50" Margin="0, 0, 10, 0" Command="{Binding Clicked}" CommandParameter="{Binding Number}">
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Style.Triggers>

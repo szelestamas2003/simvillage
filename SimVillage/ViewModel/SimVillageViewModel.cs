@@ -173,7 +173,6 @@ namespace SimVillage.ViewModel
                         model.BuildBuilding(new Stadium(new List<Tile> { new Tile(field.X, field.Y), new Tile(field.X, field.Y + 1), new Tile(field.X + 1, field.Y), new Tile(field.X + 1, field.Y + 1) }));
                         break;
                     case "Demolish":
-                        field.Text = "";
                         model.demolishZone(field.X,field.Y);
                         break;
                 }
@@ -259,6 +258,9 @@ namespace SimVillage.ViewModel
                             Fields[zone.X * Width + zone.Y].Text = string.Empty;
                             break;
                     }
+                } else
+                {
+                    Fields[zone.X * Width + zone.Y].Text = string.Empty;
                 }
             }
             OnPropertyChanged(nameof(CitizenCount));

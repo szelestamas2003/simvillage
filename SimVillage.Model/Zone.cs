@@ -51,13 +51,13 @@ namespace SimVillage.Model
                 switch (ZoneType)
                 {
                     case ZoneType.Residental:
-                        this.building = new Building.Residental(new List<Building.Tile> { new Building.Tile(X, Y)});
+                        this.building = new Residental(new List<Tile> { new Tile(X, Y)});
                         break;
                     case ZoneType.Industrial:
-                        this.building = new Building.Industrial(new List<Building.Tile> { new Building.Tile(X, Y) });
+                        this.building = new Industrial(new List<Tile> { new Tile(X, Y) });
                         break;
                     case ZoneType.Store:
-                        this.building = new Building.Store(new List<Building.Tile> { new Building.Tile(X, Y) });
+                        this.building = new Store(new List<Tile> { new Tile(X, Y) });
                         break;
                     default:
                         throw new ArgumentNullException();
@@ -86,6 +86,11 @@ namespace SimVillage.Model
             if (ZoneType != ZoneType.General)
             {
                 ZoneType = ZoneType.General;
+                building = null!;
+                Occupied = false;
+                return true;
+            } else if (building != null)
+            {
                 building = null!;
                 Occupied = false;
                 return true;
