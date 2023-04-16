@@ -218,11 +218,6 @@ namespace SimVillage.Model
 
        
 
-        public void NewBuilding(int x, int y, Building.Building building)
-        {
-
-        }
-
         public void BuildBuilding(Building.Building building)
         {
             if (building == null)
