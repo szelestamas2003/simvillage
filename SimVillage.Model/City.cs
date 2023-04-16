@@ -20,7 +20,11 @@ namespace SimVillage.Model
 
         private static Zone[,] map = null!;
 
-        private List<Citizen> Citizens = null!;
+        public int Width() { return mapWidth;}
+
+        public int Height() { return mapHeight;}
+
+        private List<Citizen> citizens = null!;
 
         private List<Industrial> avaibleIndustrials = null!;
 
@@ -34,12 +38,14 @@ namespace SimVillage.Model
 
         public EventHandler? gameChanged;
 
+        public List<Citizen> Citizens { get { return citizens; } }
+
         public City(Persistence dataAccess, string name)
         {
             this.dataAccess = dataAccess;
             cityName = name;
             Finances = new Finances(5000);
-            Citizens = new List<Citizen>();
+            citizens = new List<Citizen>();
             avaibleStores = new List<Store>();
             avaibleIndustrials = new List<Industrial>();
             avaibleHouses = new List<Residental>();
@@ -58,7 +64,6 @@ namespace SimVillage.Model
                     };
                 }
             }
-            BuildBuilding(new Forest(new List<Tile> { new Tile(0, 0) }));
         }
 
         public string Name { get { return cityName; } }
@@ -177,7 +182,7 @@ namespace SimVillage.Model
         public int getHappiness()
         {
             int happiness = 0;
-            foreach (Citizen i in Citizens)
+            foreach (Citizen i in citizens)
             {
                 happiness += i.calcHappiness();
             }
@@ -225,13 +230,13 @@ namespace SimVillage.Model
 
         public void AdvanceTime()
         {
-            PeopleMoveIn();
             DateTime previous_date = date;
-            date.AddDays(1);
+            date = date.AddDays(1);
             if (date.Year > previous_date.Year)
             {
                 CollectingTaxes();
             }
+            PeopleMoveIn();
             OnTimeAdvanced();
         }
 
@@ -279,14 +284,14 @@ namespace SimVillage.Model
                 {
                     inIndustrial += industrial.GetWorkers();
                 }
-                if (inIndustrial < inStores)
+                if (inIndustrial <= inStores)
                 {
                     Industrial building = null!;
                     int minDist = int.MaxValue;
                     foreach (Industrial industrial in avaibleIndustrials)
                     {
                         int dist = calcDistance(house, industrial);
-                        if (dist != -1 && dist < minDist && building.FreeSpace())
+                        if (dist != -1 && dist < minDist && industrial.FreeSpace())
                         {
                             minDist = dist;
                             building = industrial;
@@ -301,7 +306,7 @@ namespace SimVillage.Model
                         {
                             map[tile.GetX(), tile.GetY()].addCitizen(citizen);
                         }
-                        Citizens.Add(citizen);
+                        citizens.Add(citizen);
                         peopleAtStart--;
                         building.NewWorker();
                         citizen.SetWorkPlace(building);
@@ -313,7 +318,7 @@ namespace SimVillage.Model
                     foreach (Store store in avaibleStores)
                     {
                         int dist = calcDistance(house, store);
-                        if (dist != -1 && dist < minDist && building.FreeSpace())
+                        if (dist != -1 && dist < minDist && store.FreeSpace())
                         {
                             minDist = dist;
                             building = store;
@@ -327,7 +332,7 @@ namespace SimVillage.Model
                         {
                             map[tile.GetX(), tile.GetY()].addCitizen(citizen);
                         }
-                        Citizens.Add(citizen);
+                        citizens.Add(citizen);
                         peopleAtStart--;
                         building.NewWorker();
                         citizen.SetWorkPlace(building);
@@ -335,7 +340,7 @@ namespace SimVillage.Model
                 }
             } else
             {
-                int AVGhappiness = getHappiness() / Citizens.Count;
+                int AVGhappiness = getHappiness() / citizens.Count;
                 Residental house = null!;
                 if (avaibleHouses.Count == 0)
                 {
@@ -382,7 +387,7 @@ namespace SimVillage.Model
                     foreach (Industrial industrial in avaibleIndustrials)
                     {
                         int dist = calcDistance(house, industrial);
-                        if (dist != -1 && dist < minDist && building.FreeSpace())
+                        if (dist != -1 && dist < minDist && industrial.FreeSpace())
                         {
                             minDist = dist;
                             building = industrial;
@@ -410,7 +415,7 @@ namespace SimVillage.Model
                         Citizen citizen = Citizen.ReGen(house);
                         building.NewWorker();
                         citizen.SetWorkPlace(building);
-                        Citizens.Add(citizen);
+                        citizens.Add(citizen);
                         foreach (Tile tile in house.GetTiles())
                         {
                             map[tile.GetX(), tile.GetY()].addCitizen(citizen);
@@ -424,7 +429,7 @@ namespace SimVillage.Model
                     foreach (Store store in avaibleStores)
                     {
                         int dist = calcDistance(house, store);
-                        if (dist != -1 && dist < minDist && building.FreeSpace())
+                        if (dist != -1 && dist < minDist && store.FreeSpace())
                         {
                             minDist = dist;
                             building = store;
@@ -452,7 +457,7 @@ namespace SimVillage.Model
                         Citizen citizen = Citizen.ReGen(house);
                         building.NewWorker();
                         citizen.SetWorkPlace(building);
-                        Citizens.Add(citizen);
+                        citizens.Add(citizen);
                         foreach (Tile tile in house.GetTiles())
                         {
                             map[tile.GetX(), tile.GetY()].addCitizen(citizen);

@@ -5,18 +5,77 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SimVillage"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="SimVillage" WindowState="Maximized">
     <Grid>
-        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="30"/>
-        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,0,0,0" Width="50" Height="30"/>
-        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,0,0,0" Width="50" Height="30"/>
-        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,0,0,0" Width="50" Height="30"/>
-        <TextBox HorizontalAlignment="Left" Margin="600,0,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="121" Height="30"/>
-        <TextBox HorizontalAlignment="Left" Margin="400,0,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="200" Height="30"/>
-        <TextBox HorizontalAlignment="Left" Margin="200,0,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="200" Height="30"/>
-        <Rectangle HorizontalAlignment="Center" Height="50" Margin="0,374,0,0" Stroke="Black" VerticalAlignment="Top" Width="780" Fill="#FF91B0AB"/>
-        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="760,0,0,0" Width="40" Height="30"/>
-        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="720,0,0,0" Width="40" Height="30"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <DockPanel HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Top">
+            <Button Content="Pause" Command="{Binding PauseGameCommand}" Width="50" Height="30"/>
+            <Button Content="1" Command="{Binding OneSpeedCommand}" Width="50" Height="30"/>
+            <Button Content="5" Command="{Binding FiveSpeedCommand}" Width="50" Height="30"/>
+            <Button Content="10" Command="{Binding TenSpeedCommand}" Width="50" Height="30"/>
+            <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Path=Date, Mode=OneWay}" Width="121" Height="30"/>
+            <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Name, Mode=OneWay}" Width="200" Height="30"/>
+            <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding CitizenCount, Mode=OneWay}" Width="200" Height="30"/>
+            <Button Content="Button" Width="40" Height="30"/>
+            <Button Content="Button" Width="40" Height="30"/>
+            <Button Content="Button" Width="40" Height="30"/>
+            <Button Content="Button" Width="40" Height="30"/>
+        </DockPanel>
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding Fields}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="{Binding Height}" Columns="{Binding Width}"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Command="{Binding Clicked}" CommandParameter="{Binding Number}">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="DarkGreen"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemContainerStyle>
+                <Style>
+                    <Setter Property="Grid.Row" Value="{Binding X}"/>
+                    <Setter Property="Grid.Column" Value="{Binding Y}"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+        </ItemsControl>
+        <ItemsControl Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" ItemsSource="{Binding Options}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <DockPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding Text}" Width="60" Height="50" Margin="0, 0, 10, 0" Command="{Binding Clicked}" CommandParameter="{Binding Number}">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsClicked}" Value="True">
+                                        <Setter Property="Background" Value="DarkBlue"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsClicked}" Value="False">
+                                        <Setter Property="Background" Value="White"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
 
     </Grid>
 </Window>
