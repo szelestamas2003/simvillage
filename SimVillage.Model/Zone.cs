@@ -16,7 +16,7 @@ namespace SimVillage.Model
 
         private List<Citizen> citizens = null!;
 
-        private const int cost = 50000;
+        private const int cost = 7000;
 
         public Building.Building getBuilding() { return building; }
 
