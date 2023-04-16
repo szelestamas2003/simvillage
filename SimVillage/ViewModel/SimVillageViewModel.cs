@@ -76,7 +76,8 @@ namespace SimVillage.ViewModel
                 new Option { Text = "Power Line", Number = 7, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
                 new Option { Text = "Power Plant", Number = 8, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
                 new Option { Text = "School", Number = 9, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
-                new Option { Text = "Stadium", Number = 10, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))}
+                new Option { Text = "Stadium", Number = 10, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
+                new Option { Text = "Demolish", Number = 11, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))}
             };
 
             PauseGameCommand = new DelegateCommand(param => OnPauseGame());
@@ -171,9 +172,13 @@ namespace SimVillage.ViewModel
                         field.Text = "School";
                         model.newZone(field.X, field.Y, ZoneType.Store);
                         break;
-                    case "Staddium":
+                    case "Stadium":
                         field.Text = "Stadium";
                         model.newZone(field.X, field.Y, ZoneType.Store);
+                        break;
+                    case "Demolish":
+                        field.Text = "";
+                        model.demolishZone(field.X,field.Y);
                         break;
                 }
             }
