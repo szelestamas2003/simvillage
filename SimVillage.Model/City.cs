@@ -340,7 +340,7 @@ namespace SimVillage.Model
                         {
                             minDist = dist;
                             building = store;
-                        } else if (!building.FreeSpace())
+                        } else if (building != null &&!building.FreeSpace())
                             avaibleStores.Remove(building);
                     }
                     if (building != null)
@@ -410,7 +410,7 @@ namespace SimVillage.Model
                             minDist = dist;
                             building = industrial;
                         }
-                        else if (!building.FreeSpace())
+                        else if (building != null && !building.FreeSpace())
                             avaibleIndustrials.Remove(building);
                     }
                     bool found = false;
@@ -452,7 +452,7 @@ namespace SimVillage.Model
                             minDist = dist;
                             building = store;
                         }
-                        else if (!building.FreeSpace())
+                        else if (building != null && !building.FreeSpace())
                             avaibleStores.Remove(building);
                     }
                     bool found = false;
