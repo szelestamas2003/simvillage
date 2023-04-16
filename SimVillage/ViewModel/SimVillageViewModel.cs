@@ -84,6 +84,11 @@ namespace SimVillage.ViewModel
             {
                 building = null!;
                 Options[number].IsClicked = false;
+            } else
+            {
+                building.IsClicked = false;
+                building = Options[number];
+                Options[number].IsClicked = true;
             }
         }
 
@@ -99,7 +104,7 @@ namespace SimVillage.ViewModel
                         X = i,
                         Y = j,
                         Text = string.Empty,
-                        Number = i * Width + j,
+                        Number = i * Height + j,
                         Clicked = new DelegateCommand(param => OnFieldClicked(Convert.ToInt32(param)))
                     });
                 }
@@ -111,7 +116,23 @@ namespace SimVillage.ViewModel
         {
             if (building != null)
             {
+                Field field = Fields[number];
 
+                switch (building.Text)
+                {
+                    case "Residental":
+                        field.Text = "Residental";
+                        model.newZone(field.X, field.Y, ZoneType.Residental);
+                        break;
+                    case "Industrial":
+                        field.Text = "Industrial";
+                        model.newZone(field.X, field.Y, ZoneType.Industrial);
+                        break;
+                    case "Store":
+                        field.Text = "Store";
+                        model.newZone(field.X, field.Y, ZoneType.Store);
+                        break;
+                }
             }
         }
 
@@ -137,9 +158,7 @@ namespace SimVillage.ViewModel
 
         private void Model_GameChanged(object? sender, EventArgs e)
         {
-            Date = model.Date.ToString("d");
             CitizenCount = model.Citizens.Count;
-            OnPropertyChanged(nameof(Date));
             OnPropertyChanged(nameof(CitizenCount));
         }
 

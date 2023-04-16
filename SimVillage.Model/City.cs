@@ -50,11 +50,11 @@ namespace SimVillage.Model
             avaibleIndustrials = new List<Industrial>();
             avaibleHouses = new List<Residental>();
 
-            map = new Zone[mapHeight, mapWidth];
+            map = new Zone[mapWidth, mapHeight];
 
-            for (int i = 0; i < mapHeight; i++)
+            for (int i = 0; i < mapWidth; i++)
             {
-                for (int j = 0; j < mapWidth; j++)
+                for (int j = 0; j < mapHeight; j++)
                 {
                     map[i, j] = new Zone
                     {
@@ -296,7 +296,7 @@ namespace SimVillage.Model
                             minDist = dist;
                             building = industrial;
                         }
-                        else if (!building.FreeSpace())
+                        else if (building != null && !building.FreeSpace())
                             avaibleIndustrials.Remove(building);
                     }
                     if (building != null)

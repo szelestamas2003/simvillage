@@ -19,7 +19,7 @@
                 if (value != isClicked)
                 {
                     isClicked = value;
-                    OnPropertyChanged(nameof(IsClicked));
+                    OnPropertyChanged(nameof(isClicked));
                 }
             }
         }

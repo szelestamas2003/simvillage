@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace SimVillage.ViewModel
 {
-    public abstract class ViewModelBase
+    public abstract class ViewModelBase : INotifyPropertyChanged
     {
         protected ViewModelBase() { }
 

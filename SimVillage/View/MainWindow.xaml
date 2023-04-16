@@ -38,6 +38,20 @@
                             <Style TargetType="Button">
                                 <Setter Property="Background" Value="DarkGreen"/>
                                 <Setter Property="BorderThickness" Value="0"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text}" Value="Industrial">
+                                        <Setter Property="BorderBrush" Value="Yellow"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Store">
+                                        <Setter Property="BorderBrush" Value="Blue"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Residental">
+                                        <Setter Property="BorderBrush" Value="Lime"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
                             </Style>
                         </Button.Style>
                     </Button>
@@ -45,8 +59,8 @@
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemContainerStyle>
                 <Style>
-                    <Setter Property="Grid.Row" Value="{Binding X}"/>
-                    <Setter Property="Grid.Column" Value="{Binding Y}"/>
+                    <Setter Property="Grid.Row" Value="{Binding Y}"/>
+                    <Setter Property="Grid.Column" Value="{Binding X}"/>
                 </Style>
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
