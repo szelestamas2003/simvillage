@@ -62,7 +62,7 @@ namespace SimVillage.ViewModel
             Options = new List<Option>
             {
                 new Option { Text = "Residental", Number = 0, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
-                new Option {Text = "Industrial", Number = 1, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
+                new Option { Text = "Industrial", Number = 1, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
                 new Option { Text = "Store" , Number = 2, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
                 new Option { Text = "Road" , Number = 3, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
                 new Option { Text = "Forest", Number = 4, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
@@ -71,7 +71,8 @@ namespace SimVillage.ViewModel
                 new Option { Text = "Power Line", Number = 7, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
                 new Option { Text = "Power Plant", Number = 8, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
                 new Option { Text = "School", Number = 9, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
-                new Option { Text = "Stadium", Number = 10, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))}
+                new Option { Text = "University", Number = 10, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
+                new Option { Text = "Stadium", Number = 11, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))}
             };
 
             PauseGameCommand = new DelegateCommand(param => OnPauseGame());
@@ -139,36 +140,40 @@ namespace SimVillage.ViewModel
                             field.Text = "Store";
                         break;
                     case "Forest":
-                        field.Text = "Forest";
-                        model.newZone(field.X, field.Y, ZoneType.Store);
+                        if (model.BuildBuilding(new Forest(new List<Tile> { new Tile(field.X, field.Y) })))
+                            field.Text = "Forest";
                         break;
                     case "Road":
-                        field.Text = "Road";
-                        model.newZone(field.X, field.Y, ZoneType.Store);
+                        if (model.BuildBuilding(new Road(new List<Tile> { new Tile(field.X, field.Y) })))
+                            field.Text = "Road";
                         break;
                     case "Police":
-                        field.Text = "Police";
-                        model.newZone(field.X, field.Y, ZoneType.Store);
+                        if (model.BuildBuilding(new PoliceDepartment(new List<Tile> { new Tile(field.X, field.Y) })))
+                            field.Text = "Police";
                         break;
                     case "Fire Department":
-                        field.Text = "Fire Department";
-                        model.newZone(field.X, field.Y, ZoneType.Store);
+                        if (model.BuildBuilding(new FireDepartment(new List<Tile> { new Tile(field.X, field.Y) })))
+                            field.Text = "Fire Department";
                         break;
                     case "Power Line":
-                        field.Text = "Fire Department";
-                        model.newZone(field.X, field.Y, ZoneType.Store);
+                        if (model.BuildBuilding(new PowerLine(new List<Tile> { new Tile(field.X, field.Y) })))
+                            field.Text = "Power Line";
                         break;
                     case "Power Plant":
-                        field.Text = "Fire Department";
-                        model.newZone(field.X, field.Y, ZoneType.Store);
+                        if (model.BuildBuilding(new PowerPlant(new List<Tile> { new Tile(field.X, field.Y), new Tile(field.X, field.Y + 1), new Tile(field.X + 1, field.Y), new Tile(field.X + 1, field.Y + 1) })))
+                            field.Text = "Power Plant";
                         break;
                     case "School":
-                        field.Text = "School";
-                        model.newZone(field.X, field.Y, ZoneType.Store);
+                        if (model.BuildBuilding(new School(new List<Tile> { new Tile(field.X, field.Y), new Tile(field.X, field.Y + 1) }, SchoolTypes.Elementary)))
+                            field.Text = "School";
                         break;
-                    case "Staddium":
-                        field.Text = "Stadium";
-                        model.newZone(field.X, field.Y, ZoneType.Store);
+                    case "University":
+                        if (model.BuildBuilding(new School(new List<Tile> { new Tile(field.X, field.Y), new Tile(field.X + 1, field.Y), new Tile(field.X, field.Y + 1), new Tile(field.X + 1, field.Y + 1)}, SchoolTypes.University)))
+                            field.Text = "University";
+                        break;
+                    case "Stadium":
+                        if (model.BuildBuilding(new Stadium(new List<Tile> { new Tile(field.X, field.Y), new Tile(field.X, field.Y + 1), new Tile(field.X + 1, field.Y), new Tile(field.X + 1, field.Y + 1)})))
+                            field.Text = "Stadium";
                         break;
                 }
             }

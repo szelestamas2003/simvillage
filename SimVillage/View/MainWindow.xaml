@@ -36,7 +36,7 @@
                     <Button Command="{Binding Clicked}" CommandParameter="{Binding Number}">
                         <Button.Style>
                             <Style TargetType="Button">
-                                <Setter Property="Background" Value="DarkGreen"/>
+                                <Setter Property="Background" Value="LightGreen"/>
                                 <Setter Property="BorderThickness" Value="0"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Text}" Value="Industrial">
@@ -48,12 +48,35 @@
                                         <Setter Property="BorderThickness" Value="1"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Text}" Value="Residental">
-                                        <Setter Property="BorderBrush" Value="Lime"/>
+                                        <Setter Property="BorderBrush" Value="Green"/>
                                         <Setter Property="BorderThickness" Value="1"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Text}" Value="Police">
                                         <Setter Property="Background" Value="DarkBlue"/>
-                                        <Setter Property="BorderThickness" Value="1"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Forest">
+                                        <Setter Property="Background" Value="DarkGreen"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Road">
+                                        <Setter Property="Background" Value="Gray"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="School">
+                                        <Setter Property="Background" Value="Orange"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="University">
+                                        <Setter Property="Background" Value="OrangeRed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Fire Department">
+                                        <Setter Property="Background" Value="DarkRed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Stadium">
+                                        <Setter Property="Background" Value="Brown"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Power Line">
+                                        <Setter Property="Background" Value="LightGray"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Power Plant">
+                                        <Setter Property="Background" Value="Black"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

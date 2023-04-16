@@ -24,7 +24,7 @@ namespace SimVillage.Model
 
         public int Height() { return mapHeight;}
 
-        public Building.Tile[,] tiles = null!;
+        public Tile[,] tiles = null!;
 
         private List<Citizen> citizens = null!;
 
