@@ -88,7 +88,7 @@ namespace SimVillage.Model
             {
                 happiness += i.calcHappiness();
             }
-            return happiness;
+            return citizens.Count == 0 ? 0 : happiness / citizens.Count;
         }
 
         public bool DowngradeZone()

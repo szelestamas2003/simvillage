@@ -22,6 +22,12 @@ namespace SimVillage.ViewModel
 
         public string Date { get; private set; }
 
+        public string ZoneName { get; private set; }
+
+        public string ZoneCitizenCount { get; private set; }
+
+        public string ZoneCitizenHappiness { get; private set; }
+
         public int CitizenCount { get; private set; }
 
         public bool IsMoneyNegative { get; private set; }
@@ -127,10 +133,9 @@ namespace SimVillage.ViewModel
 
         private void OnFieldClicked(int number)
         {
+            Field field = Fields[number];
             if (building != null)
             {
-                Field field = Fields[number];
-
                 switch (building.Text)
                 {
                     case "Residental":
@@ -176,6 +181,14 @@ namespace SimVillage.ViewModel
                         model.demolishZone(field.X,field.Y);
                         break;
                 }
+            } else
+            {
+                ZoneName = model.Map[field.X, field.Y].ToString();
+                ZoneCitizenCount = "Citizens: " + model.Map[field.X, field.Y].getPeople();
+                ZoneCitizenHappiness = "Happiness: " + model.Map[field.X, field.Y].getHappiness();
+                OnPropertyChanged(nameof(ZoneName));
+                OnPropertyChanged(nameof(ZoneCitizenCount));
+                OnPropertyChanged(nameof(ZoneCitizenHappiness));
             }
         }
 
