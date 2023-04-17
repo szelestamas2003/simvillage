@@ -1,9 +1,4 @@
 ﻿using SimVillage.Model.Building;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SimVillage.Model
 {
@@ -14,11 +9,12 @@ namespace SimVillage.Model
         EducationLevel EducationLevel;
         bool Pensioner;
         int Happiness;
-        Building.Residental Home;
+        int HadToMove = 0;
+        Residental Home;
         Building.Building WorkPlace;
 
 
-        public Citizen(int Age, Building.Residental Home)
+        public Citizen(int Age, Residental Home)
         {
             this.Age = Age;
             this.Home = Home;
@@ -30,6 +26,7 @@ namespace SimVillage.Model
         public int calcHappiness()
         {
             Happiness = 0;
+            Happiness -= HadToMove * 10;
             int work_distance = City.calcDistance(Home, WorkPlace);
             work_distance = 15 - work_distance;
             Happiness += work_distance;
@@ -49,6 +46,21 @@ namespace SimVillage.Model
             return Happiness;
 
         }
+
+        public void PlusHadToMove()
+        {
+            HadToMove++;
+        }
+
+        public Residental GetHome() { return Home; }
+
+        public void SetHome(Residental home)
+        {
+            Home = home;
+        }
+
+        public Building.Building GetWorkPlace() { return WorkPlace; }
+
         public bool AgeUp()
         {
             Age++;
@@ -73,7 +85,7 @@ namespace SimVillage.Model
         {
             Pensioner = true;
             Salary = 0;
-            WorkPlace = null;
+            WorkPlace = null!;
         }
         public void SetEducation(EducationLevel level)
         {
@@ -81,8 +93,8 @@ namespace SimVillage.Model
         }
         public void MoveOut()
         {
-            WorkPlace = null;
-            Home = null;
+            WorkPlace = null!;
+            Home = null!;
             Salary = 0;
         }
         public void SetWorkPlace(Building.Building work)

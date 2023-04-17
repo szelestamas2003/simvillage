@@ -5,18 +5,138 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SimVillage"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="SimVillage" WindowState="Maximized">
     <Grid>
-        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="30"/>
-        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,0,0,0" Width="50" Height="30"/>
-        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,0,0,0" Width="50" Height="30"/>
-        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,0,0,0" Width="50" Height="30"/>
-        <TextBox HorizontalAlignment="Left" Margin="600,0,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="121" Height="30"/>
-        <TextBox HorizontalAlignment="Left" Margin="400,0,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="200" Height="30"/>
-        <TextBox HorizontalAlignment="Left" Margin="200,0,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="200" Height="30"/>
-        <Rectangle HorizontalAlignment="Center" Height="50" Margin="0,374,0,0" Stroke="Black" VerticalAlignment="Top" Width="780" Fill="#FF91B0AB"/>
-        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="760,0,0,0" Width="40" Height="30"/>
-        <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="720,0,0,0" Width="40" Height="30"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <DockPanel HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Top">
+            <Button Content="Pause" Command="{Binding PauseGameCommand}" Width="50" Height="30"/>
+            <Button Content="1x" Command="{Binding OneSpeedCommand}" Width="50" Height="30"/>
+            <Button Content="5x" Command="{Binding FiveSpeedCommand}" Width="50" Height="30"/>
+            <Button Content="10x" Command="{Binding TenSpeedCommand}" Width="50" Height="30"/>
+            <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Path=Date, Mode=OneWay}" Width="121" Height="30"/>
+            <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Name, Mode=OneWay}" Width="200" Height="30"/>
+            <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding CitizenCount, Mode=OneWay}" Width="200" Height="30"/>
+            <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding Money, Mode=OneWay}" Width="200" Height="30">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMoneyNegative}" Value="True">
+                                <Setter Property="Foreground" Value="Red" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+            <Button Content="Button" Width="40" Height="30"/>
+            <Button Content="Button" Width="40" Height="30"/>
+            <Button Content="Button" Width="40" Height="30"/>
+            <Button Content="Button" Width="40" Height="30"/>
+        </DockPanel>
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding Fields}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="{Binding Height}" Columns="{Binding Width}"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Command="{Binding Clicked}" CommandParameter="{Binding Number}">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="LightGreen"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text}" Value="Industrial">
+                                        <Setter Property="BorderBrush" Value="Yellow"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Industrial Building">
+                                        <Setter Property="Background" Value="Yellow"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Store">
+                                        <Setter Property="BorderBrush" Value="Blue"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Store Building">
+                                        <Setter Property="Background" Value="Blue"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Residental">
+                                        <Setter Property="BorderBrush" Value="Green"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Residental Building">
+                                        <Setter Property="Background" Value="Green"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Police">
+                                        <Setter Property="Background" Value="DarkBlue"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Forest">
+                                        <Setter Property="Background" Value="DarkGreen"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Road">
+                                        <Setter Property="Background" Value="Gray"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="School">
+                                        <Setter Property="Background" Value="Orange"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="University">
+                                        <Setter Property="Background" Value="OrangeRed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Fire Department">
+                                        <Setter Property="Background" Value="DarkRed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Stadium">
+                                        <Setter Property="Background" Value="Brown"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Power Line">
+                                        <Setter Property="Background" Value="LightGray"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Power Plant">
+                                        <Setter Property="Background" Value="Black"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemContainerStyle>
+                <Style>
+                    <Setter Property="Grid.Row" Value="{Binding X}"/>
+                    <Setter Property="Grid.Column" Value="{Binding Y}"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+        </ItemsControl>
+        <ItemsControl Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" ItemsSource="{Binding Options}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <DockPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding Text}" Width="100" Height="50" Margin="0, 0, 10, 0" Command="{Binding Clicked}" CommandParameter="{Binding Number}">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsClicked}" Value="True">
+                                        <Setter Property="Background" Value="LightBlue"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsClicked}" Value="False">
+                                        <Setter Property="Background" Value="White"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
 
     </Grid>
 </Window>

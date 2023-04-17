@@ -16,7 +16,7 @@ namespace SimVillage.Model
 
         private List<Citizen> citizens = null!;
 
-        private const int cost = 50000;
+        private const int cost = 400;
 
         public Building.Building getBuilding() { return building; }
 
@@ -27,14 +27,24 @@ namespace SimVillage.Model
             return citizens.Count;
         }
 
-        public void addCitizen(Citizen person)
+        public void addCitizensHome(Citizen person)
         {
             citizens.Add(person);
-            Residental house = (Residental)building;
-            if (house.FreeSpace())
-            {
-                house.MoveIn();
-            }
+        }
+
+        public void RemoveCitizenFromWorkPlace(Citizen person)
+        {
+            citizens.Remove(person);
+        }
+
+        public void AddCitizensWorkPlace(Citizen person)
+        {
+            citizens.Add(person);
+        }
+
+        public void MoveOutFromHome(Citizen person)
+        {
+            citizens.Remove(person);
         }
 
         public Zone(ZoneType zoneType = ZoneType.General)
@@ -51,13 +61,13 @@ namespace SimVillage.Model
                 switch (ZoneType)
                 {
                     case ZoneType.Residental:
-                        this.building = new Building.Residental(new List<Building.Tile> { new Building.Tile(X, Y)});
+                        this.building = new Residental(new List<Tile> { new Tile(X, Y)});
                         break;
                     case ZoneType.Industrial:
-                        this.building = new Building.Industrial(new List<Building.Tile> { new Building.Tile(X, Y) });
+                        this.building = new Industrial(new List<Tile> { new Tile(X, Y) });
                         break;
                     case ZoneType.Store:
-                        this.building = new Building.Store(new List<Building.Tile> { new Building.Tile(X, Y) });
+                        this.building = new Store(new List<Tile> { new Tile(X, Y) });
                         break;
                     default:
                         throw new ArgumentNullException();
@@ -78,7 +88,7 @@ namespace SimVillage.Model
             {
                 happiness += i.calcHappiness();
             }
-            return happiness;
+            return citizens.Count == 0 ? 0 : happiness / citizens.Count;
         }
 
         public bool DowngradeZone()
@@ -89,13 +99,18 @@ namespace SimVillage.Model
                 building = null!;
                 Occupied = false;
                 return true;
+            } else if (building != null)
+            {
+                building = null!;
+                Occupied = false;
+                return true;
             }
             return false;
         }
 
         public bool SetZone(ZoneType zoneType)
         {
-            if (ZoneType == ZoneType.General)
+            if (ZoneType == ZoneType.General && building == null)
             {
                 ZoneType = zoneType;
                 if (ZoneType != ZoneType.Residental)

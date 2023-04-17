@@ -10,6 +10,8 @@ namespace SimVillage.Model
 
         private int peopleAtStart = 30;
 
+        private bool canDemolish = false;
+
         private readonly string cityName;
 
         private DateTime date = new DateTime(2000, 1, 1);
@@ -20,7 +22,13 @@ namespace SimVillage.Model
 
         private static Zone[,] map = null!;
 
-        private List<Citizen> Citizens = null!;
+        public int Width() { return mapWidth;}
+
+        public int Height() { return mapHeight;}
+
+        public Tile[,] tiles = null!;
+
+        private List<Citizen> citizens = null!;
 
         private List<Industrial> avaibleIndustrials = null!;
 
@@ -34,15 +42,28 @@ namespace SimVillage.Model
 
         public EventHandler? gameChanged;
 
+        public EventHandler? ConflictDemolish;
+
+        public List<Citizen> Citizens { get { return citizens; } }
+
         public City(Persistence dataAccess, string name)
         {
             this.dataAccess = dataAccess;
             cityName = name;
             Finances = new Finances(5000);
-            Citizens = new List<Citizen>();
+            citizens = new List<Citizen>();
             avaibleStores = new List<Store>();
             avaibleIndustrials = new List<Industrial>();
             avaibleHouses = new List<Residental>();
+            tiles = new Tile[mapWidth, mapHeight];
+            for(int i = 0; i < mapWidth; i++)
+            {
+                for(int j = 0; j < mapHeight; j++)
+                {
+                    tiles[i, j] = new Tile(i, j);
+                }
+            }
+            
 
             map = new Zone[mapHeight, mapWidth];
 
@@ -58,7 +79,11 @@ namespace SimVillage.Model
                     };
                 }
             }
-            BuildBuilding(new Forest(new List<Tile> { new Tile(0, 0) }));
+        }
+
+        public int GetBudget()
+        {
+            return Finances.getBudget();
         }
 
         public string Name { get { return cityName; } }
@@ -67,16 +92,67 @@ namespace SimVillage.Model
 
         public Zone[,] Map { get { return map; } }
 
+        public void CanDemolish(bool boolean)
+        {
+            canDemolish = boolean;
+        }
+
         public void demolishZone(int x, int y)
         {
             Building.Building building = map[x, y].getBuilding();
+            Zone zone = map[x, y];
+            bool conflict = false;
+            if (building != null && (building.GetType() == typeof(Residental) || building.GetType() == typeof(Industrial) || building.GetType() == typeof(Store) || building.GetType() == typeof(Road)))
+            {
+                switch (building)
+                {
+                    case Road:
+                        zone.DowngradeZone();
+                        foreach (Citizen citizen in citizens)
+                        {
+                            if (calcDistance(citizen.GetHome(), citizen.GetWorkPlace()) == -1)
+                            {
+                                conflict = true;
+                                break;
+                            }
+                        }
+                        zone.BuildBuilding(building);
+                        break;
+                    case Residental:
+                        if (((Residental)building).GetInhabitans() > 0)
+                            conflict = true;
+                        break;
+                    case Industrial:
+                        if (((Industrial)building).GetWorkers() > 0)
+                            conflict = true;
+                        break;
+                    case Store:
+                        if (((Store)building).GetWorkers() > 0)
+                            conflict = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (conflict)
+                OnConflictDemolish();
             if (building != null)
             {
-                foreach (Tile tile in building.GetTiles())
+                if (!conflict || (conflict && canDemolish))
                 {
-                    if (map[tile.GetX(), tile.GetY()].DowngradeZone())
+                    bool added_money = false;
+                    foreach (Tile tile in building.GetTiles())
                     {
-                        Finances.addIncome("Demolished a " + map[x, y].ToString(), map[x, y].getCost() / 2, date);
+                        if (map[tile.GetX(), tile.GetY()].DowngradeZone())
+                        {
+                            if (map[tile.GetX(), tile.GetY()].ZoneType != ZoneType.General)
+                                Finances.addIncome("Demolished a " + map[x, y].ToString(), map[x, y].getCost() / 2, date);
+                        }
+                        if (building != null && added_money == false)
+                        {
+                            Finances.addIncome("Demolished a " + map[x, y].ToString(), building.GetCost() / 2, date);
+                            added_money = true;
+                        }
                     }
                 }
             } else
@@ -85,6 +161,50 @@ namespace SimVillage.Model
                 {
                     Finances.addIncome("Demolished a " + map[x, y].ToString(), map[x, y].getCost() / 2, date);
                 }
+            }
+            if (conflict && canDemolish)
+            {
+                List<Citizen> CitizensLeft = new List<Citizen>();
+                foreach (Citizen citizen in Citizens)
+                {
+                    if (calcDistance(citizen.GetHome(), citizen.GetWorkPlace()) == -1)
+                    {
+                        Building.Building workPlace = citizen.GetWorkPlace();
+                        if (workPlace.GetType() == typeof(Store))
+                        {
+                            Store store = (Store)workPlace;
+                            store.WorkerLeft();
+                            if (!avaibleStores.Contains(store))
+                                avaibleStores.Add(store);
+                        } else if (workPlace.GetType() == typeof(Industrial))
+                        {
+                            Industrial industrial = (Industrial)workPlace;
+                            industrial.WorkerLeft();
+                            if (!avaibleIndustrials.Contains(industrial))
+                                avaibleIndustrials.Add(industrial);
+                        }
+                        foreach (Tile tile in citizen.GetWorkPlace().GetTiles())
+                        {
+                            map[tile.GetX(), tile.GetY()].RemoveCitizenFromWorkPlace(citizen);
+                        }
+                        citizen.GetHome().MoveOut();
+                        if (!avaibleHouses.Contains(citizen.GetHome()))
+                            avaibleHouses.Add(citizen.GetHome());
+                        foreach (Tile tile in citizen.GetHome().GetTiles())
+                        {
+                            map[tile.GetX(), tile.GetY()].MoveOutFromHome(citizen);
+                        }
+                        citizen.MoveOut();
+                        PeopleMoveIn(citizen);
+                        if (citizen.GetHome() == null)
+                            CitizensLeft.Add(citizen);
+                        else
+                            citizen.PlusHadToMove();
+                    }
+                }
+                Finances.addExpenses("Demolished a " + zone.ToString() + " and you had conflict with people", building.GetCost() / 2, date);
+                citizens.RemoveAll(i => CitizensLeft.Contains(i));
+                canDemolish = false;
             }
             OnGameChanged();
         }
@@ -177,14 +297,14 @@ namespace SimVillage.Model
         public int getHappiness()
         {
             int happiness = 0;
-            foreach (Citizen i in Citizens)
+            foreach (Citizen i in citizens)
             {
                 happiness += i.calcHappiness();
             }
             return happiness;
         }
 
-        public void newZone(int x, int y, ZoneType zoneType)
+        public bool newZone(int x, int y, ZoneType zoneType)
         {
             if (map[x, y].SetZone(zoneType))
             {
@@ -194,52 +314,64 @@ namespace SimVillage.Model
                     avaibleStores.Add((Store)map[x, y].getBuilding());
                 Finances.addExpenses("Built a " + map[x, y].ToString(), map[x, y].getCost(), date);
                 OnGameChanged();
+                return true;
             } else
             {
-                OnBuildFailed();
+                return false;
             }
         }
 
-        public void BuildBuilding(Building.Building building)
+        public bool BuildBuilding(Building.Building building)
         {
             if (building == null)
-                return;
-
+                return false;
+            
             bool freeZone = true;
             foreach (Tile tile in building.GetTiles())
             {
-                Zone zone = map[tile.GetX(), tile.GetY()];
-                freeZone = freeZone && (zone.ZoneType == ZoneType.General && zone.getBuilding() == null);
+                if (tile.GetX() >= 0 && tile.GetX() < mapHeight && tile.GetY() >= 0 && tile.GetY() < mapWidth)
+                {
+                    Zone zone = map[tile.GetX(), tile.GetY()];
+                    freeZone = freeZone && (zone.ZoneType == ZoneType.General && zone.getBuilding() == null);
+                } else
+                {
+                    freeZone = false;
+                    break;
+                }
             }
             if (freeZone)
             {
+                Finances.addExpenses("Built a ", building.GetCost(), date);
                 foreach (Tile tile in building.GetTiles())
                 {
                     map[tile.GetX(), tile.GetY()].BuildBuilding(building);
                 }
+                OnGameChanged();
+                return true;
             } else
             {
-                OnBuildFailed();
+                OnGameChanged();
+                return false;
             }
         }
 
         public void AdvanceTime()
         {
-            PeopleMoveIn();
             DateTime previous_date = date;
-            date.AddDays(1);
+            date = date.AddDays(1);
             if (date.Year > previous_date.Year)
             {
                 CollectingTaxes();
             }
+            PeopleMoveIn();
             OnTimeAdvanced();
         }
 
-        private void PeopleMoveIn()
+        private void PeopleMoveIn(Citizen citizen = null!)
         {
-            if (peopleAtStart > 0)
+            if (peopleAtStart > 0 || citizen != null)
             {
-                Citizen citizen = null!;
+                Zone houseZone = null!;
                 Residental house = null!;
                 if (avaibleHouses.Count == 0)
                 {
@@ -247,10 +379,7 @@ namespace SimVillage.Model
                     {
                         if (zone.ZoneType == ZoneType.Residental && !zone.Occupied)
                         {
-                            zone.Occupied = true;
-                            zone.BuildBuilding();
-                            house = (Residental)zone.getBuilding();
-                            avaibleHouses.Add(house);
+                            houseZone = zone;
                             break;
                         }
                     }
@@ -260,7 +389,6 @@ namespace SimVillage.Model
                     {
                         if (houses.FreeSpace())
                         {
-                            citizen = Citizen.ReGen(houses);
                             house = houses;
                             break;
                         } else
@@ -279,7 +407,11 @@ namespace SimVillage.Model
                 {
                     inIndustrial += industrial.GetWorkers();
                 }
-                if (inIndustrial < inStores)
+                if (houseZone != null)
+                {
+                    house = new Residental(new List<Tile> { new Tile(houseZone.X, houseZone.Y) });
+                }
+                if (house != null && inIndustrial <= inStores)
                 {
                     Industrial building = null!;
                     int minDist = int.MaxValue;
@@ -291,22 +423,33 @@ namespace SimVillage.Model
                             minDist = dist;
                             building = industrial;
                         }
-                        else if (!building.FreeSpace())
+                        else if (building != null && !building.FreeSpace())
                             avaibleIndustrials.Remove(building);
                     }
                     if (building != null)
                     {
-                        citizen = Citizen.ReGen(house);
+                        if (houseZone != null)
+                        {
+                            houseZone.Occupied = true;
+                            houseZone.BuildBuilding();
+                            avaibleHouses.Add(house);
+                        }
+                        if (citizen == null)
+                        {
+                            citizen = Citizen.ReGen(house);
+                            citizens.Add(citizen);
+                            peopleAtStart--;
+                        } else
+                            citizen.SetHome(house);
+                        house.MoveIn();
                         foreach (Tile tile in house.GetTiles())
                         {
-                            map[tile.GetX(), tile.GetY()].addCitizen(citizen);
+                            map[tile.GetX(), tile.GetY()].addCitizensHome(citizen);
                         }
-                        Citizens.Add(citizen);
-                        peopleAtStart--;
                         building.NewWorker();
                         citizen.SetWorkPlace(building);
                     }
-                } else
+                } else if (house != null)
                 {
                     Store building = null!;
                     int minDist = int.MaxValue;
@@ -317,36 +460,45 @@ namespace SimVillage.Model
                         {
                             minDist = dist;
                             building = store;
-                        } else if (!building.FreeSpace())
+                        } else if (building != null &&!building.FreeSpace())
                             avaibleStores.Remove(building);
                     }
                     if (building != null)
                     {
-                        citizen = Citizen.ReGen(house);
+                        if (houseZone != null)
+                        {
+                            houseZone.Occupied = true;
+                            houseZone.BuildBuilding();
+                            avaibleHouses.Add(house);
+                        }
+                        if (citizen == null)
+                        {
+                            citizen = Citizen.ReGen(house);
+                            citizens.Add(citizen);
+                            peopleAtStart--;
+                        } else
+                            citizen.SetHome(house);
+                        house.MoveIn();
                         foreach (Tile tile in house.GetTiles())
                         {
-                            map[tile.GetX(), tile.GetY()].addCitizen(citizen);
+                            map[tile.GetX(), tile.GetY()].addCitizensHome(citizen);
                         }
-                        Citizens.Add(citizen);
-                        peopleAtStart--;
                         building.NewWorker();
                         citizen.SetWorkPlace(building);
                     }
                 }
             } else
             {
-                int AVGhappiness = getHappiness() / Citizens.Count;
+                int AVGhappiness = getHappiness() / citizens.Count;
                 Residental house = null!;
+                Zone houseZone = null!;
                 if (avaibleHouses.Count == 0)
                 {
                     foreach (Zone zone in map)
                     {
                         if (zone.ZoneType == ZoneType.Residental && !zone.Occupied)
                         {
-                            zone.Occupied = true;
-                            zone.BuildBuilding();
-                            house = (Residental)zone.getBuilding();
-                            avaibleHouses.Add(house);
+                            houseZone = zone;
                             break;
                         }
                     }
@@ -375,7 +527,11 @@ namespace SimVillage.Model
                 {
                     inIndustrial += industrial.GetWorkers();
                 }
-                if (inIndustrial < inStores)
+                if (houseZone != null)
+                {
+                    house = new Residental(new List<Tile> { new Tile(houseZone.X, houseZone.Y) });
+                }
+                if (house != null && inIndustrial < inStores)
                 {
                     Industrial building = null!;
                     int minDist = int.MaxValue;
@@ -387,7 +543,7 @@ namespace SimVillage.Model
                             minDist = dist;
                             building = industrial;
                         }
-                        else if (!building.FreeSpace())
+                        else if (building != null && !building.FreeSpace())
                             avaibleIndustrials.Remove(building);
                     }
                     bool found = false;
@@ -407,17 +563,24 @@ namespace SimVillage.Model
                     }
                     if (building != null && minDist < 30 && !found && AVGhappiness > 5)
                     {
-                        Citizen citizen = Citizen.ReGen(house);
+                        if (houseZone != null)
+                        {
+                            houseZone.Occupied = true;
+                            houseZone.BuildBuilding();
+                            avaibleHouses.Add(house);
+                        }
+                        citizen = Citizen.ReGen(house);
+                        house.MoveIn();
                         building.NewWorker();
                         citizen.SetWorkPlace(building);
-                        Citizens.Add(citizen);
+                        citizens.Add(citizen);
                         foreach (Tile tile in house.GetTiles())
                         {
-                            map[tile.GetX(), tile.GetY()].addCitizen(citizen);
+                            map[tile.GetX(), tile.GetY()].addCitizensHome(citizen);
                         }
                     }
                 }
-                else
+                else if (house != null)
                 {
                     Store building = null!;
                     int minDist = int.MaxValue;
@@ -429,7 +592,7 @@ namespace SimVillage.Model
                             minDist = dist;
                             building = store;
                         }
-                        else if (!building.FreeSpace())
+                        else if (building != null && !building.FreeSpace())
                             avaibleStores.Remove(building);
                     }
                     bool found = false;
@@ -449,13 +612,20 @@ namespace SimVillage.Model
                     }
                     if (building != null && minDist < 30 && !found && AVGhappiness > 5)
                     {
-                        Citizen citizen = Citizen.ReGen(house);
+                        if (houseZone != null)
+                        {
+                            houseZone.Occupied = true;
+                            houseZone.BuildBuilding();
+                            avaibleHouses.Add(house);
+                        }
+                        citizen = Citizen.ReGen(house);
+                        house.MoveIn();
                         building.NewWorker();
                         citizen.SetWorkPlace(building);
-                        Citizens.Add(citizen);
+                        citizens.Add(citizen);
                         foreach (Tile tile in house.GetTiles())
                         {
-                            map[tile.GetX(), tile.GetY()].addCitizen(citizen);
+                            map[tile.GetX(), tile.GetY()].addCitizensHome(citizen);
                         }
                     }
                 }
@@ -471,6 +641,11 @@ namespace SimVillage.Model
         private void OnBuildFailed()
         {
             failedBuilding?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnConflictDemolish()
+        {
+            ConflictDemolish?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnGameChanged()

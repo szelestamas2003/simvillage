@@ -14,6 +14,7 @@ namespace SimVillage.Model.Building
             Age = 0;
             Size = (1, 1);
             SetPowerConsumption(3);
+            cost = 80;
 
         }
 

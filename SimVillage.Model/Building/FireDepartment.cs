@@ -14,6 +14,7 @@ namespace SimVillage.Model.Building
             SetTiles(tile);
             SetPowerConsumption(45);
             Size = (1, 1);
+            cost = 500;
         }
         public bool IsAvailable() { return  UnitAvailable; }
         public void SendUnit()

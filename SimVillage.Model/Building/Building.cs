@@ -12,6 +12,7 @@ namespace SimVillage.Model.Building
         protected (int, int) Size;
         protected bool Occupied;
         protected int Density;
+        protected int cost;
         protected int PowerConsumption;
 
 
@@ -55,6 +56,10 @@ namespace SimVillage.Model.Building
                 tile.SetBulding(null);
             }
             Tiles = null;
+        }
+        public int GetCost()
+        {
+            return cost;
         }
 
         

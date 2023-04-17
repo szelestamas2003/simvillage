@@ -13,6 +13,7 @@ namespace SimVillage.Model.Building
             SetTiles(tile);
             Size = (1, 1);
             SetPowerConsumption(4);
+            cost = 40;
         }
     }
 }

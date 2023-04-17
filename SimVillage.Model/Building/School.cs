@@ -18,6 +18,7 @@ namespace SimVillage.Model.Building
             SetTiles(tile);
             SetPowerConsumption(50);
             Type = type;
+            cost = 600;
         }
 
         public int GetMaxStudent()
