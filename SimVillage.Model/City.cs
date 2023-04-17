@@ -432,6 +432,7 @@ namespace SimVillage.Model
                         {
                             houseZone.Occupied = true;
                             houseZone.BuildBuilding();
+                            house = (Residental)houseZone.getBuilding();
                             avaibleHouses.Add(house);
                         }
                         if (citizen == null)
@@ -469,6 +470,7 @@ namespace SimVillage.Model
                         {
                             houseZone.Occupied = true;
                             houseZone.BuildBuilding();
+                            house = (Residental)houseZone.getBuilding();
                             avaibleHouses.Add(house);
                         }
                         if (citizen == null)
@@ -567,6 +569,7 @@ namespace SimVillage.Model
                         {
                             houseZone.Occupied = true;
                             houseZone.BuildBuilding();
+                            house = (Residental)houseZone.getBuilding();
                             avaibleHouses.Add(house);
                         }
                         citizen = Citizen.ReGen(house);
@@ -616,6 +619,7 @@ namespace SimVillage.Model
                         {
                             houseZone.Occupied = true;
                             houseZone.BuildBuilding();
+                            house = (Residental)houseZone.getBuilding();
                             avaibleHouses.Add(house);
                         }
                         citizen = Citizen.ReGen(house);
