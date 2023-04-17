@@ -10,6 +10,8 @@ namespace SimVillage.Model
 
         private int peopleAtStart = 30;
 
+        private bool canDemolish = false;
+
         private readonly string cityName;
 
         private DateTime date = new DateTime(2000, 1, 1);
@@ -90,24 +92,67 @@ namespace SimVillage.Model
 
         public Zone[,] Map { get { return map; } }
 
+        public void CanDemolish(bool boolean)
+        {
+            canDemolish = boolean;
+        }
+
         public void demolishZone(int x, int y)
         {
             Building.Building building = map[x, y].getBuilding();
             Zone zone = map[x, y];
+            bool conflict = false;
+            if (building != null && (building.GetType() == typeof(Residental) || building.GetType() == typeof(Industrial) || building.GetType() == typeof(Store) || building.GetType() == typeof(Road)))
+            {
+                switch (building)
+                {
+                    case Road:
+                        zone.DowngradeZone();
+                        foreach (Citizen citizen in citizens)
+                        {
+                            if (calcDistance(citizen.GetHome(), citizen.GetWorkPlace()) == -1)
+                            {
+                                conflict = true;
+                                break;
+                            }
+                        }
+                        zone.BuildBuilding(building);
+                        break;
+                    case Residental:
+                        if (((Residental)building).GetInhabitans() > 0)
+                            conflict = true;
+                        break;
+                    case Industrial:
+                        if (((Industrial)building).GetWorkers() > 0)
+                            conflict = true;
+                        break;
+                    case Store:
+                        if (((Store)building).GetWorkers() > 0)
+                            conflict = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (conflict)
+                OnConflictDemolish();
             if (building != null)
             {
-                bool added_money = false;
-                foreach (Tile tile in building.GetTiles())
+                if (!conflict || (conflict && canDemolish))
                 {
-                    if (map[tile.GetX(), tile.GetY()].DowngradeZone())
+                    bool added_money = false;
+                    foreach (Tile tile in building.GetTiles())
                     {
-                        if (map[tile.GetX(), tile.GetY()].ZoneType != ZoneType.General)
-                            Finances.addIncome("Demolished a " + map[x, y].ToString(), map[x, y].getCost() / 2, date);
-                    }
-                    if(building != null && added_money == false)
-                    {
-                        Finances.addIncome("Demolished a " + map[x, y].ToString(), building.GetCost() / 2, date);
-                        added_money = true;
+                        if (map[tile.GetX(), tile.GetY()].DowngradeZone())
+                        {
+                            if (map[tile.GetX(), tile.GetY()].ZoneType != ZoneType.General)
+                                Finances.addIncome("Demolished a " + map[x, y].ToString(), map[x, y].getCost() / 2, date);
+                        }
+                        if (building != null && added_money == false)
+                        {
+                            Finances.addIncome("Demolished a " + map[x, y].ToString(), building.GetCost() / 2, date);
+                            added_money = true;
+                        }
                     }
                 }
             } else
@@ -117,15 +162,13 @@ namespace SimVillage.Model
                     Finances.addIncome("Demolished a " + map[x, y].ToString(), map[x, y].getCost() / 2, date);
                 }
             }
-            bool conflict = false;
-            if (building != null && (building.GetType() == typeof(Residental) || building.GetType() == typeof(Industrial) || building.GetType() == typeof(Store) || building.GetType() == typeof(Road)))
+            if (conflict && canDemolish)
             {
                 List<Citizen> CitizensLeft = new List<Citizen>();
                 foreach (Citizen citizen in Citizens)
                 {
                     if (calcDistance(citizen.GetHome(), citizen.GetWorkPlace()) == -1)
                     {
-                        conflict = true;
                         Building.Building workPlace = citizen.GetWorkPlace();
                         if (workPlace.GetType() == typeof(Store))
                         {
@@ -159,12 +202,9 @@ namespace SimVillage.Model
                             citizen.PlusHadToMove();
                     }
                 }
-                if (conflict)
-                {
-                    Finances.addExpenses("Demolished a " + zone.ToString() + " and you had conflict with people", building.GetCost() / 2, date);
-                    citizens.RemoveAll(i => CitizensLeft.Contains(i));
-                    OnConflictDemolish();
-                }
+                Finances.addExpenses("Demolished a " + zone.ToString() + " and you had conflict with people", building.GetCost() / 2, date);
+                citizens.RemoveAll(i => CitizensLeft.Contains(i));
+                canDemolish = false;
             }
             OnGameChanged();
         }
@@ -289,8 +329,15 @@ namespace SimVillage.Model
             bool freeZone = true;
             foreach (Tile tile in building.GetTiles())
             {
-                Zone zone = map[tile.GetX(), tile.GetY()];
-                freeZone = freeZone && (zone.ZoneType == ZoneType.General && zone.getBuilding() == null);
+                if (tile.GetX() >= 0 && tile.GetX() < mapHeight && tile.GetY() >= 0 && tile.GetY() < mapWidth)
+                {
+                    Zone zone = map[tile.GetX(), tile.GetY()];
+                    freeZone = freeZone && (zone.ZoneType == ZoneType.General && zone.getBuilding() == null);
+                } else
+                {
+                    freeZone = false;
+                    break;
+                }
             }
             if (freeZone)
             {

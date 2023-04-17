@@ -52,8 +52,8 @@ namespace SimVillage
 
         private void Model_ConflictDemolish(object? sender, EventArgs e)
         {
-            MessageBox.Show("Some people got upset by your action", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-            //MessageBox.Show("Some people will have to move out. Do you still want to proceed?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult dialogResult = MessageBox.Show("Some people will have to move out. Do you still want to proceed?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            city.CanDemolish(dialogResult == MessageBoxResult.Yes);
         }
 
         private void ViewModel_TenSpeed(object? sender, EventArgs e)
