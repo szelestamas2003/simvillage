@@ -32,6 +32,7 @@ namespace SimVillage
         public void App_Startup(object? sender, StartupEventArgs e)
         {
             city = new City(new Model.Persistence(), "SimVillage");
+            city.ConflictDemolish += new EventHandler(Model_ConflictDemolish);
 
             viewModel = new SimVillageViewModel(city);
             viewModel.PauseGame += new EventHandler(ViewModel_PauseGame);
@@ -47,6 +48,11 @@ namespace SimVillage
             timer.Interval = 5000;
             timer.Elapsed += new ElapsedEventHandler(Timer_Tick);
             timer.Start();
+        }
+
+        private void Model_ConflictDemolish(object? sender, EventArgs e)
+        {
+            MessageBox.Show("That was a demolish with conflict", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         private void ViewModel_TenSpeed(object? sender, EventArgs e)

@@ -27,14 +27,24 @@ namespace SimVillage.Model
             return citizens.Count;
         }
 
-        public void addCitizen(Citizen person)
+        public void addCitizensHome(Citizen person)
         {
             citizens.Add(person);
-            Residental house = (Residental)building;
-            if (house.FreeSpace())
-            {
-                house.MoveIn();
-            }
+        }
+
+        public void RemoveCitizenFromWorkPlace(Citizen person)
+        {
+            citizens.Remove(person);
+        }
+
+        public void AddCitizensWorkPlace(Citizen person)
+        {
+            citizens.Add(person);
+        }
+
+        public void MoveOutFromHome(Citizen person)
+        {
+            citizens.Remove(person);
         }
 
         public Zone(ZoneType zoneType = ZoneType.General)

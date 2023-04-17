@@ -260,7 +260,13 @@ namespace SimVillage.ViewModel
                     }
                 } else
                 {
-                    Fields[zone.X * Width + zone.Y].Text = string.Empty;
+                    Fields[zone.X * Width + zone.Y].Text = zone.ZoneType switch
+                    {
+                        ZoneType.Residental => "Residental",
+                        ZoneType.Industrial => "Industrial",
+                        ZoneType.Store => "Store",
+                        _ => string.Empty
+                    };
                 }
             }
             OnPropertyChanged(nameof(CitizenCount));
