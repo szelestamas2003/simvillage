@@ -52,7 +52,8 @@ namespace SimVillage
 
         private void Model_ConflictDemolish(object? sender, EventArgs e)
         {
-            MessageBox.Show("That was a demolish with conflict", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show("Some people got upset by your action", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            //MessageBox.Show("Some people will have to move out. Do you still want to proceed?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question);
         }
 
         private void ViewModel_TenSpeed(object? sender, EventArgs e)

@@ -161,7 +161,7 @@ namespace SimVillage.Model
                 }
                 if (conflict)
                 {
-                    Finances.addExpenses("Demolished a " + zone.ToString() + " with conflict", building.GetCost() / 2, date);
+                    Finances.addExpenses("Demolished a " + zone.ToString() + " and you had conflict with people", building.GetCost() / 2, date);
                     citizens.RemoveAll(i => CitizensLeft.Contains(i));
                     OnConflictDemolish();
                 }
