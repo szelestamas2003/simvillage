@@ -98,6 +98,7 @@ namespace SimVillage.Model
                 ZoneType = ZoneType.General;
                 building = null!;
                 Occupied = false;
+                citizens.Clear();
                 return true;
             } else if (building != null)
             {

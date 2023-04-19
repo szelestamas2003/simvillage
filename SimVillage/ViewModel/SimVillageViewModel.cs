@@ -63,7 +63,7 @@ namespace SimVillage.ViewModel
             this.model = model;
             model.gameAdvanced += new EventHandler(Model_GameAdvanced);
             model.gameChanged += new EventHandler(Model_GameChanged);
-            Date = model.Date.ToString("d");
+            Date = model.Date.ToString("yyyy") + " " + model.Date.ToString("M");
             Money = model.GetBudget();
 
             Fields = new ObservableCollection<Field>();
@@ -290,7 +290,7 @@ namespace SimVillage.ViewModel
 
         private void Model_GameAdvanced(object? sender, EventArgs e)
         {
-            Date = model.Date.ToString("d");
+            Date = model.Date.ToString("yyyy") + " " + model.Date.ToString("M");
             OnPropertyChanged(nameof(Date));
         }
     }

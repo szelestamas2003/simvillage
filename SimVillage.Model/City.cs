@@ -165,41 +165,91 @@ namespace SimVillage.Model
             if (conflict && canDemolish)
             {
                 List<Citizen> CitizensLeft = new List<Citizen>();
-                foreach (Citizen citizen in Citizens)
+                if (building.GetType() == typeof(Road))
                 {
-                    if (calcDistance(citizen.GetHome(), citizen.GetWorkPlace()) == -1)
+                    foreach (Citizen citizen in Citizens)
                     {
-                        Building.Building workPlace = citizen.GetWorkPlace();
-                        if (workPlace.GetType() == typeof(Store))
+                        if (calcDistance(citizen.GetHome(), citizen.GetWorkPlace()) == -1)
                         {
-                            Store store = (Store)workPlace;
-                            store.WorkerLeft();
-                            if (!avaibleStores.Contains(store))
-                                avaibleStores.Add(store);
-                        } else if (workPlace.GetType() == typeof(Industrial))
-                        {
-                            Industrial industrial = (Industrial)workPlace;
-                            industrial.WorkerLeft();
-                            if (!avaibleIndustrials.Contains(industrial))
-                                avaibleIndustrials.Add(industrial);
+                            Building.Building workPlace = citizen.GetWorkPlace();
+                            if (workPlace.GetType() == typeof(Store))
+                            {
+                                Store store = (Store)workPlace;
+                                store.WorkerLeft();
+                                if (!avaibleStores.Contains(store))
+                                    avaibleStores.Add(store);
+                            }
+                            else if (workPlace.GetType() == typeof(Industrial))
+                            {
+                                Industrial industrial = (Industrial)workPlace;
+                                industrial.WorkerLeft();
+                                if (!avaibleIndustrials.Contains(industrial))
+                                    avaibleIndustrials.Add(industrial);
+                            }
+                            foreach (Tile tile in citizen.GetWorkPlace().GetTiles())
+                            {
+                                map[tile.GetX(), tile.GetY()].RemoveCitizenFromWorkPlace(citizen);
+                            }
+                            citizen.GetHome().MoveOut();
+                            if (!avaibleHouses.Contains(citizen.GetHome()))
+                                avaibleHouses.Add(citizen.GetHome());
+                            foreach (Tile tile in citizen.GetHome().GetTiles())
+                            {
+                                map[tile.GetX(), tile.GetY()].MoveOutFromHome(citizen);
+                            }
+                            citizen.MoveOut();
+                            PeopleMoveIn(citizen);
+                            if (citizen.GetHome() == null)
+                                CitizensLeft.Add(citizen);
+                            else
+                                citizen.PlusHadToMove();
                         }
-                        foreach (Tile tile in citizen.GetWorkPlace().GetTiles())
+                    }
+                } else if (building.GetType() == typeof(Residental))
+                {
+                    foreach (Citizen citizen in Citizens)
+                    {
+                        if (citizen.GetHome() == building)
                         {
-                            map[tile.GetX(), tile.GetY()].RemoveCitizenFromWorkPlace(citizen);
+                            Building.Building workPlace = citizen.GetWorkPlace();
+                            if (workPlace.GetType() == typeof(Store))
+                            {
+                                Store store = (Store)workPlace;
+                                store.WorkerLeft();
+                                if (!avaibleStores.Contains(store))
+                                    avaibleStores.Add(store);
+                            }
+                            else if (workPlace.GetType() == typeof(Industrial))
+                            {
+                                Industrial industrial = (Industrial)workPlace;
+                                industrial.WorkerLeft();
+                                if (!avaibleIndustrials.Contains(industrial))
+                                    avaibleIndustrials.Add(industrial);
+                            }
+                            foreach (Tile tile in citizen.GetWorkPlace().GetTiles())
+                            {
+                                map[tile.GetX(), tile.GetY()].RemoveCitizenFromWorkPlace(citizen);
+                            }
+                            citizen.MoveOut();
+                            PeopleMoveIn(citizen);
+                            if (citizen.GetHome() == null)
+                                CitizensLeft.Add(citizen);
+                            else
+                                citizen.PlusHadToMove();
                         }
-                        citizen.GetHome().MoveOut();
-                        if (!avaibleHouses.Contains(citizen.GetHome()))
-                            avaibleHouses.Add(citizen.GetHome());
-                        foreach (Tile tile in citizen.GetHome().GetTiles())
-                        {
-                            map[tile.GetX(), tile.GetY()].MoveOutFromHome(citizen);
-                        }
-                        citizen.MoveOut();
-                        PeopleMoveIn(citizen);
-                        if (citizen.GetHome() == null)
-                            CitizensLeft.Add(citizen);
-                        else
-                            citizen.PlusHadToMove();
+                    }
+                } else if (building.GetType() == typeof(Industrial))
+                {
+                    foreach (Citizen citizen in Citizens)
+                    {
+                        citizen.SetWorkPlace(null!);
+                        //PeopleMoveIn(citizen);
+                    }
+                } else
+                {
+                    foreach (Citizen citizen in Citizens)
+                    {
+                        citizen.SetWorkPlace(null!);
                     }
                 }
                 Finances.addExpenses("Demolished a " + zone.ToString() + " and you had conflict with people", building.GetCost() / 2, date);
