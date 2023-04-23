@@ -50,6 +50,10 @@ namespace SimVillage.ViewModel
 
         public event EventHandler? TenSpeed;
 
+        public event EventHandler? Rename;
+
+        public DelegateCommand RenameCommand { get; private set; }
+
         public DelegateCommand PauseGameCommand { get; private set; }
 
         public DelegateCommand OneSpeedCommand { get; private set; }
@@ -86,7 +90,7 @@ namespace SimVillage.ViewModel
                 new Option { Text = "Stadium", Number = 11, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))},
                 new Option { Text = "Demolish", Number = 12, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param)))}
             };
-
+            RenameCommand = new DelegateCommand(param => OnRename());
             PauseGameCommand = new DelegateCommand(param => OnPauseGame());
             OneSpeedCommand = new DelegateCommand(param => OnOneSpeedCommand());
             FiveSpeedCommand = new DelegateCommand(param => OnFiveSpeedCommand());
@@ -210,6 +214,11 @@ namespace SimVillage.ViewModel
         private void OnPauseGame()
         {
             PauseGame?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnRename()
+        {
+            Rename?.Invoke(this, EventArgs.Empty);
         }
 
         private void Model_GameChanged(object? sender, EventArgs e)

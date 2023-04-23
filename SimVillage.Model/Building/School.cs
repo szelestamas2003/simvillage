@@ -9,8 +9,8 @@ namespace SimVillage.Model.Building
     public class School : Building
     {
         int MaxStudents;
-        int Students;
         SchoolTypes Type;
+        List<Citizen> Students;
 
         public School(List<Tile> tile, SchoolTypes type)
         {
@@ -19,6 +19,7 @@ namespace SimVillage.Model.Building
             SetPowerConsumption(50);
             Type = type;
             cost = 600;
+            Students = new List<Citizen>();
         }
 
         public int GetMaxStudent()
@@ -27,15 +28,29 @@ namespace SimVillage.Model.Building
         }
         public int GetStudents()
         {
-            return Students;
+            return Students.Count;
         }
-        public void SetStudents(int students)
+        public void SetStudents(Citizen student)
         {
-            Students = students;
+            Students.Append(student);
         }
         public SchoolTypes GetSchoolType()
         {
             return Type;
+        }
+        public void GiveEducation()
+        {
+            foreach(Citizen student in Students)
+            {
+                if(Type == SchoolTypes.Elementary)
+                {
+                    student.SetEducation(EducationLevel.Middle);
+                }
+                else if(Type == SchoolTypes.University)
+                {
+                    student.SetEducation(EducationLevel.Higher);
+                }
+            }
         }
 
 
