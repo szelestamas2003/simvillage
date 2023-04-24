@@ -44,7 +44,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Command="{Binding Clicked}" CommandParameter="{Binding Number}">
+                    <Button Command="{Binding Clicked}" CommandParameter="{Binding Number}" Cursor="Hand">
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Setter Property="Background" Value="LightGreen"/>
@@ -116,7 +116,7 @@
                 <Style TargetType="ItemsControl">
                     <Setter Property="BorderBrush" Value="Black"/>
                     <Setter Property="BorderThickness" Value="1"/>
-                    <Setter Property="Background" Value="AliceBlue"/>
+                    <Setter Property="Background" Value="#FF91B0AB"/>
                     <Setter Property="Padding" Value="5, 5, 0, 5"/>
                 </Style>
             </ItemsControl.Style>
@@ -144,7 +144,5 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-
-
     </Grid>
 </Window>
