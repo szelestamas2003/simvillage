@@ -25,5 +25,9 @@ namespace SimVillage.Model.Building
         {
             UnitAvailable = true;
         }
+        public String ToString()
+        {
+            return "Fire Department: Power consmuption: " + PowerConsumption + "Unit available: " + UnitAvailable;
+        }
     }
 }
