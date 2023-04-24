@@ -22,9 +22,9 @@ namespace SimVillage.Model
 
         public int getCost() { return cost; }
 
-        public int getPeople()
+        public List<Citizen> getPeople()
         {
-            return citizens.Count;
+            return citizens;
         }
 
         public void addCitizensHome(Citizen person)

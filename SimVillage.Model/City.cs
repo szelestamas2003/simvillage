@@ -454,6 +454,7 @@ namespace SimVillage.Model
                         }
                         building.NewWorker();
                         citizen.SetWorkPlace(building);
+                        citizen.SetSalary(500);
                     }
                 } else if (house != null)
                 {
