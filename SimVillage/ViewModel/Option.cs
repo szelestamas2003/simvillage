@@ -38,5 +38,7 @@
         }
 
         public DelegateCommand? Clicked { get; set; }
+
+        public string Info { get; set; }
     }
 }

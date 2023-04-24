@@ -97,6 +97,11 @@ namespace SimVillage.Model
             canDemolish = boolean;
         }
 
+        public void GiveEducation(School school)
+        {
+            school.GiveEducation();
+        }
+
         public void demolishZone(int x, int y)
         {
             Building.Building building = map[x, y].getBuilding();
