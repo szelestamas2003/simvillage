@@ -139,5 +139,8 @@ namespace SimVillage.Model
         {
             this.Salary = salary;
         }
+        public int GetSalary() {
+            return Salary;
+        }
     }
 }

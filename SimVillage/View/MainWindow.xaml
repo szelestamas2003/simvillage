@@ -32,7 +32,6 @@
                     </Style>
                 </TextBox.Style>
             </TextBox>
-            <Button Content="Város átnevezése" Command="{Binding Rename}" Width="40" Height="30"/>
             <Button Content="Button" Width="40" Height="30"/>
             <Button Content="Button" Width="40" Height="30"/>
             <Button Content="Button" Width="40" Height="30"/>

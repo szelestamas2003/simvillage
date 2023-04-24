@@ -10,6 +10,7 @@
         private int StoreTax = 10;
         private int IndustrialTax = 10;
 
+
         public Finances(int budget)
         {
             this.budget = budget;
@@ -21,6 +22,12 @@
         {
             expenses.Add((name, cost, date));
             budget -= cost;
+        }
+
+        public int getTax(ZoneType zone)
+        {
+            if(zone  == ZoneType.Industrial) return IndustrialTax;
+            else return StoreTax;
         }
 
         public void addIncome(string name, int cost, DateTime date)

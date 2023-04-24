@@ -234,10 +234,27 @@ namespace SimVillage.Model
 
         private void CollectingTaxes()
         {
+            double tax = 0;
             foreach (Zone zone in map)
             {
-
+                if(zone.ZoneType == ZoneType.Store)
+                {
+                    tax += Finances.getTax(ZoneType.Store)/100 * zone.getPeople().Count * 50;
+                }
+                else if(zone.ZoneType == ZoneType.Industrial)
+                {
+                    tax += Finances.getTax(ZoneType.Industrial)/100 * zone.getPeople().Count * 50;
+                }
+                else if(zone.ZoneType == ZoneType.Residental)
+                {
+                    foreach(Citizen citizen in zone.getPeople())
+                    {
+                        tax += citizen.GetSalary() * Finances.getTax(ZoneType.Residental)/100;
+                    }
+                }
             }
+            tax = Math.Round(tax);
+            Finances.addIncome("Tax", Convert.ToInt32(tax), date);
         }
 
         static public int calcDistance(Building.Building from, Building.Building to)
@@ -364,7 +381,7 @@ namespace SimVillage.Model
         {
             DateTime previous_date = date;
             date = date.AddDays(1);
-            if (date.Year > previous_date.Year)
+            if (date.Day > previous_date.Day)
             {
                 CollectingTaxes();
             }

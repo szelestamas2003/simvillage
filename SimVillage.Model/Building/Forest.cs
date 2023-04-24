@@ -26,7 +26,7 @@ namespace SimVillage.Model.Building
 
         public String ToString()
         {
-
+            return "Forest: Age: " + Age + " Power consumption: " + PowerConsumption;
         }
         
     }
