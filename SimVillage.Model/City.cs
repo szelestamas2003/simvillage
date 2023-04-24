@@ -409,6 +409,7 @@ namespace SimVillage.Model
                     }
                 } else
                 {
+                    List<Residental> delete = new List<Residental>();
                     foreach (Residental houses in avaibleHouses)
                     {
                         if (houses.FreeSpace())
@@ -417,9 +418,10 @@ namespace SimVillage.Model
                             break;
                         } else
                         {
-                            avaibleHouses.Remove(houses);
+                            delete.Add(houses);
                         }
                     }
+                    avaibleHouses.RemoveAll(h => delete.Contains(h));
                 }
                 int inStores = 0;
                 int inIndustrial = 0;
@@ -531,6 +533,7 @@ namespace SimVillage.Model
                     }
                 } else
                 {
+                    List<Residental> delete = new List<Residental>();
                     foreach (Residental houses in avaibleHouses)
                     {
                         if (houses.FreeSpace())
@@ -540,9 +543,10 @@ namespace SimVillage.Model
                         }
                         else
                         {
-                            avaibleHouses.Remove(houses);
+                            delete.Add(houses);
                         }
                     }
+                    avaibleHouses.RemoveAll(h => delete.Contains(h));
                 }
                 int inStores = 0;
                 int inIndustrial = 0;
