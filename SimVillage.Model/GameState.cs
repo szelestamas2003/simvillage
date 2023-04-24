@@ -7,7 +7,7 @@ using SimVillage.Model;
 
 namespace SimVillage.Persistence
 {
-    internal class GameState
+    public class GameState
     {
         public string Name;
         public DateTime Date;

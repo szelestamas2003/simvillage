@@ -127,7 +127,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="{Binding Text}" Width="100" Height="25" Margin="0, 0, 5, 0" Command="{Binding Clicked}" CommandParameter="{Binding Number}">
+                    <Button Content="{Binding Text}" Width="Auto" Height="Auto" Margin="0, 0, 5, 0" Padding="15,5,15,5" Command="{Binding Clicked}" CommandParameter="{Binding Number}">
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Style.Triggers>

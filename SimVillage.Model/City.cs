@@ -1,4 +1,5 @@
 ﻿using SimVillage.Model.Building;
+using SimVillage.Persistence;
 
 namespace SimVillage.Model
 {
@@ -220,7 +221,8 @@ namespace SimVillage.Model
             {
                 throw new InvalidOperationException("No data access is provided");
             }
-            await dataAccess.saveGame();
+            GameState g = new GameState();
+            await dataAccess.saveGame("path", g);
         }
 
         public async Task Load()
@@ -229,7 +231,7 @@ namespace SimVillage.Model
             {
                 throw new InvalidOperationException("No data access is provided");
             }
-            await dataAccess.loadGame();
+            await dataAccess.loadGame("path");
         }
 
         private void CollectingTaxes()
