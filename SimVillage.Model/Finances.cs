@@ -6,6 +6,9 @@
         private List<(string, int, DateTime)> incomes = null!;
 
         private int budget;
+        private int ResidentTax = 10;
+        private int StoreTax = 10;
+        private int IndustrialTax = 10;
 
         public Finances(int budget)
         {
