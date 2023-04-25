@@ -31,7 +31,7 @@ namespace SimVillage
 
         public void App_Startup(object? sender, StartupEventArgs e)
         {
-            city = new City(new Model.Persistence(), "SimVillage");
+            city = new City(new Model.Persistence());
             city.ConflictDemolish += new EventHandler(Model_ConflictDemolish);
 
             viewModel = new SimVillageViewModel(city);
@@ -43,6 +43,8 @@ namespace SimVillage
             view =new MainWindow();
             view.DataContext = viewModel;
             view.Show();
+
+            city.newGame("SimVillage");
 
             timer = new Timer();
             timer.Interval = 5000;

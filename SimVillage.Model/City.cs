@@ -13,7 +13,7 @@ namespace SimVillage.Model
 
         private bool canDemolish = false;
 
-        private readonly string cityName;
+        private string cityName;
 
         private DateTime date = new DateTime(2000, 1, 1);
 
@@ -37,7 +37,7 @@ namespace SimVillage.Model
 
         public EventHandler? gameAdvanced;
 
-        public EventHandler? failedBuilding;
+        public EventHandler? gameCreated;
 
         public EventHandler? gameChanged;
 
@@ -45,16 +45,20 @@ namespace SimVillage.Model
 
         public List<Citizen> Citizens { get { return citizens; } }
 
-        public City(Persistence dataAccess, string name)
+        public City(Persistence dataAccess)
         {
             this.dataAccess = dataAccess;
+        }
+
+        public void newGame(string name)
+        {
             cityName = name;
             Finances = new Finances(5000);
             citizens = new List<Citizen>();
             avaibleStores = new List<Store>();
             avaibleIndustrials = new List<Industrial>();
             avaibleHouses = new List<Residental>();
-            
+
 
             map = new Zone[mapHeight, mapWidth];
 
@@ -70,7 +74,7 @@ namespace SimVillage.Model
                     };
                     if (j == 0)
                     {
-                        BuildBuilding(new Road(new List<Tile> { new Tile(i, 0) }));
+                        BuildBuilding(new Road(new List<Tile> { new Tile(i, 0) }), true);
                     }
                 }
             }
@@ -80,13 +84,14 @@ namespace SimVillage.Model
             {
                 int x = random.Next(0, mapHeight);
                 int y = random.Next(0, mapWidth);
-                BuildBuilding(new Forest(new List<Tile> { new Tile(x, y) }));
+                BuildBuilding(new Forest(new List<Tile> { new Tile(x, y) }), true);
             }
+            OnGameChanged();
         }
 
         public int GetBudget()
         {
-            return Finances.getBudget();
+            return Finances != null ? Finances.getBudget() : 0;
         }
 
         public string Name { get { return cityName; } }
@@ -251,13 +256,14 @@ namespace SimVillage.Model
                     foreach (Citizen citizen in Citizens)
                     {
                         citizen.SetWorkPlace(null!);
-                        //PeopleMoveIn(citizen);
+                        citizen.SetSalary(0);
                     }
                 } else
                 {
                     foreach (Citizen citizen in Citizens)
                     {
                         citizen.SetWorkPlace(null!);
+                        citizen.SetSalary(0);
                     }
                 }
                 Finances.addExpenses("Demolished a " + zone.ToString() + " and you had conflict with people", building.GetCost() / 2, date);
@@ -397,7 +403,7 @@ namespace SimVillage.Model
             }
         }
 
-        public bool BuildBuilding(Building.Building building)
+        public bool BuildBuilding(Building.Building building, bool inConstructor = false)
         {
             if (building == null)
                 return false;
@@ -417,16 +423,19 @@ namespace SimVillage.Model
             }
             if (freeZone)
             {
-                Finances.addExpenses("Built a ", building.GetCost(), date);
+                if (!inConstructor)
+                    Finances.addExpenses("Built a ", building.GetCost(), date);
                 foreach (Tile tile in building.GetTiles())
                 {
                     map[tile.GetX(), tile.GetY()].BuildBuilding(building);
                 }
-                OnGameChanged();
+                if (!inConstructor)
+                    OnGameChanged();
                 return true;
             } else
             {
-                OnGameChanged();
+                if (!inConstructor)
+                    OnGameChanged();
                 return false;
             }
         }
@@ -723,9 +732,9 @@ namespace SimVillage.Model
             gameAdvanced?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnBuildFailed()
+        private void OnGameCreated()
         {
-            failedBuilding?.Invoke(this, EventArgs.Empty);
+            gameCreated?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnConflictDemolish()
