@@ -11,6 +11,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <DockPanel HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Top">
             <Button Content="Pause" Command="{Binding PauseGameCommand}" Width="50" Height="30"/>
@@ -34,7 +35,6 @@
             <Button Content="Button" Width="40" Height="30"/>
             <Button Content="Button" Width="40" Height="30"/>
             <Button Content="Button" Width="40" Height="30"/>
-            <Button Content="Button" Width="40" Height="30"/>
         </DockPanel>
         <ItemsControl Grid.Row="1" ItemsSource="{Binding Fields}">
             <ItemsControl.ItemsPanel>
@@ -44,7 +44,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Command="{Binding Clicked}" CommandParameter="{Binding Number}">
+                    <Button Command="{Binding Clicked}" CommandParameter="{Binding Number}" Cursor="Hand">
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Setter Property="Background" Value="LightGreen"/>
@@ -112,6 +112,14 @@
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
         <ItemsControl Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" ItemsSource="{Binding Options}">
+            <ItemsControl.Style>
+                <Style TargetType="ItemsControl">
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="Background" Value="#FF91B0AB"/>
+                    <Setter Property="Padding" Value="5, 5, 0, 5"/>
+                </Style>
+            </ItemsControl.Style>
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <DockPanel/>
@@ -119,7 +127,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="{Binding Text}" Width="100" Height="50" Margin="0, 0, 10, 0" Command="{Binding Clicked}" CommandParameter="{Binding Number}">
+                    <Button Content="{Binding Text}" Width="Auto" Height="Auto" Margin="0, 0, 5, 0" Padding="15,5,15,5" Command="{Binding Clicked}" CommandParameter="{Binding Number}">
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Style.Triggers>
@@ -136,7 +144,12 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-
+        <StatusBar Grid.Row="3">
+            <StatusBarItem>
+                <TextBlock Text="{Binding BuildInfo}"/>
+            </StatusBarItem>
+        </StatusBar>
 
     </Grid>
+
 </Window>

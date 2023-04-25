@@ -6,6 +6,10 @@
         private List<(string, int, DateTime)> incomes = null!;
 
         private int budget;
+        private int ResidentTax = 10;
+        private int StoreTax = 10;
+        private int IndustrialTax = 10;
+
 
         public Finances(int budget)
         {
@@ -18,6 +22,12 @@
         {
             expenses.Add((name, cost, date));
             budget -= cost;
+        }
+
+        public int getTax(ZoneType zone)
+        {
+            if(zone  == ZoneType.Industrial) return IndustrialTax;
+            else return StoreTax;
         }
 
         public void addIncome(string name, int cost, DateTime date)

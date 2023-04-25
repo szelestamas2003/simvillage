@@ -1,4 +1,5 @@
 ﻿using SimVillage.Model.Building;
+using SimVillage.Persistence;
 
 namespace SimVillage.Model
 {
@@ -97,6 +98,11 @@ namespace SimVillage.Model
         public void CanDemolish(bool boolean)
         {
             canDemolish = boolean;
+        }
+
+        public void GiveEducation(School school)
+        {
+            school.GiveEducation();
         }
 
         public void demolishZone(int x, int y)
@@ -267,7 +273,8 @@ namespace SimVillage.Model
             {
                 throw new InvalidOperationException("No data access is provided");
             }
-            await dataAccess.saveGame();
+            GameState g = new GameState();
+            await dataAccess.saveGame("path", g);
         }
 
         public async Task Load()
@@ -276,15 +283,32 @@ namespace SimVillage.Model
             {
                 throw new InvalidOperationException("No data access is provided");
             }
-            await dataAccess.loadGame();
+            await dataAccess.loadGame("path");
         }
 
         private void CollectingTaxes()
         {
+            double tax = 0;
             foreach (Zone zone in map)
             {
-
+                if(zone.ZoneType == ZoneType.Store)
+                {
+                    tax += Finances.getTax(ZoneType.Store)/100 * zone.getPeople().Count * 50;
+                }
+                else if(zone.ZoneType == ZoneType.Industrial)
+                {
+                    tax += Finances.getTax(ZoneType.Industrial)/100 * zone.getPeople().Count * 50;
+                }
+                else if(zone.ZoneType == ZoneType.Residental)
+                {
+                    foreach(Citizen citizen in zone.getPeople())
+                    {
+                        tax += citizen.GetSalary() * Finances.getTax(ZoneType.Residental)/100;
+                    }
+                }
             }
+            tax = Math.Round(tax);
+            Finances.addIncome("Tax", Convert.ToInt32(tax), date);
         }
 
         static public int calcDistance(Building.Building from, Building.Building to)
@@ -411,7 +435,7 @@ namespace SimVillage.Model
         {
             DateTime previous_date = date;
             date = date.AddDays(1);
-            if (date.Year > previous_date.Year)
+            if (date.Day > previous_date.Day)
             {
                 CollectingTaxes();
             }
@@ -437,6 +461,7 @@ namespace SimVillage.Model
                     }
                 } else
                 {
+                    List<Residental> delete = new List<Residental>();
                     foreach (Residental houses in avaibleHouses)
                     {
                         if (houses.FreeSpace())
@@ -445,9 +470,10 @@ namespace SimVillage.Model
                             break;
                         } else
                         {
-                            avaibleHouses.Remove(houses);
+                            delete.Add(houses);
                         }
                     }
+                    avaibleHouses.RemoveAll(h => delete.Contains(h));
                 }
                 int inStores = 0;
                 int inIndustrial = 0;
@@ -501,6 +527,7 @@ namespace SimVillage.Model
                         }
                         building.NewWorker();
                         citizen.SetWorkPlace(building);
+                        citizen.SetSalary(500);
                     }
                 } else if (house != null)
                 {
@@ -558,6 +585,7 @@ namespace SimVillage.Model
                     }
                 } else
                 {
+                    List<Residental> delete = new List<Residental>();
                     foreach (Residental houses in avaibleHouses)
                     {
                         if (houses.FreeSpace())
@@ -567,9 +595,10 @@ namespace SimVillage.Model
                         }
                         else
                         {
-                            avaibleHouses.Remove(houses);
+                            delete.Add(houses);
                         }
                     }
+                    avaibleHouses.RemoveAll(h => delete.Contains(h));
                 }
                 int inStores = 0;
                 int inIndustrial = 0;

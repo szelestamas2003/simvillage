@@ -14,6 +14,7 @@ namespace SimVillage.Model.Building
         protected int Density;
         protected int cost;
         protected int PowerConsumption;
+        protected bool IsPowered;
 
 
         public Building(List<Tile> tiles, (int, int) size, bool occupied, int density, int powerConsumption)
@@ -60,6 +61,10 @@ namespace SimVillage.Model.Building
         public int GetCost()
         {
             return cost;
+        }
+        public String ToString()
+        {
+            return null;
         }
 
         

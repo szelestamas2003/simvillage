@@ -113,6 +113,10 @@ namespace SimVillage.Model
             Citizen citizen = new Citizen(18, home);
             return citizen;
         }
+        public EducationLevel GetEducation()
+        {
+            return EducationLevel;
+        }
         public bool ChanceToPassAway()
         {
             Random r = new Random();
@@ -130,6 +134,13 @@ namespace SimVillage.Model
                 return false;
             }
 
+        }
+        public void SetSalary(int salary)
+        {
+            this.Salary = salary;
+        }
+        public int GetSalary() {
+            return Salary;
         }
     }
 }
