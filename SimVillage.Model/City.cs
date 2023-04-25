@@ -26,8 +26,6 @@ namespace SimVillage.Model
 
         public int Height() { return mapHeight;}
 
-        public Tile[,] tiles = null!;
-
         private List<Citizen> citizens = null!;
 
         private List<Industrial> avaibleIndustrials = null!;
@@ -55,14 +53,6 @@ namespace SimVillage.Model
             avaibleStores = new List<Store>();
             avaibleIndustrials = new List<Industrial>();
             avaibleHouses = new List<Residental>();
-            tiles = new Tile[mapWidth, mapHeight];
-            for(int i = 0; i < mapWidth; i++)
-            {
-                for(int j = 0; j < mapHeight; j++)
-                {
-                    tiles[i, j] = new Tile(i, j);
-                }
-            }
             
 
             map = new Zone[mapHeight, mapWidth];
@@ -77,7 +67,19 @@ namespace SimVillage.Model
                         Y = j,
                         Occupied = false
                     };
+                    if (j == 0)
+                    {
+                        BuildBuilding(new Road(new List<Tile> { new Tile(i, 0) }));
+                    }
                 }
+            }
+            Random random = new Random();
+
+            for (int i = 0; i < 15; i++)
+            {
+                int x = random.Next(0, mapHeight);
+                int y = random.Next(0, mapWidth);
+                BuildBuilding(new Forest(new List<Tile> { new Tile(x, y) }));
             }
         }
 
