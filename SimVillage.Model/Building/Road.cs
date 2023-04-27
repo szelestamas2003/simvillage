@@ -14,6 +14,7 @@ namespace SimVillage.Model.Building
             Size = (1, 1);
             SetPowerConsumption(4);
             cost = 40;
+            IsAccessible = true;
         }
     }
 }

@@ -15,7 +15,12 @@ namespace SimVillage.Model.Building
             Size = (1, 1);
             SetPowerConsumption(3);
             cost = 80;
+            IsAccessible = true;
+        }
 
+        public void SetAge(int age)
+        {
+            Age = age;
         }
 
         public void AgeUp()

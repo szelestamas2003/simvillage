@@ -14,7 +14,7 @@ namespace SimVillage.Model
         Building.Building WorkPlace;
 
 
-        public Citizen(int Age, Residental Home)
+        private Citizen(int Age, Residental Home)
         {
             this.Age = Age;
             this.Home = Home;
@@ -101,16 +101,16 @@ namespace SimVillage.Model
         {
             WorkPlace = work;
         }
-        static public Citizen ReGen(Building.Residental home)
+        static public Citizen ReGen(Residental home)
         {
             Random r = new Random();
             int age = r.Next(18,60);
             Citizen citizen = new Citizen(age, home);
             return citizen;
         }
-        static public Citizen ReGen18(Building.Residental home)
+        static public Citizen ReGen18()
         {
-            Citizen citizen = new Citizen(18, home);
+            Citizen citizen = new Citizen(18, null!);
             return citizen;
         }
         public EducationLevel GetEducation()
@@ -137,7 +137,7 @@ namespace SimVillage.Model
         }
         public void SetSalary(int salary)
         {
-            this.Salary = salary;
+            Salary = salary;
         }
         public int GetSalary() {
             return Salary;

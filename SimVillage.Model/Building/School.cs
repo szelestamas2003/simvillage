@@ -45,10 +45,14 @@ namespace SimVillage.Model.Building
                 if(Type == SchoolTypes.Elementary)
                 {
                     student.SetEducation(EducationLevel.Middle);
+                    if (student.GetWorkPlace() != null)
+                        student.SetSalary(1000);
                 }
                 else if(Type == SchoolTypes.University)
                 {
                     student.SetEducation(EducationLevel.Higher);
+                    if (student.GetWorkPlace() != null)
+                        student.SetSalary(1500);
                 }
             }
         }

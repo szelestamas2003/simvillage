@@ -69,6 +69,7 @@ namespace SimVillage.ViewModel
             this.model = model;
             model.gameAdvanced += new EventHandler(Model_GameAdvanced);
             model.gameChanged += new EventHandler(Model_GameChanged);
+            model.gameCreated += new EventHandler(Model_GameCreated);
             Date = model.Date.ToString("yyyy") + " " + model.Date.ToString("M");
             Money = model.GetBudget();
 
@@ -301,6 +302,12 @@ namespace SimVillage.ViewModel
             OnPropertyChanged(nameof(IsMoneyNegative));
             OnPropertyChanged(nameof(Money));
             OnPropertyChanged(nameof(Fields));
+        }
+
+        private void Model_GameCreated(object? sender, EventArgs e)
+        {
+            OnPropertyChanged(nameof(Name));
+            Model_GameChanged(sender, e);
         }
 
         private void Model_GameAdvanced(object? sender, EventArgs e)

@@ -54,7 +54,7 @@ namespace SimVillage
 
         private void Model_ConflictDemolish(object? sender, EventArgs e)
         {
-            MessageBoxResult dialogResult = MessageBox.Show("Some people will have to move out. Do you still want to proceed?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult dialogResult = MessageBox.Show("Some people may have to move out. Do you still want to proceed?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question);
             city.CanDemolish(dialogResult == MessageBoxResult.Yes);
         }
 
