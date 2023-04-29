@@ -234,6 +234,39 @@ namespace SimVillage.Model
             await dataAccess.loadGame("path");
         }
 
+        public void UpgradeZone(int x, int y)
+        {
+            if (map[x, y].ZoneType != ZoneType.General && map[x, y].getBuilding() != null && map[x, y].getBuilding().GetDensity() < 3)
+            {
+                switch (map[x, y].getBuilding())
+                {
+                    case Residental r:
+                        r.SetDensity(r.GetDensity() + 1);
+                        r.SetMaxInhabitants(r.GetMaxInhabitants() * 2 + 2);
+                        if (!avaibleHouses.Contains(r))
+                            avaibleHouses.Add(r);
+                        break;
+                    case Industrial i:
+                        i.SetDensity(i.GetDensity() + 1);
+                        i.SetMaxWorkers(i.GetMaxWorkers() * 2 + 2);
+                        if (!avaibleIndustrials.Contains(i))
+                            avaibleIndustrials.Add(i);
+                        break;
+                    case Store s:
+                        s.SetDensity(s.GetDensity() + 1);
+                        s.SetMaxWorkers(s.GetMaxWorkers() * 2 + 2);
+                        if (!avaibleStores.Contains(s))
+                            avaibleStores.Add(s);
+                        break;
+                }
+                if (map[x, y].getBuilding().GetDensity() == 2)
+                    Finances.addExpenses("Upgraded " + map[x, y].ToString() + " to level 2", map[x, y].getCost(), date);
+                else
+                    Finances.addExpenses("Upgraded " + map[x, y].ToString() + " to level 3", map[x, y].getCost(), date);
+                OnGameChanged();
+            }
+        }
+
         private void CollectingTaxes()
         {
             double tax = 0;
@@ -473,6 +506,10 @@ namespace SimVillage.Model
                         {
                             map[tile.GetX(), tile.GetY()].addCitizensHome(citizen);
                         }
+                        foreach (Tile tile in building.GetTiles())
+                        {
+                            map[tile.GetX(), tile.GetY()].AddCitizensWorkPlace(citizen);
+                        }
                         building.NewWorker();
                         citizen.SetWorkPlace(building);
                         citizen.SetSalary(500);
@@ -511,6 +548,10 @@ namespace SimVillage.Model
                         foreach (Tile tile in house.GetTiles())
                         {
                             map[tile.GetX(), tile.GetY()].addCitizensHome(citizen);
+                        }
+                        foreach (Tile tile in building.GetTiles())
+                        {
+                            map[tile.GetX(), tile.GetY()].AddCitizensWorkPlace(citizen);
                         }
                         building.NewWorker();
                         citizen.SetWorkPlace(building);
@@ -610,6 +651,10 @@ namespace SimVillage.Model
                         {
                             map[tile.GetX(), tile.GetY()].addCitizensHome(citizen);
                         }
+                        foreach (Tile tile in building.GetTiles())
+                        {
+                            map[tile.GetX(), tile.GetY()].AddCitizensWorkPlace(citizen);
+                        }
                     }
                 }
                 else if (house != null)
@@ -659,6 +704,10 @@ namespace SimVillage.Model
                         foreach (Tile tile in house.GetTiles())
                         {
                             map[tile.GetX(), tile.GetY()].addCitizensHome(citizen);
+                        }
+                        foreach (Tile tile in building.GetTiles())
+                        {
+                            map[tile.GetX(), tile.GetY()].AddCitizensWorkPlace(citizen);
                         }
                     }
                 }

@@ -22,12 +22,6 @@ namespace SimVillage.ViewModel
 
         public string Date { get; private set; }
 
-        public string ZoneName { get; private set; }
-
-        public string ZoneCitizenCount { get; private set; }
-
-        public string ZoneCitizenHappiness { get; private set; }
-
         public int CitizenCount { get; private set; }
 
         public bool IsMoneyNegative { get; private set; }
@@ -37,6 +31,8 @@ namespace SimVillage.ViewModel
         public string BuildInfo { get; private set; }
 
         private Option building = null!;
+
+        private Field field = null!;
 
         public event EventHandler? NewGame;
 
@@ -134,11 +130,21 @@ namespace SimVillage.ViewModel
                         Y = j,
                         Text = string.Empty,
                         Number = i * Width + j,
-                        Clicked = new DelegateCommand(param => OnFieldClicked(Convert.ToInt32(param)))
+                        Name = model.Map[i, j].ToString(),
+                        CitizenCount = "Citizens: " + model.Map[i, j].getPeople().Count,
+                        Happiness = "Happiness: " + model.Map[i, j].getHappiness(),
+                        Clicked = new DelegateCommand(param => OnFieldClicked(Convert.ToInt32(param))),
+                        UpgradeCommand = new DelegateCommand(param => UpgradeZone(Convert.ToInt32(param)))
                     });
                 }
             }
             OnPropertyChanged(nameof(Fields));
+        }
+
+        private void UpgradeZone(int v)
+        {
+            Field field = Fields[v];
+            model.UpgradeZone(field.X, field.Y);
         }
 
         private void OnFieldClicked(int number)
@@ -193,12 +199,22 @@ namespace SimVillage.ViewModel
                 }
             } else
             {
-                ZoneName = model.Map[field.X, field.Y].ToString();
-                ZoneCitizenCount = "Citizens: " + model.Map[field.X, field.Y].getPeople();
-                ZoneCitizenHappiness = "Happiness: " + model.Map[field.X, field.Y].getHappiness();
-                OnPropertyChanged(nameof(ZoneName));
-                OnPropertyChanged(nameof(ZoneCitizenCount));
-                OnPropertyChanged(nameof(ZoneCitizenHappiness));
+                if (this.field == null)
+                {
+                    this.field = field;
+                    field.IsClicked = true;
+                }
+                else if (this.field == field)
+                {
+                    this.field = null!;
+                    field.IsClicked = false;
+                }
+                else
+                {
+                    this.field.IsClicked = false;
+                    this.field = field;
+                    field.IsClicked = true;
+                }
             }
         }
 
@@ -296,6 +312,9 @@ namespace SimVillage.ViewModel
                         _ => string.Empty
                     };
                 }
+                Fields[zone.X * Width + zone.Y].Name = zone.ToString();
+                Fields[zone.X * Width + zone.Y].CitizenCount = "Citizens: " + zone.getPeople().Count;
+                Fields[zone.X * Width + zone.Y].Happiness = "Happiness: " + zone.getHappiness();
             }
             OnPropertyChanged(nameof(CitizenCount));
             OnPropertyChanged(nameof(IsMoneyNegative));
