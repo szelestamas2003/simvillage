@@ -9,12 +9,13 @@ namespace SimVillage.Model.Building
     public class FireDepartment : Building
     {
         bool UnitAvailable;
-        public FireDepartment(List<Tile> tile)
+        public FireDepartment(int x, int y)
         {
-            SetTiles(tile);
-            SetPowerConsumption(45);
+            PowerConsumption = 45;
             Size = (1, 1);
             cost = 500;
+            X = x;
+            Y = y;
         }
         public bool IsAvailable() { return  UnitAvailable; }
         public void SendUnit()

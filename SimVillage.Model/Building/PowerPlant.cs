@@ -9,12 +9,13 @@ namespace SimVillage.Model.Building
     public class PowerPlant : Building
     {
         int GeneratedPower = 1000;
-        public PowerPlant(List<Tile> tile)
+        public PowerPlant(int x, int y)
         {
-            SetTiles(tile);
-            SetPowerConsumption(0);
+            PowerConsumption = 0;
             Size = (2, 2);
             cost = 1000;
+            X = x;
+            Y = y;
         }
         public int GetGeneratedPower() {  return GeneratedPower; }
         public void SetGeneratedPower(int value) {  GeneratedPower = value; }

@@ -10,13 +10,14 @@ namespace SimVillage.Model.Building
     {
         int MaxWorkers;
         int Workers;
-        public Store(List<Tile> tile)
+        public Store(int x, int y)
         {
-            SetTiles(tile);
-            SetPowerConsumption(30);
-            SetDensity(1);
+            PowerConsumption = 30;
+            Density = 1;
             MaxWorkers = 10;
             Size = (1, 1);
+            X = x;
+            Y = y;
         }
         public int GetMaxWorkers() { return MaxWorkers; }
         public int GetWorkers() { return Workers; }

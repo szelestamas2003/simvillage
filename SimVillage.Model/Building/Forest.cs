@@ -9,13 +9,14 @@ namespace SimVillage.Model.Building
     public class Forest : Building
     {
         int Age;
-        public Forest(List<Tile> tile) {
-            SetTiles(tile);
+        public Forest(int x, int y) {
             Age = 0;
             Size = (1, 1);
-            SetPowerConsumption(3);
+            PowerConsumption = 3;
             cost = 80;
             IsAccessible = true;
+            X = x;
+            Y = y;
         }
 
         public void SetAge(int age)

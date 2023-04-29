@@ -8,12 +8,13 @@ namespace SimVillage.Model.Building
 {
     public class Stadium : Building
     {
-        public Stadium(List<Tile> tile)
+        public Stadium(int x, int y)
         {
-            SetTiles(tile);
             PowerConsumption = 60;
             Size = (2, 2);
             cost = 600;
+            X = x;
+            Y = y;
         }
     }
 }

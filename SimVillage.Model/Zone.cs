@@ -27,22 +27,12 @@ namespace SimVillage.Model
             return citizens;
         }
 
-        public void addCitizensHome(Citizen person)
+        public void addCitizenToZone(Citizen person)
         {
             citizens.Add(person);
         }
 
-        public void RemoveCitizenFromWorkPlace(Citizen person)
-        {
-            citizens.Remove(person);
-        }
-
-        public void AddCitizensWorkPlace(Citizen person)
-        {
-            citizens.Add(person);
-        }
-
-        public void MoveOutFromHome(Citizen person)
+        public void RemoveCitizenFromZone(Citizen person)
         {
             citizens.Remove(person);
         }
@@ -61,13 +51,13 @@ namespace SimVillage.Model
                 switch (ZoneType)
                 {
                     case ZoneType.Residental:
-                        this.building = new Residental(new List<Tile> { new Tile(X, Y)});
+                        this.building = new Residental(X, Y);
                         break;
                     case ZoneType.Industrial:
-                        this.building = new Industrial(new List<Tile> { new Tile(X, Y) });
+                        this.building = new Industrial(X, Y);
                         break;
                     case ZoneType.Store:
-                        this.building = new Store(new List<Tile> { new Tile(X, Y) });
+                        this.building = new Store(X, Y);
                         break;
                     default:
                         throw new ArgumentNullException();

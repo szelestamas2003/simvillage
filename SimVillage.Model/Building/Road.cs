@@ -8,13 +8,14 @@ namespace SimVillage.Model.Building
 {
     public class Road : Building
     {
-        public Road(List<Tile> tile)
+        public Road(int x, int y)
         {
-            SetTiles(tile);
             Size = (1, 1);
-            SetPowerConsumption(4);
+            PowerConsumption = 4;
             cost = 40;
             IsAccessible = true;
+            X = x;
+            Y = y;
         }
     }
 }

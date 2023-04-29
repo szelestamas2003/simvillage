@@ -162,31 +162,31 @@ namespace SimVillage.ViewModel
                             field.Text = "Store";
                         break;
                     case "Forest":
-                        model.BuildBuilding(new Forest(new List<Tile> { new Tile(field.X, field.Y) }));
+                        model.BuildBuilding(new Forest(field.X, field.Y));
                         break;
                     case "Road":
-                        model.BuildBuilding(new Road(new List<Tile> { new Tile(field.X, field.Y) }));
+                        model.BuildBuilding(new Road(field.X, field.Y));
                         break;
                     case "Police":
-                        model.BuildBuilding(new PoliceDepartment(new List<Tile> { new Tile(field.X, field.Y) }));
+                        model.BuildBuilding(new PoliceDepartment(field.X, field.Y));
                         break;
                     case "Fire Department":
-                        model.BuildBuilding(new FireDepartment(new List<Tile> { new Tile(field.X, field.Y) }));
+                        model.BuildBuilding(new FireDepartment(field.X, field.Y));
                         break;
                     case "Power Line":
-                        model.BuildBuilding(new PowerLine(new List<Tile> { new Tile(field.X, field.Y) }));
+                        model.BuildBuilding(new PowerLine(field.X, field.Y));
                         break;
                     case "Power Plant":
-                        model.BuildBuilding(new PowerPlant(new List<Tile> { new Tile(field.X, field.Y), new Tile(field.X, field.Y + 1), new Tile(field.X + 1, field.Y), new Tile(field.X + 1, field.Y + 1) }));
+                        model.BuildBuilding(new PowerPlant(field.X, field.Y));
                         break;
                     case "School":
-                        model.BuildBuilding(new School(new List<Tile> { new Tile(field.X, field.Y), new Tile(field.X, field.Y + 1) }, SchoolTypes.Elementary));
+                        model.BuildBuilding(new School(field.X, field.Y, SchoolTypes.Elementary));
                         break;
                     case "University":
-                        model.BuildBuilding(new School(new List<Tile> { new Tile(field.X, field.Y), new Tile(field.X + 1, field.Y), new Tile(field.X, field.Y + 1), new Tile(field.X + 1, field.Y + 1) }, SchoolTypes.University));
+                        model.BuildBuilding(new School(field.X, field.Y, SchoolTypes.University));
                         break;
                     case "Stadium":
-                        model.BuildBuilding(new Stadium(new List<Tile> { new Tile(field.X, field.Y), new Tile(field.X, field.Y + 1), new Tile(field.X + 1, field.Y), new Tile(field.X + 1, field.Y + 1) }));
+                        model.BuildBuilding(new Stadium(field.X, field.Y));
                         break;
                     case "Demolish":
                         model.demolishZone(field.X,field.Y);

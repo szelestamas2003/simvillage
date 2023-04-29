@@ -8,12 +8,13 @@ namespace SimVillage.Model.Building
 {
     public class PoliceDepartment : Building
     {
-        public PoliceDepartment (List<Tile> tile)
+        public PoliceDepartment(int x, int y)
         {
-            SetTiles(tile);
-            SetPowerConsumption(45);
+            PowerConsumption = 45;
             Size = (1, 1);
             cost = 60;
+            X = x;
+            Y = y;
         }
     }
 }

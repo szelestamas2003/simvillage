@@ -12,13 +12,18 @@ namespace SimVillage.Model.Building
         SchoolTypes Type;
         List<Citizen> Students;
 
-        public School(List<Tile> tile, SchoolTypes type)
+        public School(int x, int y, SchoolTypes type)
         {
             MaxStudents = 300;
-            SetTiles(tile);
-            SetPowerConsumption(50);
+            PowerConsumption = 50;
+            if (type == SchoolTypes.Elementary)
+                Size = (1, 2);
+            else
+                Size = (2, 2);
             Type = type;
             cost = 600;
+            X = x;
+            Y = y;
             Students = new List<Citizen>();
         }
 

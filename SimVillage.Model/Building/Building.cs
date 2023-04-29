@@ -8,7 +8,6 @@ namespace SimVillage.Model.Building
 {
     public abstract class Building
     {
-        protected List<Tile> Tiles;
         protected (int, int) Size;
         protected bool Occupied;
         protected int Density;
@@ -16,25 +15,29 @@ namespace SimVillage.Model.Building
         protected int PowerConsumption;
         protected bool IsPowered;
         protected bool IsAccessible;
+        protected int X;
+        protected int Y;
 
 
-        public Building(List<Tile> tiles, (int, int) size, bool occupied, int density, int powerConsumption)
+        public Building((int, int) size, bool occupied, int density, int powerConsumption, int x, int y)
         {
-            Tiles = tiles;
             Size = size;
             Occupied = occupied;
             Density = density;
             PowerConsumption = powerConsumption;
             IsAccessible = false;
+            X = x;
+            Y = y;
         }
         public Building() { }
 
-        public List<Tile> GetTiles() { return Tiles; }
         public (int,int) GetSize() { return Size; }
         public int GetPowerConsumption() {  return PowerConsumption; }
         public int GetDensity() { return Density;}
         public bool GetOccupied() {  return Occupied;}
         public bool GetAccessibility() { return IsAccessible;}
+        public int GetX() { return X;}
+        public int GetY() { return Y;}
 
 
         public void SetSize(int size1,int size2) { Size = (size1, size2); }
@@ -42,25 +45,14 @@ namespace SimVillage.Model.Building
         public void SetOccupied(bool occupied) {  Occupied = occupied;}
         public void SetPowerConsumption(int powerconsumption) { PowerConsumption = powerconsumption; }
         public void SetAccessibility(bool accessibility) { IsAccessible = accessibility;}
-        public void SetTiles(List<Tile> tiles) 
-        { 
-            Tiles = tiles;
-            foreach(Tile t in Tiles)
-            {
-                t.SetBulding(this);
-            }
-        }
+        public void SetX(int x) {  X = x;}
+        public void SetY(int y) {  Y = y;}
         public void Demolish()
         {
             Density = 0;
             Occupied = false;
             PowerConsumption = 0;
             Size = (0, 0);
-            foreach(Tile tile in Tiles)
-            {
-                tile.SetBulding(null);
-            }
-            Tiles = null;
         }
         public int GetCost()
         {
