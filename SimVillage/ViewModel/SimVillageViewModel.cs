@@ -131,9 +131,9 @@ namespace SimVillage.ViewModel
                         Y = j,
                         Text = string.Empty,
                         Number = i * Width + j,
-                        Name = model.Map[i, j].ToString(),
-                        CitizenCount = "Citizens: " + model.Map[i, j].getPeople().Count,
-                        Happiness = "Happiness: " + model.Map[i, j].getHappiness(),
+                        Name = string.Empty,
+                        CitizenCount = string.Empty,
+                        Happiness = string.Empty,
                         Clicked = new DelegateCommand(param => OnFieldClicked(Convert.ToInt32(param))),
                         UpgradeCommand = new DelegateCommand(param => UpgradeZone(Convert.ToInt32(param)))
                     });

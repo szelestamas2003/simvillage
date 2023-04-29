@@ -327,20 +327,20 @@ namespace SimVillage.Model
                     case Residental r:
                         r.SetDensity(r.GetDensity() + 1);
                         r.SetMaxInhabitants(r.GetMaxInhabitants() * 2 + 2);
-                        if (!avaibleHouses.Contains(r))
-                            avaibleHouses.Add(r);
+                        if (!availableHouses.Contains(r))
+                            availableHouses.Add(r);
                         break;
                     case Industrial i:
                         i.SetDensity(i.GetDensity() + 1);
                         i.SetMaxWorkers(i.GetMaxWorkers() * 2 + 2);
-                        if (!avaibleIndustrials.Contains(i))
-                            avaibleIndustrials.Add(i);
+                        if (!availableIndustrials.Contains(i))
+                            availableIndustrials.Add(i);
                         break;
                     case Store s:
                         s.SetDensity(s.GetDensity() + 1);
                         s.SetMaxWorkers(s.GetMaxWorkers() * 2 + 2);
-                        if (!avaibleStores.Contains(s))
-                            avaibleStores.Add(s);
+                        if (!availableStores.Contains(s))
+                            availableStores.Add(s);
                         break;
                 }
                 if (map[x, y].getBuilding().GetDensity() == 2)
@@ -807,6 +807,7 @@ namespace SimVillage.Model
                             citizen.SetHome(house);
                         house.MoveIn();
                         map[house.GetX(), house.GetY()].addCitizenToZone(citizen);
+                        map[building.GetX(), building.GetY()].addCitizenToZone(citizen);
                         building.NewWorker();
                         citizen.SetWorkPlace(building);
                         citizen.SetSalary(500);
@@ -845,6 +846,7 @@ namespace SimVillage.Model
                             citizen.SetHome(house);
                         house.MoveIn();
                         map[house.GetX(), house.GetY()].addCitizenToZone(citizen);
+                        map[building.GetX(), building.GetY()].addCitizenToZone(citizen);
                         building.NewWorker();
                         citizen.SetWorkPlace(building);
                         citizen.SetSalary(500);
@@ -956,6 +958,7 @@ namespace SimVillage.Model
                         citizen.SetSalary(500);
                         citizens.Add(citizen);
                         map[house.GetX(), house.GetY()].addCitizenToZone(citizen);
+                        map[building.GetX(), building.GetY()].addCitizenToZone(citizen);
                     }
                 }
                 else if (house != null)
@@ -1003,6 +1006,7 @@ namespace SimVillage.Model
                         citizen.SetSalary(500);
                         citizens.Add(citizen);
                         map[house.GetX(), house.GetY()].addCitizenToZone(citizen);
+                        map[building.GetX(), building.GetY()].addCitizenToZone(citizen);
                     }
                 }
             }
