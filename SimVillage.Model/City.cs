@@ -584,6 +584,15 @@ namespace SimVillage.Model
             if (date.Month > previous_date.Month)
             {
                 CollectingTaxes();
+                double upkeep = 0;
+                foreach (Zone zone in map)
+                {
+                    if (zone.ZoneType == ZoneType.General && zone.getBuilding() != null)
+                    {
+                        upkeep += zone.getBuilding().GetCost() * 0.01;
+                    }
+                }
+                Finances.addExpenses("Monthly running expenses", Convert.ToInt32(upkeep), date);
             } else if (date.Year > previous_date.Year)
             {
                 foreach (School school in avaibleSchools)
