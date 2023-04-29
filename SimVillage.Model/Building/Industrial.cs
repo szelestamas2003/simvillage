@@ -21,7 +21,7 @@ namespace SimVillage.Model.Building
         public int GetMaxWorkers() { return MaxWorkers; }
         public int GetWorkers() {  return Workers; }
         
-        public void SetMaxWrokers(int MaxWorkers) { this.MaxWorkers =MaxWorkers; }
+        public void SetMaxWorkers(int MaxWorkers) { this.MaxWorkers =MaxWorkers; }
         public void NewWorker()
         {
             Workers++;

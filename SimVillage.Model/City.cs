@@ -81,7 +81,7 @@ namespace SimVillage.Model
                         Y = j,
                         Occupied = false
                     };
-                    if (j == 0)
+                    if (j == 0 && i == 29)
                     {
                         BuildBuilding(new Road(new List<Tile> { new Tile(i, 0) }), true);
                     }
@@ -118,7 +118,7 @@ namespace SimVillage.Model
 
         public void demolishZone(int x, int y)
         {
-            if (y == 0)
+            if (y == 0 && x == 29)
                 return;
             Building.Building building = map[x, y].getBuilding();
             Zone zone = map[x, y];
@@ -162,7 +162,7 @@ namespace SimVillage.Model
                 if (!conflict || (conflict && canDemolish))
                 {
                     bool added_money = false;
-                    if (!conflict && building.GetType() == typeof(Road))
+                    if (building.GetType() == typeof(Road))
                     {
                         zone.DowngradeZone();
                         foreach (Zone zones in map)
