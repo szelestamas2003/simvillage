@@ -24,6 +24,8 @@ namespace SimVillage.ViewModel
 
         public int CitizenCount { get; private set; }
 
+        public int Happiness { get { return model.getHappiness(); } }
+
         public bool IsMoneyNegative { get; private set; }
 
         public int Money { get; private set; }
@@ -320,6 +322,7 @@ namespace SimVillage.ViewModel
             OnPropertyChanged(nameof(IsMoneyNegative));
             OnPropertyChanged(nameof(Money));
             OnPropertyChanged(nameof(Fields));
+            OnPropertyChanged(nameof(Happiness));
         }
 
         private void Model_GameAdvanced(object? sender, EventArgs e)

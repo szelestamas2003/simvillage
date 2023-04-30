@@ -358,7 +358,7 @@ namespace SimVillage.Model
             {
                 happiness += i.calcHappiness();
             }
-            return happiness;
+            return citizens.Count != 0 ? happiness / citizens.Count : 0;
         }
 
         public bool newZone(int x, int y, ZoneType zoneType)
