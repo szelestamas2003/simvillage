@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SimVillage.Model.Building
 {
-    public class Tile
+    internal class Tile
     {
         private int X;
         private int Y;

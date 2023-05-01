@@ -12,8 +12,9 @@
             SetTiles(tile);
             SetPowerConsumption(50);
             Type = type;
-            cost = 600;
-            Students = new List<Citizen>();
+            Size = type == SchoolTypes.University ? (2, 2) : (1, 2);
+            Cost = type == SchoolTypes.University ? 50 : 25;
+            
         }
 
         public int GetMaxStudent()

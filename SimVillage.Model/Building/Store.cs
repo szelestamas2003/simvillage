@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace SimVillage.Model.Building
 {
-    public class Store : Building
+    internal class Store : Building
     {
         int MaxWorkers;
         int Workers;
-        public Store()
+        public Store(List<Tile> tile)
         {
-            PowerConsumption = 30;
-            Density = 1;
+            SetTiles(tile);
+            SetPowerConsumption(30);
+            SetDensity(1);
             MaxWorkers = 10;
             Size = (1, 1);
         }

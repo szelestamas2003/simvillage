@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SimVillage.Model.Building
 {
-    public enum SchoolTypes
+    internal enum SchoolTypes
     {
         Elementary, University
     }
