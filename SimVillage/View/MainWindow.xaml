@@ -61,8 +61,17 @@
                                 <StackPanel Orientation="Vertical">
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                 </StackPanel>
-                                <TextBlock Text="{Binding CitizenCount}" Padding="5, 5, 5, 0" FontSize="10"/>
-                                <TextBlock Text="{Binding Happiness}" Padding="5, 0, 0, 5" FontSize="10"/>
+                                <TextBlock Text="{Binding Info}" Padding="5, 5, 5, 5" FontSize="10">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Info}" Value="">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                                 <TextBlock Text="Do you want to upgrade this zone?" Padding="5, 0, 0, 0" FontSize="10">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">

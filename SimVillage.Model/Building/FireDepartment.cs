@@ -26,9 +26,11 @@ namespace SimVillage.Model.Building
         {
             UnitAvailable = true;
         }
-        public String ToString()
+
+        public int GetRadius() { return Radius; }
+        public override String ToString()
         {
-            return "Power consmuption: " + PowerConsumption + "Unit available: " + UnitAvailable + " Maintenance cost: "+ cost/100 + " Radius: "+ Radius;
+            return "Power consumption: " + PowerConsumption + "\nUnit available: " + UnitAvailable + "\nMaintenance cost: "+ cost/100 + "\nRadius: "+ Radius;
         }
     }
 }

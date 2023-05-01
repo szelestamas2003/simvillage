@@ -17,9 +17,11 @@ namespace SimVillage.Model.Building
             cost = 600;
         }
 
-        public String ToString()
+        public int GetRadius() { return Radius; }
+
+        public override String ToString()
         {
-            return "Power consmuption: " + PowerConsumption + " Maintenance cost: " + cost/100 + " Radius: "+ Radius;
+            return "Power consumption: " + PowerConsumption + "\nMaintenance cost: " + cost/100 + "\nRadius: "+ Radius;
 
         }
     }

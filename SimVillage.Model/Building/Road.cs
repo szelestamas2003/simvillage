@@ -16,9 +16,9 @@ namespace SimVillage.Model.Building
             cost = 40;
         }
 
-        public String ToString()
+        public override String ToString()
         {
-            return "Power consumption: " + PowerConsumption + " Maintenance cost " + cost / 100;
+            return "Power consumption: " + PowerConsumption + "\nMaintenance cost " + cost / 100;
         }
     }
 }

@@ -53,9 +53,9 @@ namespace SimVillage.Model.Building
             }
         }
 
-        public String ToString()
+        public override String ToString()
         {
-            return "School type: " + Type + " Current students " + Students.Count + " Maximum students: " + MaxStudents + " Power consumption: " + PowerConsumption + " Maintenance cost: " + cost / 100;
+            return "School type: " + Type + "\nCurrent students " + Students.Count + "\nMaximum students: " + MaxStudents + "\nPower consumption: " + PowerConsumption + "\nMaintenance cost: " + cost / 100;
         }
 
 

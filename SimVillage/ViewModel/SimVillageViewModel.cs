@@ -133,8 +133,7 @@ namespace SimVillage.ViewModel
                         Text = string.Empty,
                         Number = i * Width + j,
                         Name = model.Map[i, j].ToString(),
-                        CitizenCount = "Citizens: " + model.Map[i, j].getPeople().Count,
-                        Happiness = "Happiness: " + model.Map[i, j].getHappiness(),
+                        Info = string.Empty,
                         Clicked = new DelegateCommand(param => OnFieldClicked(Convert.ToInt32(param))),
                         UpgradeCommand = new DelegateCommand(param => UpgradeZone(Convert.ToInt32(param)))
                     });
@@ -315,8 +314,7 @@ namespace SimVillage.ViewModel
                     };
                 }
                 Fields[zone.X * Width + zone.Y].Name = zone.ToString();
-                Fields[zone.X * Width + zone.Y].CitizenCount = "Citizens: " + zone.getPeople().Count;
-                Fields[zone.X * Width + zone.Y].Happiness = "Happiness: " + zone.getHappiness();
+                Fields[zone.X * Width + zone.Y].Info = zone.getBuilding() != null ? zone.getBuilding().ToString() : "";
             }
             OnPropertyChanged(nameof(CitizenCount));
             OnPropertyChanged(nameof(IsMoneyNegative));

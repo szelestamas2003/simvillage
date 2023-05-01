@@ -62,10 +62,6 @@ namespace SimVillage.Model.Building
         {
             return cost;
         }
-        public String ToString()
-        {
-            return null;
-        }
 
         
     }

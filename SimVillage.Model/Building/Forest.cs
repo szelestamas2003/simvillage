@@ -9,7 +9,7 @@ namespace SimVillage.Model.Building
     public class Forest : Building
     {
         int Age;
-        int Radius = 10;
+        int Radius = 3;
         public Forest(List<Tile> tile) {
             SetTiles(tile);
             Age = 0;
@@ -19,15 +19,17 @@ namespace SimVillage.Model.Building
 
         }
 
+        public int GetRadius() { return Radius; }
+
         public void AgeUp()
         {
             Age += 1;
         }
         public int GetAge() { return Age; }
 
-        public String ToString()
+        public override String ToString()
         {
-            return "Age: " + Age + " Power consumption: " + PowerConsumption + " Radius: " + Radius;
+            return "Age: " + Age + "\nPower consumption: " + PowerConsumption + "\nRadius: " + Radius;
         }
         
     }

@@ -16,7 +16,7 @@ namespace SimVillage.Model.Building
             cost = 20;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             return "";
         }
