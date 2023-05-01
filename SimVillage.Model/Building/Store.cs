@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SimVillage.Model.Building
 {
-    internal class Store : Building
+    public class Store : Building
     {
         int MaxWorkers;
         int Workers;

@@ -12,8 +12,6 @@
             SetTiles(tile);
             SetPowerConsumption(50);
             Type = type;
-            Size = type == SchoolTypes.University ? (2, 2) : (1, 2);
-            Cost = type == SchoolTypes.University ? 50 : 25;
             
         }
 
