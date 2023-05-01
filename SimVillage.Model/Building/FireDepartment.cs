@@ -1,15 +1,18 @@
-﻿namespace SimVillage.Model.Building
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SimVillage.Model.Building
 {
-    public class FireDepartment : Building
+    internal class FireDepartment : Building
     {
         bool UnitAvailable;
-
-        public FireDepartment(int x, int y)
+        public FireDepartment(List<Tile> tile)
         {
-            PowerConsumption = 45;
-            X = x;
-            Y = y;
-            Cost = 30;
+            SetTiles(tile);
+            SetPowerConsumption(45);
         }
         public bool IsAvailable() { return  UnitAvailable; }
         public void SendUnit()

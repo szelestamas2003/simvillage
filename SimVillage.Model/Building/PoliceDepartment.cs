@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace SimVillage.Model.Building
 {
-    public class PoliceDepartment : Building
+    internal class PoliceDepartment : Building
     {
-        public PoliceDepartment ()
+        public PoliceDepartment (List<Tile> tile)
         {
-            PowerConsumption = 45;
+            SetTiles(tile);
+            SetPowerConsumption(45);
         }
     }
 }

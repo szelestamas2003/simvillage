@@ -1,19 +1,19 @@
-﻿namespace SimVillage.Model.Building
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SimVillage.Model.Building
 {
-    public class Forest : Building
+    internal class Forest : Building
     {
         int Age;
-        public Forest() {
+        public Forest(List<Tile> tile) {
+            SetTiles(tile);
             Age = 0;
-            PowerConsumption = 0;
-            Occupied = false;
-            Size = (1, 1);
-            Cost = 30;
-        }
+            SetPowerConsumption(3);
 
-        public Forest(int age)
-        {
-            Age = age;
         }
 
         public void AgeUp()

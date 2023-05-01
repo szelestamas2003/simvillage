@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace SimVillage.Model.Building
 {
-    public class Residental : Building
+    internal class Residental : Building
     {
         int MaxInhabitants;
         int Inhabitans;
-        public Residental()
+        public Residental(List<Tile> tile)
         {
+            SetTiles(tile);
             SetPowerConsumption(30);
             SetDensity(1);
             MaxInhabitants = 6;

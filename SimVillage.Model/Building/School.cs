@@ -1,20 +1,23 @@
-﻿namespace SimVillage.Model.Building
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SimVillage.Model.Building
 {
-    public class School : Building
+    internal class School : Building
     {
         int MaxStudents;
         int Students;
         SchoolTypes Type;
 
-        public School(SchoolTypes type, int x, int y)
+        public School(List<Tile> tile, SchoolTypes type)
         {
             MaxStudents = 300;
-            PowerConsumption = 50;
+            SetTiles(tile);
+            SetPowerConsumption(50);
             Type = type;
-            Size = type == SchoolTypes.University ? (2, 2) : (1, 2);
-            Cost = type == SchoolTypes.University ? 50 : 25;
-            X = x;
-            Y = y;
         }
 
         public int GetMaxStudent()
@@ -29,15 +32,16 @@
         {
             Students = students;
         }
-
-        public void ModifyStudents(int students)
+        public int GetType()
         {
-            Students += students;
-        }
-
-        public SchoolTypes GetSchoolType()
-        {
-            return Type;
+            if(Type == SchoolTypes.University) 
+            { 
+                return 2; 
+            }
+            else
+            {
+                return 1;
+            }
         }
 
 
