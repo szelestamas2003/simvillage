@@ -15,5 +15,10 @@ namespace SimVillage.Model.Building
             SetPowerConsumption(4);
             cost = 40;
         }
+
+        public String ToString()
+        {
+            return "Power consumption: " + PowerConsumption + " Maintenance cost " + cost / 100;
+        }
     }
 }

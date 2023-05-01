@@ -15,5 +15,10 @@ namespace SimVillage.Model.Building
             Size = (1, 1);
             cost = 20;
         }
+
+        public String ToString()
+        {
+            return "";
+        }
     }
 }

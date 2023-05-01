@@ -9,6 +9,7 @@ namespace SimVillage.Model.Building
     public class FireDepartment : Building
     {
         bool UnitAvailable;
+        int Radius = 40;
         public FireDepartment(List<Tile> tile)
         {
             SetTiles(tile);
@@ -27,7 +28,7 @@ namespace SimVillage.Model.Building
         }
         public String ToString()
         {
-            return "Fire Department: Power consmuption: " + PowerConsumption + "Unit available: " + UnitAvailable;
+            return "Power consmuption: " + PowerConsumption + "Unit available: " + UnitAvailable + " Maintenance cost: "+ cost/100 + " Radius: "+ Radius;
         }
     }
 }

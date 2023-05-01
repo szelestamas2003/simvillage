@@ -36,5 +36,10 @@ namespace SimVillage.Model.Building
             return Workers < MaxWorkers;
         }
 
+        public String ToString()
+        {
+            return "Current workers: " + Workers + " Maximum workers: " + MaxWorkers + " Building level " + Density + " Power consuption: " + PowerConsumption;
+
+        }
     }
 }

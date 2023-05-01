@@ -53,6 +53,11 @@ namespace SimVillage.Model.Building
             }
         }
 
+        public String ToString()
+        {
+            return "School type: " + Type + " Current students " + Students.Count + " Maximum students: " + MaxStudents + " Power consumption: " + PowerConsumption + " Maintenance cost: " + cost / 100;
+        }
+
 
     }
 }
