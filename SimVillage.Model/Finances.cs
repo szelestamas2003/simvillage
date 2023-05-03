@@ -26,8 +26,17 @@
 
         public int getTax(ZoneType zone)
         {
-            if(zone  == ZoneType.Industrial) return IndustrialTax;
-            else return StoreTax;
+            switch (zone)
+            {
+                case ZoneType.Residental:
+                    return ResidentTax;
+                case ZoneType.Industrial:
+                    return IndustrialTax;
+                case ZoneType.Store:
+                    return StoreTax;
+                default:
+                    return 0;
+            }
         }
 
         public void addIncome(string name, int cost, DateTime date)

@@ -26,6 +26,7 @@ namespace SimVillage.Model.Building
             Density = density;
             PowerConsumption = powerConsumption;
             IsAccessible = false;
+            IsPowered = false;
             X = x;
             Y = y;
         }
@@ -36,6 +37,7 @@ namespace SimVillage.Model.Building
         public int GetDensity() { return Density;}
         public bool GetOccupied() {  return Occupied;}
         public bool GetAccessibility() { return IsAccessible;}
+        public bool GetIsPowered() { return IsPowered;}
         public int GetX() { return X;}
         public int GetY() { return Y;}
 
@@ -45,6 +47,7 @@ namespace SimVillage.Model.Building
         public void SetOccupied(bool occupied) {  Occupied = occupied;}
         public void SetPowerConsumption(int powerconsumption) { PowerConsumption = powerconsumption; }
         public void SetAccessibility(bool accessibility) { IsAccessible = accessibility;}
+        public void SetIsPowered(bool powered) {  IsPowered = powered;}
         public void SetX(int x) {  X = x;}
         public void SetY(int y) {  Y = y;}
         public void Demolish()
