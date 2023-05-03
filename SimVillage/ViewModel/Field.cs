@@ -12,6 +12,10 @@
 
         public int X { get; set; }
 
+        public double Top { get; set; }
+
+        public double Left { get; set; }
+
         private bool isclicked = false;
 
         public string Info

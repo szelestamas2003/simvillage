@@ -18,6 +18,10 @@ namespace SimVillage.ViewModel
 
         public int Height { get { return model.Height(); } }
 
+        public int CanvasW { get; private set; }
+
+        public int CanvasH { get; private set; }
+
         public string Name { get { return model.Name; } }
 
         public string Date { get; private set; }
@@ -131,6 +135,8 @@ namespace SimVillage.ViewModel
                         X = i,
                         Y = j,
                         Text = string.Empty,
+                        Top = i * 64,
+                        Left = j * 64,
                         Number = i * Width + j,
                         Name = model.Map[i, j].ToString(),
                         Info = string.Empty,
@@ -139,6 +145,10 @@ namespace SimVillage.ViewModel
                     });
                 }
             }
+            CanvasW = Width * 64;
+            CanvasH = Height * 64;
+            OnPropertyChanged(nameof(CanvasW));
+            OnPropertyChanged(nameof(CanvasH));
             OnPropertyChanged(nameof(Fields));
         }
 

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SimVillage"
         mc:Ignorable="d"
-        Title="SimVillage" WindowState="Maximized">
+        Title="SimVillage" WindowState="Maximized" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -37,15 +37,21 @@
             <Button Content="Button" Width="40" Height="30"/>
             <Button Content="Button" Width="40" Height="30"/>
         </DockPanel>
-        <ItemsControl Grid.Row="1" ItemsSource="{Binding Fields}">
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding Fields}" x:Name="container" ClipToBounds="True">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Rows="{Binding Height}" Columns="{Binding Width}"/>
+                    <Canvas PreviewMouseRightButtonDown="Canvas_MouseDown" Name="canvas" PreviewMouseRightButtonUp="Canvas_MouseUp" MouseMove="Canvas_MouseMove" Width="{Binding CanvasW}" Height="{Binding CanvasH}"/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Top" Value="{Binding Top}"/>
+                    <Setter Property="Canvas.Left" Value="{Binding Left}"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Command="{Binding Clicked}" CommandParameter="{Binding Number}" Cursor="Hand">
+                    <Button Command="{Binding Clicked}" CommandParameter="{Binding Number}" Cursor="Hand" Height="64" Width="64">
                         <Popup IsOpen="{Binding IsClicked}" AllowsTransparency="True">
                             <Popup.Style>
                                 <Style TargetType="Popup">
@@ -169,12 +175,6 @@
                     </Button>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
-            <ItemsControl.ItemContainerStyle>
-                <Style>
-                    <Setter Property="Grid.Row" Value="{Binding X}"/>
-                    <Setter Property="Grid.Column" Value="{Binding Y}"/>
-                </Style>
-            </ItemsControl.ItemContainerStyle>
         </ItemsControl>
         <ItemsControl Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" ItemsSource="{Binding Options}">
             <ItemsControl.Style>
