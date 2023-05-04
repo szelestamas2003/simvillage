@@ -196,7 +196,7 @@ namespace SimVillage.Model
                         if (map[zones.Item1, zones.Item2].DowngradeZone())
                         {
                             if (map[zones.Item1, zones.Item2].ZoneType != ZoneType.General)
-                                Finances.addIncome("Demolished a " + map[x, y].ToString(), map[x, y].getCost() / 2, date);
+                                Finances.addIncome("Demolished a " + map[x, y].ToString(), map[x, y].getCost() / 2, date.ToString("d"));
                         }
                         if (building != null && added_money == false)
                         {
@@ -295,7 +295,7 @@ namespace SimVillage.Model
                         citizen.SetSalary(0);
                     }
                 }
-                Finances.addExpenses("Demolished a " + zone.ToString() + " and you had conflict with people", building!.GetCost() / 2, date);
+                Finances.addExpenses("Demolished a " + zone.ToString() + " and you had conflict with people", building!.GetCost() / 2, date.ToString("d"));
                 citizens.RemoveAll(i => CitizensLeft.Contains(i));
                 canDemolish = false;
             }
@@ -551,7 +551,7 @@ namespace SimVillage.Model
                     availableStores.Add((Store)map[x, y].getBuilding());
                     map[x, y].getBuilding().SetAccessibility(true);
                 }
-                Finances.addExpenses("Built a " + map[x, y].ToString(), map[x, y].getCost(), date);
+                Finances.addExpenses("Built a " + map[x, y].ToString(), map[x, y].getCost(), date.ToString("d"));
                 OnGameChanged();
                 return true;
             } else
@@ -596,7 +596,7 @@ namespace SimVillage.Model
             {
                 if (!inConstructor)
                 {
-                    Finances.addExpenses("Built a ", building.GetCost(), date);
+                    Finances.addExpenses("Built a ", building.GetCost(), date.ToString("d"));
                     if (calcDistance(map[29, 0].getBuilding(), building) != -1)
                         building.SetAccessibility(true);
                     if (building.GetType() == typeof(Road))
@@ -733,7 +733,7 @@ namespace SimVillage.Model
                         upkeep += zone.getBuilding().GetCost() * 0.01;
                     }
                 }
-                Finances.addExpenses("Monthly running expenses", Convert.ToInt32(upkeep), date);
+                Finances.addExpenses("Monthly running expenses", Convert.ToInt32(upkeep), date.ToString("d"));
             } else if (date.Year > previous_date.Year)
             {
                 foreach (School school in availableSchools)

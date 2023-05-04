@@ -54,17 +54,16 @@ namespace SimVillage
 
             gamePage = new GamePage();
 
-            city.newGame("SimVillage");
-
             timer = new Timer();
             timer.Interval = 5000;
             timer.Elapsed += new ElapsedEventHandler(Timer_Tick);
-            timer.Start();
         }
 
         private void ViewModel_NewGame(object? sender, EventArgs e)
         {
-            
+            mainWindow.Navigate(gamePage);
+            city.newGame("SimVillage");
+            timer.Start();
         }
 
         private void ViewModel_Info(object? sender, EventArgs e)

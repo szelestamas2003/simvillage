@@ -161,7 +161,7 @@ namespace SimVillage.ViewModel
                         Y = j,
                         Text = string.Empty,
                         Number = i * Width + j,
-                        Name = model.Map[i, j].ToString(),
+                        Name = string.Empty,
                         Info = string.Empty,
                         Clicked = new DelegateCommand(param => OnFieldClicked(Convert.ToInt32(param))),
                         UpgradeCommand = new DelegateCommand(param => UpgradeZone(Convert.ToInt32(param)))
