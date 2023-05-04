@@ -19,15 +19,13 @@ namespace SimVillage.Model
 
         private Persistence dataAccess;
 
-        private Finances Finances;
+        public Finances Finances { get; private set; }
 
         private static Zone[,] map = null!;
 
         public int Width() { return mapWidth;}
 
         public int Height() { return mapHeight;}
-
-        public Tile[,] tiles = null!;
 
         private List<Citizen> citizens = null!;
 
@@ -56,14 +54,6 @@ namespace SimVillage.Model
             avaibleStores = new List<Store>();
             avaibleIndustrials = new List<Industrial>();
             avaibleHouses = new List<Residental>();
-            tiles = new Tile[mapWidth, mapHeight];
-            for(int i = 0; i < mapWidth; i++)
-            {
-                for(int j = 0; j < mapHeight; j++)
-                {
-                    tiles[i, j] = new Tile(i, j);
-                }
-            }
             
 
             map = new Zone[mapHeight, mapWidth];
@@ -152,11 +142,11 @@ namespace SimVillage.Model
                         if (map[tile.GetX(), tile.GetY()].DowngradeZone())
                         {
                             if (map[tile.GetX(), tile.GetY()].ZoneType != ZoneType.General)
-                                Finances.addIncome("Demolished a " + map[x, y].ToString(), map[x, y].getCost() / 2, date);
+                                Finances.addIncome("Demolished a " + map[x, y].ToString(), map[x, y].getCost() / 2, date.ToString("d"));
                         }
                         if (building != null && added_money == false)
                         {
-                            Finances.addIncome("Demolished a " + map[x, y].ToString(), building.GetCost() / 2, date);
+                            Finances.addIncome("Demolished a " + map[x, y].ToString(), building.GetCost() / 2, date.ToString("d"));
                             added_money = true;
                         }
                     }
@@ -165,7 +155,7 @@ namespace SimVillage.Model
             {
                 if (map[x, y].DowngradeZone())
                 {
-                    Finances.addIncome("Demolished a " + map[x, y].ToString(), map[x, y].getCost() / 2, date);
+                    Finances.addIncome("Demolished a " + map[x, y].ToString(), map[x, y].getCost() / 2, date.ToString("d"));
                 }
             }
             if (conflict && canDemolish)
@@ -208,7 +198,7 @@ namespace SimVillage.Model
                             citizen.PlusHadToMove();
                     }
                 }
-                Finances.addExpenses("Demolished a " + zone.ToString() + " and you had conflict with people", building.GetCost() / 2, date);
+                Finances.addExpenses("Demolished a " + zone.ToString() + " and you had conflict with people", building.GetCost() / 2, date.ToString("d"));
                 citizens.RemoveAll(i => CitizensLeft.Contains(i));
                 canDemolish = false;
             }
@@ -260,9 +250,9 @@ namespace SimVillage.Model
                         break;
                 }
                 if (map[x, y].getBuilding().GetDensity() == 2)
-                    Finances.addExpenses("Upgraded " + map[x, y].ToString() + " to level 2", map[x, y].getCost(), date);
+                    Finances.addExpenses("Upgraded " + map[x, y].ToString() + " to level 2", map[x, y].getCost(), date.ToString("d"));
                 else
-                    Finances.addExpenses("Upgraded " + map[x, y].ToString() + " to level 3", map[x, y].getCost(), date);
+                    Finances.addExpenses("Upgraded " + map[x, y].ToString() + " to level 3", map[x, y].getCost(), date.ToString("d"));
                 OnGameChanged();
             }
         }
@@ -289,7 +279,7 @@ namespace SimVillage.Model
                 }
             }
             tax = Math.Round(tax);
-            Finances.addIncome("Tax", Convert.ToInt32(tax), date);
+            Finances.addIncome("Tax", Convert.ToInt32(tax), date.ToString("d"));
         }
 
         static public int calcDistance(Building.Building from, Building.Building to)
@@ -369,7 +359,7 @@ namespace SimVillage.Model
                     avaibleIndustrials.Add((Industrial)map[x, y].getBuilding());
                 else if (zoneType == ZoneType.Store)
                     avaibleStores.Add((Store)map[x, y].getBuilding());
-                Finances.addExpenses("Built a " + map[x, y].ToString(), map[x, y].getCost(), date);
+                Finances.addExpenses("Built a " + map[x, y].ToString(), map[x, y].getCost(), date.ToString("d"));
                 OnGameChanged();
                 return true;
             } else
@@ -398,7 +388,7 @@ namespace SimVillage.Model
             }
             if (freeZone)
             {
-                Finances.addExpenses("Built a ", building.GetCost(), date);
+                Finances.addExpenses("Built a " + building.ToString(), building.GetCost(), date.ToString("d"));
                 foreach (Tile tile in building.GetTiles())
                 {
                     map[tile.GetX(), tile.GetY()].BuildBuilding(building);

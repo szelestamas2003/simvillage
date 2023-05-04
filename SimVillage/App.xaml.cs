@@ -1,4 +1,5 @@
 ﻿using SimVillage.Model;
+using SimVillage.View;
 using SimVillage.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Navigation;
 
 namespace SimVillage
 {
@@ -18,7 +21,9 @@ namespace SimVillage
     {
         private Timer timer = null!;
 
-        private MainWindow view = null!;
+        private Page gamePage = null!;
+
+        private NavigationWindow mainWindow = null!;
 
         private SimVillageViewModel viewModel = null!;
 
@@ -39,14 +44,38 @@ namespace SimVillage
             viewModel.OneSpeed += new EventHandler(ViewModel_OneSpeed);
             viewModel.FiveSpeed += new EventHandler(ViewModel_FiveSpeed);
             viewModel.TenSpeed += new EventHandler(ViewModel_TenSpeed);
+            viewModel.Info += new EventHandler(ViewModel_Info);
+            viewModel.NewGame += new EventHandler(ViewModel_NewGame);
 
-            view =new MainWindow();
-            view.DataContext = viewModel;
-            view.Show();
+            mainWindow = new MainWindow();
+            mainWindow.DataContext = viewModel;
+            mainWindow.Navigate(new Welcome());
+            mainWindow.Show();
+
+            gamePage = new GamePage();
 
             timer = new Timer();
             timer.Interval = 5000;
             timer.Elapsed += new ElapsedEventHandler(Timer_Tick);
+            timer.Start();
+        }
+
+        private void ViewModel_NewGame(object? sender, EventArgs e)
+        {
+            
+        }
+
+        private void ViewModel_Info(object? sender, EventArgs e)
+        {
+            timer.Stop();
+            InfoWindow info = new InfoWindow();
+            info.DataContext = viewModel;
+            if ((bool)info.ShowDialog()!)
+            {
+                city.Finances.setTax(ZoneType.Residental, (int)info.Rslider.Value);
+                city.Finances.setTax(ZoneType.Industrial, (int)info.Islider.Value);
+                city.Finances.setTax(ZoneType.Store, (int)info.Sslider.Value);
+            }
             timer.Start();
         }
 

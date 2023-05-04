@@ -1,0 +1,71 @@
+﻿<Window x:Class="SimVillage.InfoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimVillage"
+        mc:Ignorable="d"
+        Title="Info" Height="450" Width="650" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner" WindowStyle="None">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Content="Residental Tax:" Grid.Row="0" Grid.Column="0" Padding="0, 0, 5, 5" HorizontalAlignment="Right"/>
+            <TextBlock Text="{Binding ElementName=Rslider, Path=Value}" Grid.Row="0" Grid.Column="1"/>
+            <Slider x:Name="Rslider" Minimum="0" Maximum="100" Value="{Binding ResidentTax, Mode=OneWay}" TickFrequency="1" IsSnapToTickEnabled="True" Grid.Row="0" Grid.Column="2"/>
+            <Label Content="Industrial Tax:" Grid.Row="1" Grid.Column="0" Padding="0, 0, 5, 5" HorizontalAlignment="Right"/>
+            <TextBlock Text="{Binding ElementName=Islider, Path=Value}" Grid.Row="1" Grid.Column="1"/>
+            <Slider x:Name="Islider" Minimum="0" Maximum="100" Value="{Binding IndustrialTax, Mode=OneWay}" TickFrequency="1" IsSnapToTickEnabled="True" Grid.Row="1" Grid.Column="2"/>
+            <Label Content="Store Tax:" Grid.Row="2" Grid.Column="0" Padding="0, 0, 5, 5" HorizontalAlignment="Right"/>
+            <TextBlock Text="{Binding ElementName=Sslider, Path=Value}" Grid.Row="2" Grid.Column="1"/>
+            <Slider x:Name="Sslider" Minimum="0" Maximum="100" Value="{Binding StoreTax, Mode=OneWay}" TickFrequency="1" IsSnapToTickEnabled="True" Grid.Row="2" Grid.Column="2"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Content="Expenses:" Grid.Column="0" Grid.Row="0" Margin="10, 0, 10, 10"/>
+            <ListView ItemsSource="{Binding Expenses}" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Column="0" Grid.Row="1" Margin="10, 0, 10, 0">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Name}"/>
+                        <GridViewColumn Header="Amount" Width="50" DisplayMemberBinding="{Binding Amount}"/>
+                        <GridViewColumn Header="Date" Width="100" DisplayMemberBinding="{Binding Date}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Label Content="Incomes:" Grid.Column="1" Grid.Row="0" Margin="10, 0, 10, 10"/>
+            <ListView ItemsSource="{Binding Incomes}" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Column="1" Grid.Row="1" Margin="10, 0, 10, 0">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Name}"/>
+                        <GridViewColumn Header="Amount" Width="50" DisplayMemberBinding="{Binding Amount}"/>
+                        <GridViewColumn Header="Date" Width="100" DisplayMemberBinding="{Binding Date}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        <StackPanel Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" Orientation="Horizontal" Grid.ColumnSpan="2" Margin="0, 5, 0, 5">
+            <Button IsDefault="True" Content="Ok" Width="70" Height="25" Click="ok_Click"/>
+            <Button IsCancel="True" Content="Cancel" Width="70" Margin="5, 0, 10, 0" Height="25" Click="cancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

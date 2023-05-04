@@ -1,0 +1,220 @@
+﻿<Page x:Class="SimVillage.GamePage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimVillage"
+        mc:Ignorable="d"
+        Title="SimVillage" Background="White">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <DockPanel HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Center">
+            <Button Content="Pause" Command="{Binding PauseGameCommand}" Width="50" Height="30"/>
+            <Button Content="1x" Command="{Binding OneSpeedCommand}" Width="50" Height="30"/>
+            <Button Content="5x" Command="{Binding FiveSpeedCommand}" Width="50" Height="30"/>
+            <Button Content="10x" Command="{Binding TenSpeedCommand}" Width="50" Height="30"/>
+            <TextBlock Background="White" TextWrapping="Wrap" Text="{Binding Date}" Height="30" Margin="10, 0, 10, 0" HorizontalAlignment="Center"/>
+            <TextBlock Background="White" TextWrapping="Wrap" Text="{Binding Name}" Height="30" Margin="10, 0, 10, 0" HorizontalAlignment="Center"/>
+            <TextBlock Background="White" TextWrapping="Wrap" Text="{Binding CitizenCount}" Height="30" Margin="10, 0, 10, 0" HorizontalAlignment="Center"/>
+            <TextBlock Background="White" TextWrapping="Wrap" Text="{Binding Money}" Height="30" Margin="10, 0, 10, 0" HorizontalAlignment="Center">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMoneyNegative}" Value="True">
+                                <Setter Property="Foreground" Value="Red" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <TextBlock Background="White"  TextWrapping="Wrap" Text="{Binding Happiness}" Height="30" Margin="10, 0, 10, 0" HorizontalAlignment="Center"/>
+            <Button Content="Info" Width="40" Height="30" Command="{Binding InfoCommand}"/>
+            <Button Content="Button" Width="40" Height="30"/>
+            <Button Content="Button" Width="40" Height="30"/>
+        </DockPanel>
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding Fields}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="{Binding Height}" Columns="{Binding Width}"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Command="{Binding Clicked}" CommandParameter="{Binding Number}" Cursor="Hand">
+                        <Popup IsOpen="{Binding IsClicked}" AllowsTransparency="True">
+                            <Popup.Style>
+                                <Style TargetType="Popup">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsXGtThan25}" Value="True">
+                                            <Setter Property="Placement" Value="Top"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Popup.Style>
+                            <StackPanel Background="White">
+                                <TextBlock Text="{Binding Name}" Padding="5, 5, 5, 0" FontWeight="Bold" FontSize="15"/>
+                                <StackPanel Orientation="Vertical">
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                </StackPanel>
+                                <TextBlock Text="{Binding Info}" Padding="5, 5, 5, 5" FontSize="10">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Info}" Value="">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <TextBlock Text="Do you want to upgrade this zone?" Padding="5, 0, 0, 0" FontSize="10">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Text}" Value="Industrial Building">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Text}" Value="Residental Building">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Text}" Value="Store Building">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <Button Content="Upgrade" Height="20" Width="60" Background="Wheat" HorizontalAlignment="Left" Margin="5, 0, 0, 5" Command="{Binding UpgradeCommand}" CommandParameter="{Binding Number}">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Text}" Value="Industrial Building">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Text}" Value="Residental Building">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Text}" Value="Store Building">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </StackPanel>
+                        </Popup>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="LightGreen"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text}" Value="Industrial">
+                                        <Setter Property="BorderBrush" Value="Yellow"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Industrial Building">
+                                        <Setter Property="Background" Value="Yellow"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Store">
+                                        <Setter Property="BorderBrush" Value="Blue"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Store Building">
+                                        <Setter Property="Background" Value="Blue"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Residental">
+                                        <Setter Property="BorderBrush" Value="Green"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Residental Building">
+                                        <Setter Property="Background" Value="Green"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Police">
+                                        <Setter Property="Background" Value="DarkBlue"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Forest">
+                                        <Setter Property="Background" Value="DarkGreen"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Road">
+                                        <Setter Property="Background" Value="Gray"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="School">
+                                        <Setter Property="Background" Value="Orange"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="University">
+                                        <Setter Property="Background" Value="OrangeRed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Fire Department">
+                                        <Setter Property="Background" Value="DarkRed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Stadium">
+                                        <Setter Property="Background" Value="Brown"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Power Line">
+                                        <Setter Property="Background" Value="LightGray"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="Power Plant">
+                                        <Setter Property="Background" Value="Black"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemContainerStyle>
+                <Style>
+                    <Setter Property="Grid.Row" Value="{Binding X}"/>
+                    <Setter Property="Grid.Column" Value="{Binding Y}"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+        </ItemsControl>
+        <ItemsControl Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" ItemsSource="{Binding Options}">
+            <ItemsControl.Style>
+                <Style TargetType="ItemsControl">
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="Background" Value="#FF91B0AB"/>
+                    <Setter Property="Padding" Value="5, 5, 0, 5"/>
+                </Style>
+            </ItemsControl.Style>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <DockPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding Text}" Width="Auto" Height="Auto" Margin="0, 0, 5, 0" Padding="15,5,15,5" Command="{Binding Clicked}" CommandParameter="{Binding Number}">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsClicked}" Value="True">
+                                        <Setter Property="Background" Value="LightBlue"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsClicked}" Value="False">
+                                        <Setter Property="Background" Value="White"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <StatusBar Grid.Row="3">
+            <StatusBarItem>
+                <TextBlock Text="{Binding BuildInfo}"/>
+            </StatusBarItem>
+        </StatusBar>
+
+    </Grid>
+
+</Page>
