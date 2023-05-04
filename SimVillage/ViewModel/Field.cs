@@ -6,9 +6,7 @@
 
         private string name = string.Empty;
 
-        private string citizenCount = string.Empty;
-
-        private string happiness = string.Empty;
+        private string info = string.Empty;
 
         public bool IsXGtThan25 { get { return X > 25; } }
 
@@ -16,27 +14,14 @@
 
         private bool isclicked = false;
 
-        public string Happiness
+        public string Info
         {
-            get { return happiness; }
+            get { return info; }
             set
             {
-                if (happiness != value)
+                if (info != value)
                 {
-                    happiness = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public string CitizenCount
-        {
-            get { return citizenCount; }
-            set
-            {
-                if (citizenCount != value)
-                {
-                    citizenCount = value;
+                    info = value;
                     OnPropertyChanged();
                 }
             }

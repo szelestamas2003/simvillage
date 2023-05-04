@@ -9,6 +9,7 @@ namespace SimVillage.Model.Building
     public class FireDepartment : Building
     {
         bool UnitAvailable;
+        int Radius = 40;
         public FireDepartment(int x, int y)
         {
             PowerConsumption = 45;
@@ -26,9 +27,11 @@ namespace SimVillage.Model.Building
         {
             UnitAvailable = true;
         }
+
+        public int GetRadius() { return Radius; }
         public override String ToString()
         {
-            return "Fire Department: Power consmuption: " + PowerConsumption + "Unit available: " + UnitAvailable;
+            return "Power consumption: " + PowerConsumption + "\nUnit available: " + UnitAvailable + "\nMaintenance cost: "+ cost/100 + "\nRadius: "+ Radius;
         }
     }
 }

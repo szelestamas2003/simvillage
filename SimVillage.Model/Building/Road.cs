@@ -17,5 +17,10 @@ namespace SimVillage.Model.Building
             X = x;
             Y = y;
         }
+
+        public override String ToString()
+        {
+            return "Power consumption: " + PowerConsumption + "\nMaintenance cost " + cost / 100;
+        }
     }
 }

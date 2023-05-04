@@ -20,5 +20,10 @@ namespace SimVillage.Model.Building
         public int GetGeneratedPower() {  return GeneratedPower; }
         public void SetGeneratedPower(int value) {  GeneratedPower = value; }
 
+        public override String ToString()
+        {
+            return "Generated Power: " + GeneratedPower + "\nMaintenance cost: " + cost / 100;
+        }
+
     }
 }

@@ -19,7 +19,7 @@ namespace SimVillage.Model
 
         private Persistence dataAccess;
 
-        private Finances Finances = null!;
+        public Finances Finances { get; private set; }
 
         private static Zone[,] map = null!;
 
@@ -200,7 +200,7 @@ namespace SimVillage.Model
                         }
                         if (building != null && added_money == false)
                         {
-                            Finances.addIncome("Demolished a " + map[x, y].ToString(), building.GetCost() / 2, date);
+                            Finances.addIncome("Demolished a " + map[x, y].ToString(), building.GetCost() / 2, date.ToString("d"));
                             added_money = true;
                         }
                     }
@@ -209,7 +209,7 @@ namespace SimVillage.Model
             {
                 if (map[x, y].DowngradeZone())
                 {
-                    Finances.addIncome("Demolished a " + map[x, y].ToString(), map[x, y].getCost() / 2, date);
+                    Finances.addIncome("Demolished a " + map[x, y].ToString(), map[x, y].getCost() / 2, date.ToString("d"));
                 }
             }
             if (conflict && canDemolish)
@@ -352,9 +352,9 @@ namespace SimVillage.Model
                         break;
                 }
                 if (map[x, y].getBuilding().GetDensity() == 2)
-                    Finances.addExpenses("Upgraded " + map[x, y].ToString() + " to level 2", map[x, y].getCost(), date);
+                    Finances.addExpenses("Upgraded " + map[x, y].ToString() + " to level 2", map[x, y].getCost(), date.ToString("d"));
                 else
-                    Finances.addExpenses("Upgraded " + map[x, y].ToString() + " to level 3", map[x, y].getCost(), date);
+                    Finances.addExpenses("Upgraded " + map[x, y].ToString() + " to level 3", map[x, y].getCost(), date.ToString("d"));
                 OnGameChanged();
             }
         }
@@ -387,7 +387,7 @@ namespace SimVillage.Model
                 }
             }
             tax = Math.Round(tax);
-            Finances.addIncome("Tax", Convert.ToInt32(tax), date);
+            Finances.addIncome("Tax", Convert.ToInt32(tax), date.ToString("d"));
         }
 
         private void calcElectricity()
@@ -534,7 +534,7 @@ namespace SimVillage.Model
             {
                 happiness += i.calcHappiness();
             }
-            return happiness;
+            return citizens.Count != 0 ? happiness / citizens.Count : 0;
         }
 
         public bool newZone(int x, int y, ZoneType zoneType)

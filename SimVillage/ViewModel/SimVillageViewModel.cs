@@ -24,6 +24,18 @@ namespace SimVillage.ViewModel
 
         public int CitizenCount { get; private set; }
 
+        public int Happiness { get { return model.getHappiness(); } }
+
+        public List<Transaction> Expenses { get { var asd = model.Finances.Expenses; asd.Reverse(); return asd; } }
+
+        public List<Transaction> Incomes { get { var asd = model.Finances.Incomes; asd.Reverse(); return asd; } }
+
+        public int ResidentTax { get { return model.Finances.getTax(ZoneType.Residental); } }
+
+        public int IndustrialTax { get { return model.Finances.getTax(ZoneType.Industrial); } }
+
+        public int StoreTax { get { return model.Finances.getTax(ZoneType.Store); } }
+
         public bool IsMoneyNegative { get; private set; }
 
         public int Money { get; private set; }
@@ -48,6 +60,8 @@ namespace SimVillage.ViewModel
 
         public event EventHandler? TenSpeed;
 
+        public event EventHandler? Info;
+
         public event EventHandler? Rename;
 
         public DelegateCommand RenameCommand { get; private set; }
@@ -59,6 +73,10 @@ namespace SimVillage.ViewModel
         public DelegateCommand FiveSpeedCommand { get; private set; }
 
         public DelegateCommand TenSpeedCommand { get; private set; }
+
+        public DelegateCommand InfoCommand { get; private set; }
+
+        public DelegateCommand NewGameCommand { get; private set; }
 
         public SimVillageViewModel(City model)
         {
@@ -94,6 +112,18 @@ namespace SimVillage.ViewModel
             OneSpeedCommand = new DelegateCommand(param => OnOneSpeedCommand());
             FiveSpeedCommand = new DelegateCommand(param => OnFiveSpeedCommand());
             TenSpeedCommand = new DelegateCommand(param => OnTenSpeedCommand());
+            InfoCommand = new DelegateCommand(param => OnInfoCommand());
+            NewGameCommand = new DelegateCommand(param => OnNewGame());
+        }
+
+        private void OnNewGame()
+        {
+            NewGame?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnInfoCommand()
+        {
+            Info?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnOptionsClicked(int number)
@@ -131,9 +161,8 @@ namespace SimVillage.ViewModel
                         Y = j,
                         Text = string.Empty,
                         Number = i * Width + j,
-                        Name = string.Empty,
-                        CitizenCount = string.Empty,
-                        Happiness = string.Empty,
+                        Name = model.Map[i, j].ToString(),
+                        Info = string.Empty,
                         Clicked = new DelegateCommand(param => OnFieldClicked(Convert.ToInt32(param))),
                         UpgradeCommand = new DelegateCommand(param => UpgradeZone(Convert.ToInt32(param)))
                     });
@@ -314,13 +343,13 @@ namespace SimVillage.ViewModel
                     };
                 }
                 Fields[zone.X * Width + zone.Y].Name = zone.ToString();
-                Fields[zone.X * Width + zone.Y].CitizenCount = "Citizens: " + zone.getPeople().Count;
-                Fields[zone.X * Width + zone.Y].Happiness = "Happiness: " + zone.getHappiness();
+                Fields[zone.X * Width + zone.Y].Info = zone.getBuilding() != null ? zone.getBuilding().ToString() : "";
             }
             OnPropertyChanged(nameof(CitizenCount));
             OnPropertyChanged(nameof(IsMoneyNegative));
             OnPropertyChanged(nameof(Money));
             OnPropertyChanged(nameof(Fields));
+            OnPropertyChanged(nameof(Happiness));
         }
 
         private void Model_GameCreated(object? sender, EventArgs e)
