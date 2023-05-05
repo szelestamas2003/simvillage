@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SimVillage"
         mc:Ignorable="d"
-        Title="SimVillage" Background="White">
+        Title="SimVillage" Background="White" KeepAlive="True">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -34,8 +34,7 @@
             </TextBlock>
             <TextBlock Background="White"  TextWrapping="Wrap" Text="{Binding Happiness}" Height="30" Margin="10, 0, 10, 0" HorizontalAlignment="Center"/>
             <Button Content="Info" Width="40" Height="30" Command="{Binding InfoCommand}"/>
-            <Button Content="Button" Width="40" Height="30"/>
-            <Button Content="Button" Width="40" Height="30"/>
+            <Button Content="Pause Menu" Width="70" Height="30" Command="{Binding PauseMenuCommand}"/>
         </DockPanel>
         <ItemsControl Grid.Row="1" ItemsSource="{Binding Fields}">
             <ItemsControl.ItemsPanel>

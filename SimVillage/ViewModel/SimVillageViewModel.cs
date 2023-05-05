@@ -64,6 +64,12 @@ namespace SimVillage.ViewModel
 
         public event EventHandler? Rename;
 
+        public event EventHandler? ExitGame;
+
+        public event EventHandler? ContinueGame;
+
+        public event EventHandler? PauseMenu;
+
         public DelegateCommand RenameCommand { get; private set; }
 
         public DelegateCommand PauseGameCommand { get; private set; }
@@ -77,6 +83,16 @@ namespace SimVillage.ViewModel
         public DelegateCommand InfoCommand { get; private set; }
 
         public DelegateCommand NewGameCommand { get; private set; }
+
+        public DelegateCommand LoadGameCommand { get; private set; }
+
+        public DelegateCommand SaveGameCommand { get; private set; }
+
+        public DelegateCommand ExitCommand { get; private set; }
+
+        public DelegateCommand ContinueGameCommand { get; private set; }
+
+        public DelegateCommand PauseMenuCommand { get; private set; }
 
         public SimVillageViewModel(City model)
         {
@@ -114,6 +130,36 @@ namespace SimVillage.ViewModel
             TenSpeedCommand = new DelegateCommand(param => OnTenSpeedCommand());
             InfoCommand = new DelegateCommand(param => OnInfoCommand());
             NewGameCommand = new DelegateCommand(param => OnNewGame());
+            LoadGameCommand = new DelegateCommand(param => OnLoadGame());
+            SaveGameCommand = new DelegateCommand(param => OnSaveGame());
+            ExitCommand = new DelegateCommand(param => OnExitGame());
+            ContinueGameCommand = new DelegateCommand(param => OnContinueGame());
+            PauseMenuCommand = new DelegateCommand(param => OnPauseMenu());
+        }
+
+        private void OnPauseMenu()
+        {
+            PauseMenu?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnContinueGame()
+        {
+            ContinueGame?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnExitGame()
+        {
+            ExitGame?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnSaveGame()
+        {
+            SaveGame?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnLoadGame()
+        {
+            LoadGame?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnNewGame()

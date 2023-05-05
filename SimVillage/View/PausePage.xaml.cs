@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace SimVillage
 {
     /// <summary>
-    /// Interaction logic for Welcome.xaml
+    /// Interaction logic for PausePage.xaml
     /// </summary>
-    public partial class Welcome : Page
+    public partial class PausePage : Page
     {
-        public Welcome()
+        public PausePage()
         {
             InitializeComponent();
         }
