@@ -16,7 +16,6 @@ namespace SimVillage.Model
             try
             {
                 await using FileStream createStream = File.Create(path);
-                string string2 = JsonSerializer.Serialize(data);
                 await JsonSerializer.SerializeAsync(createStream, data);
             }
             catch

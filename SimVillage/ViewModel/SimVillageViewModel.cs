@@ -332,64 +332,68 @@ namespace SimVillage.ViewModel
                 IsMoneyNegative = false;
             }
 
-            foreach (Zone zone in model.Map)
+            foreach (List<Zone> rows in model.Map)
             {
-                if (zone.getBuilding() != null)
+                foreach (Zone zone in rows)
                 {
-                    switch (zone.getBuilding())
+                    if (zone.getBuilding() != null)
                     {
-                        case Road:
-                            Fields[zone.X * Width + zone.Y].Text = "Road";
-                            break;
-                        case Forest:
-                            Fields[zone.X * Width + zone.Y].Text = "Forest";
-                            break;
-                        case PoliceDepartment:
-                            Fields[zone.X * Width + zone.Y].Text = "Police";
-                            break;
-                        case FireDepartment:
-                            Fields[zone.X * Width + zone.Y].Text = "Fire Department";
-                            break;
-                        case PowerLine:
-                            Fields[zone.X * Width + zone.Y].Text = "Power Line";
-                            break;
-                        case PowerPlant:
-                            Fields[zone.X * Width + zone.Y].Text = "Power Plant";
-                            break;
-                        case School s:
-                            if (s.GetSchoolType() == SchoolTypes.Elementary)
-                                Fields[zone.X * Width + zone.Y].Text = "School";
-                            else
-                                Fields[zone.X * Width + zone.Y].Text = "University";
-                            break;
-                        case Stadium:
-                            Fields[zone.X * Width + zone.Y].Text = "Stadium";
-                            break;
-                        case Residental:
-                            Fields[zone.X * Width + zone.Y].Text = "Residental Building";
-                            break;
-                        case Industrial:
-                            Fields[zone.X * Width + zone.Y].Text = "Industrial Building";
-                            break;
-                        case Store:
-                            Fields[zone.X * Width + zone.Y].Text = "Store Building";
-                            break;
-                        default:
-                            Fields[zone.X * Width + zone.Y].Text = string.Empty;
-                            break;
+                        switch (zone.getBuilding())
+                        {
+                            case Road:
+                                Fields[zone.X * Width + zone.Y].Text = "Road";
+                                break;
+                            case Forest:
+                                Fields[zone.X * Width + zone.Y].Text = "Forest";
+                                break;
+                            case PoliceDepartment:
+                                Fields[zone.X * Width + zone.Y].Text = "Police";
+                                break;
+                            case FireDepartment:
+                                Fields[zone.X * Width + zone.Y].Text = "Fire Department";
+                                break;
+                            case PowerLine:
+                                Fields[zone.X * Width + zone.Y].Text = "Power Line";
+                                break;
+                            case PowerPlant:
+                                Fields[zone.X * Width + zone.Y].Text = "Power Plant";
+                                break;
+                            case School s:
+                                if (s.GetSchoolType() == SchoolTypes.Elementary)
+                                    Fields[zone.X * Width + zone.Y].Text = "School";
+                                else
+                                    Fields[zone.X * Width + zone.Y].Text = "University";
+                                break;
+                            case Stadium:
+                                Fields[zone.X * Width + zone.Y].Text = "Stadium";
+                                break;
+                            case Residental:
+                                Fields[zone.X * Width + zone.Y].Text = "Residental Building";
+                                break;
+                            case Industrial:
+                                Fields[zone.X * Width + zone.Y].Text = "Industrial Building";
+                                break;
+                            case Store:
+                                Fields[zone.X * Width + zone.Y].Text = "Store Building";
+                                break;
+                            default:
+                                Fields[zone.X * Width + zone.Y].Text = string.Empty;
+                                break;
+                        }
                     }
-                } else
-                {
-                    Fields[zone.X * Width + zone.Y].Text = zone.ZoneType switch
+                    else
                     {
-                        ZoneType.Residental => "Residental",
-                        ZoneType.Industrial => "Industrial",
-                        ZoneType.Store => "Store",
-                        _ => string.Empty
-                    };
+                        Fields[zone.X * Width + zone.Y].Text = zone.ZoneType switch
+                        {
+                            ZoneType.Residental => "Residental",
+                            ZoneType.Industrial => "Industrial",
+                            ZoneType.Store => "Store",
+                            _ => string.Empty
+                        };
+                    }
+                    Fields[zone.X * Width + zone.Y].Name = zone.ToString();
+                    Fields[zone.X * Width + zone.Y].Info = zone.getBuilding() != null ? zone.getBuilding().ToString() : "";
                 }
-                Fields[zone.X * Width + zone.Y].Name = zone.ToString();
-                Fields[zone.X * Width + zone.Y].Info = zone.getBuilding() != null ? zone.getBuilding().ToString() : "";
             }
             OnPropertyChanged(nameof(CitizenCount));
             OnPropertyChanged(nameof(IsMoneyNegative));

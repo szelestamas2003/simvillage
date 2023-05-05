@@ -18,9 +18,9 @@ namespace SimVillage
     /// <summary>
     /// Interaction logic for Welcome.xaml
     /// </summary>
-    public partial class Welcome : Page
+    public partial class MainMenu : Page
     {
-        public Welcome()
+        public MainMenu()
         {
             InitializeComponent();
         }

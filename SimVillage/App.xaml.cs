@@ -60,7 +60,7 @@ namespace SimVillage
             mainWindow = new MainWindow();
             mainWindow.KeyDown += new KeyEventHandler(OnButtonKeyDown);
             mainWindow.DataContext = viewModel;
-            mainWindow.Navigate(new Welcome());
+            mainWindow.Navigate(new MainMenu());
             mainWindow.Show();
 
             gamePageUri = new Uri("View/GamePage.xaml", UriKind.Relative);
@@ -114,7 +114,7 @@ namespace SimVillage
 
         private async void ViewModel_SaveGame(object? sender, EventArgs e)
         {
-            await city.Save("asd");
+            await city.Save("save1.json");
         }
 
         private void ViewModel_LoadGame(object? sender, EventArgs e)
