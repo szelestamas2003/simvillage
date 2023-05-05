@@ -594,11 +594,20 @@ namespace SimVillage.Model
             }
             if (freeZone)
             {
+                foreach ((int, int) zones in buildingZones)
+                {
+                    map[zones.Item1, zones.Item2].BuildBuilding(building);
+                }
+
                 if (!inConstructor)
                 {
-                    Finances.addExpenses("Built a ", building.GetCost(), date);
+                    Finances.addExpenses("Built a " + building.GetType().Name, building.GetCost(), date);
                     if (calcDistance(map[29, 0].getBuilding(), building) != -1)
+                    {
+                        if (building.GetType() == typeof(PowerPlant))
+                            powerPlants.Add((PowerPlant)building);
                         building.SetAccessibility(true);
+                    }
                     if (building.GetType() == typeof(Road))
                     {
                         foreach (Zone zone in map)
@@ -623,11 +632,6 @@ namespace SimVillage.Model
                             }
                         }
                     }
-                }
-                 
-                foreach ((int, int) zones in buildingZones)
-                {
-                    map[zones.Item1, zones.Item2].BuildBuilding(building);
                 }
                 if (!inConstructor)
                     OnGameChanged();
