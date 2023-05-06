@@ -19,9 +19,9 @@ namespace SimVillage.Model
 
         private Persistence dataAccess;
 
-        private Finances Finances = null!;
+        public Finances Finances { get; private set; } = null!;
 
-        private static Zone[,] map = null!;
+        private static List<List<Zone>> map = null!;
 
         public int Width() { return mapWidth;}
 
@@ -31,7 +31,7 @@ namespace SimVillage.Model
 
         public DateTime Date { get { return date; } }
 
-        public Zone[,] Map { get { return map; } }
+        public List<List<Zone>> Map { get { return map; } }
 
         private List<Citizen> citizens = null!;
 
@@ -60,7 +60,7 @@ namespace SimVillage.Model
             this.dataAccess = dataAccess;
         }
 
-        public void newGame(string name)
+        public void NewGame(string name)
         {
             cityName = name;
             Finances = new Finances(5000);
@@ -72,18 +72,19 @@ namespace SimVillage.Model
             powerPlants = new List<PowerPlant>();
 
 
-            map = new Zone[mapHeight, mapWidth];
+            map = new List<List<Zone>>(mapHeight);
 
             for (int i = 0; i < mapHeight; i++)
             {
+                map.Add(new List<Zone>(mapWidth));
                 for (int j = 0; j < mapWidth; j++)
                 {
-                    map[i, j] = new Zone
+                    map[i].Add(new Zone
                     {
                         X = i,
                         Y = j,
                         Occupied = false
-                    };
+                    });
                     if (j == 0 && i == 29)
                     {
                         BuildBuilding(new Road(i, j), true);
@@ -123,8 +124,8 @@ namespace SimVillage.Model
         {
             if (y == 0 && x == 29)
                 return;
-            Building.Building building = map[x, y].getBuilding();
-            Zone zone = map[x, y];
+            Building.Building building = map[x][y].Building;
+            Zone zone = map[x][y];
             bool conflict = false;
             if (building != null && (building.GetType() == typeof(Residental) || building.GetType() == typeof(Industrial) || building.GetType() == typeof(Store) || building.GetType() == typeof(Road)))
             {
@@ -168,12 +169,15 @@ namespace SimVillage.Model
                     if (building.GetType() == typeof(Road))
                     {
                         zone.DowngradeZone();
-                        foreach (Zone zones in map)
+                        foreach (List<Zone> rows in map)
                         {
-                            if (zones.getBuilding() != null && zones.getBuilding().GetType() != typeof(Road) && zones.getBuilding().GetType() != typeof(PowerLine) && zones.getBuilding().GetType() != typeof(Forest) && calcDistance(map[29, 0].getBuilding(), zones.getBuilding()) == -1)
+                            foreach (Zone zones in rows)
                             {
-                                zone.BuildBuilding(building);
-                                return;
+                                if (zones.Building != null && zones.Building.GetType() != typeof(Road) && zones.Building.GetType() != typeof(PowerLine) && zones.Building.GetType() != typeof(Forest) && calcDistance(map[29][0].Building, zones.Building) == -1)
+                                {
+                                    zone.BuildBuilding(building);
+                                    return;
+                                }
                             }
                         }
                         zone.BuildBuilding(building);
@@ -193,23 +197,23 @@ namespace SimVillage.Model
                     }
                     foreach ((int, int) zones in buildingZones)
                     {
-                        if (map[zones.Item1, zones.Item2].DowngradeZone())
+                        if (map[zones.Item1][zones.Item2].DowngradeZone())
                         {
-                            if (map[zones.Item1, zones.Item2].ZoneType != ZoneType.General)
-                                Finances.addIncome("Demolished a " + map[x, y].ToString(), map[x, y].getCost() / 2, date);
+                            if (map[zones.Item1][zones.Item2].ZoneType != ZoneType.General)
+                                Finances.addIncome("Demolished a " + map[x][y].ToString(), map[x][y].getCost() / 2, date.ToString("d"));
                         }
                         if (building != null && added_money == false)
                         {
-                            Finances.addIncome("Demolished a " + map[x, y].ToString(), building.GetCost() / 2, date);
+                            Finances.addIncome("Demolished a " + map[x][y].ToString(), building.GetCost() / 2, date.ToString("d"));
                             added_money = true;
                         }
                     }
                 }
             } else
             {
-                if (map[x, y].DowngradeZone())
+                if (map[x][y].DowngradeZone())
                 {
-                    Finances.addIncome("Demolished a " + map[x, y].ToString(), map[x, y].getCost() / 2, date);
+                    Finances.addIncome("Demolished a " + map[x][y].ToString(), map[x][y].getCost() / 2, date.ToString("d"));
                 }
             }
             if (conflict && canDemolish)
@@ -237,11 +241,11 @@ namespace SimVillage.Model
                                 if (!availableIndustrials.Contains(industrial))
                                     availableIndustrials.Add(industrial);
                             }
-                            map[workPlace.GetX(), workPlace.GetY()].RemoveCitizenFromZone(citizen);
+                            map[workPlace.GetX()][workPlace.GetY()].RemoveCitizenFromZone(citizen);
                             citizen.GetHome().MoveOut();
                             if (!availableHouses.Contains(citizen.GetHome()))
                                 availableHouses.Add(citizen.GetHome());
-                            map[citizen.GetHome().GetX(), citizen.GetHome().GetY()].RemoveCitizenFromZone(citizen);
+                            map[citizen.GetHome().GetX()][citizen.GetHome().GetY()].RemoveCitizenFromZone(citizen);
                             citizen.MoveOut();
                             PeopleMoveIn(citizen);
                             if (citizen.GetHome() == null)
@@ -271,7 +275,7 @@ namespace SimVillage.Model
                                 if (!availableIndustrials.Contains(industrial))
                                     availableIndustrials.Add(industrial);
                             }
-                            map[workPlace.GetX(), workPlace.GetY()].RemoveCitizenFromZone(citizen);
+                            map[workPlace.GetX()][workPlace.GetY()].RemoveCitizenFromZone(citizen);
                             citizen.MoveOut();
                             PeopleMoveIn(citizen);
                             if (citizen.GetHome() == null)
@@ -295,7 +299,7 @@ namespace SimVillage.Model
                         citizen.SetSalary(0);
                     }
                 }
-                Finances.addExpenses("Demolished a " + zone.ToString() + " and you had conflict with people", building!.GetCost() / 2, date);
+                Finances.addExpenses("Demolished a " + zone.ToString() + " and you had conflict with people", building!.GetCost() / 2, date.ToString("d"));
                 citizens.RemoveAll(i => CitizensLeft.Contains(i));
                 canDemolish = false;
             }
@@ -313,7 +317,7 @@ namespace SimVillage.Model
             g.Citizens = citizens;
             g.Finances = Finances;
             g.Date = date;
-            //g.Zones = map;
+            g.Zones = map;
             await dataAccess.saveGame(path, g);
         }
 
@@ -328,9 +332,9 @@ namespace SimVillage.Model
 
         public void UpgradeZone(int x, int y)
         {
-            if (map[x, y].ZoneType != ZoneType.General && map[x, y].getBuilding() != null && map[x, y].getBuilding().GetDensity() < 3)
+            if (map[x][y].ZoneType != ZoneType.General && map[x][y].Building != null && map[x][y].Building.GetDensity() < 3)
             {
-                switch (map[x, y].getBuilding())
+                switch (map[x][y].Building)
                 {
                     case Residental r:
                         r.SetDensity(r.GetDensity() + 1);
@@ -351,10 +355,10 @@ namespace SimVillage.Model
                             availableStores.Add(s);
                         break;
                 }
-                if (map[x, y].getBuilding().GetDensity() == 2)
-                    Finances.addExpenses("Upgraded " + map[x, y].ToString() + " to level 2", map[x, y].getCost(), date);
+                if (map[x][y].Building.GetDensity() == 2)
+                    Finances.addExpenses("Upgraded " + map[x][y].ToString() + " to level 2", map[x][y].getCost(), date.ToString("d"));
                 else
-                    Finances.addExpenses("Upgraded " + map[x, y].ToString() + " to level 3", map[x, y].getCost(), date);
+                    Finances.addExpenses("Upgraded " + map[x][y].ToString() + " to level 3", map[x][y].getCost(), date.ToString("d"));
                 OnGameChanged();
             }
         }
@@ -362,40 +366,45 @@ namespace SimVillage.Model
         private void CollectingTaxes()
         {
             double tax = 0;
-            foreach (Zone zone in map)
+            foreach (List<Zone> rows in map)
             {
-                if(zone.ZoneType == ZoneType.Store)
+                foreach (Zone zone in rows)
                 {
-                    if (zone.getBuilding().GetIsPowered())
-                        tax += Finances.getTax(ZoneType.Store) / 100 * zone.getPeople().Count * 50;
-                    else
-                        tax += Finances.getTax(ZoneType.Store) / 100 * zone.getPeople().Count * 25;
-                }
-                else if(zone.ZoneType == ZoneType.Industrial)
-                {
-                    if (zone.getBuilding().GetIsPowered())
-                        tax += Finances.getTax(ZoneType.Industrial) / 100 * zone.getPeople().Count * 50;
-                    else
-                        tax += Finances.getTax(ZoneType.Industrial) / 100 * zone.getPeople().Count * 25;
-                }
-                else if(zone.ZoneType == ZoneType.Residental)
-                {
-                    foreach(Citizen citizen in zone.getPeople())
+                    if (zone.ZoneType == ZoneType.Store)
                     {
-                        tax += citizen.GetSalary() * Finances.getTax(ZoneType.Residental)/100;
+                        if (zone.Building.GetIsPowered())
+                            tax += Finances.getTax(ZoneType.Store) / 100 * zone.Citizens.Count * 50;
+                        else
+                            tax += Finances.getTax(ZoneType.Store) / 100 * zone.Citizens.Count * 25;
+                    }
+                    else if (zone.ZoneType == ZoneType.Industrial)
+                    {
+                        if (zone.Building.GetIsPowered())
+                            tax += Finances.getTax(ZoneType.Industrial) / 100 * zone.Citizens.Count * 50;
+                        else
+                            tax += Finances.getTax(ZoneType.Industrial) / 100 * zone.Citizens.Count * 25;
+                    }
+                    else if (zone.ZoneType == ZoneType.Residental)
+                    {
+                        foreach (Citizen citizen in zone.Citizens)
+                        {
+                            tax += citizen.GetSalary() * Finances.getTax(ZoneType.Residental) / 100;
+                        }
                     }
                 }
             }
             tax = Math.Round(tax);
-            Finances.addIncome("Tax", Convert.ToInt32(tax), date);
+            if (tax != 0)
+                Finances.addIncome("Tax", Convert.ToInt32(tax), date.ToString("d"));
         }
 
         private void calcElectricity()
         {
             HashSet<Building.Building> visited = new HashSet<Building.Building>();
-            foreach (Zone zone in map)
+            foreach (List<Zone> rows in map)
             {
-                zone.getBuilding()?.SetIsPowered(false);
+                foreach (Zone zone in rows)
+                    zone.Building?.SetIsPowered(false);
             }
 
             foreach (PowerPlant powerPlant in powerPlants)
@@ -431,7 +440,7 @@ namespace SimVillage.Model
                     {
                         if (zones.Item1 + i >= 0 && zones.Item1 + i < mapHeight && zones.Item2 + j >= 0 && zones.Item2 + j < mapWidth)
                         {
-                            Building.Building building = map[zones.Item1 + i, zones.Item2 + j].getBuilding();
+                            Building.Building building = map[zones.Item1 + i][zones.Item2 + j].Building;
                             if (building != null && !visited.Contains(building) && !building.GetIsPowered() && powerConsumption + building.GetPowerConsumption() <= capacity)
                             {
                                 building.SetIsPowered(true);
@@ -440,7 +449,7 @@ namespace SimVillage.Model
                                 switch (building)
                                 {
                                     case School s:
-                                        if (calcDistance(map[29, 0].getBuilding(), s) != -1)
+                                        if (calcDistance(map[29][0].Building, s) != -1)
                                             availableSchools.Add(s);
                                         break;
                                 }
@@ -494,7 +503,7 @@ namespace SimVillage.Model
                     {
                         if (zones.Item1 + i >= 0 && zones.Item1 + i < mapHeight && zones.Item2 + j >= 0 && zones.Item2 + j < mapWidth)
                         {
-                            if (map[zones.Item1 + i, zones.Item2 + j].getBuilding() == to)
+                            if (map[zones.Item1 + i][zones.Item2 + j].Building == to)
                             {
                                 distances.Add(n);
                                 found = true;
@@ -514,7 +523,7 @@ namespace SimVillage.Model
                         {
                             if (!(Math.Abs(i) == Math.Abs(j)) && zones.Item1 + i >= 0 && zones.Item1 + i < mapHeight && zones.Item2 + j >= 0 && zones.Item2 + j < mapWidth)
                             {
-                                Building.Building building = map[zones.Item1 + i, zones.Item2 + j].getBuilding();
+                                Building.Building building = map[zones.Item1 + i][zones.Item2 + j].Building;
                                 if (building != from && building != null && building.GetType() == typeof(Road) && !visited.Contains(building))
                                 {
                                     visited.Add((Road)building);
@@ -534,24 +543,24 @@ namespace SimVillage.Model
             {
                 happiness += i.calcHappiness();
             }
-            return happiness;
+            return citizens.Count != 0 ? happiness / citizens.Count : 0;
         }
 
         public bool newZone(int x, int y, ZoneType zoneType)
         {
-            if (map[x, y].SetZone(zoneType))
+            if (map[x][y].SetZone(zoneType))
             {
-                if (zoneType == ZoneType.Industrial && calcDistance(map[x, y].getBuilding(), map[29, 0].getBuilding()) != -1)
+                if (zoneType == ZoneType.Industrial && calcDistance(map[x][y].Building, map[29][0].Building) != -1)
                 {
-                    availableIndustrials.Add((Industrial)map[x, y].getBuilding());
-                    map[x, y].getBuilding().SetAccessibility(true);
+                    availableIndustrials.Add((Industrial)map[x][y].Building);
+                    map[x][y].Building.SetAccessibility(true);
                 }
-                else if (zoneType == ZoneType.Store && calcDistance(map[x, y].getBuilding(), map[29, 0].getBuilding()) != -1)
+                else if (zoneType == ZoneType.Store && calcDistance(map[x][y].Building, map[29][0].Building) != -1)
                 {
-                    availableStores.Add((Store)map[x, y].getBuilding());
-                    map[x, y].getBuilding().SetAccessibility(true);
+                    availableStores.Add((Store)map[x][y].Building);
+                    map[x][y].Building.SetAccessibility(true);
                 }
-                Finances.addExpenses("Built a " + map[x, y].ToString(), map[x, y].getCost(), date);
+                Finances.addExpenses("Built a " + map[x][y].ToString(), map[x][y].getCost(), date.ToString("d"));
                 OnGameChanged();
                 return true;
             } else
@@ -584,8 +593,8 @@ namespace SimVillage.Model
             {
                 if (zones.Item1 >= 0 && zones.Item1 < mapHeight && zones.Item2 >= 0 && zones.Item2 < mapWidth)
                 {
-                    Zone zone = map[zones.Item1, zones.Item2];
-                    freeZone = freeZone && (zone.ZoneType == ZoneType.General && zone.getBuilding() == null);
+                    Zone zone = map[zones.Item1][zones.Item2];
+                    freeZone = freeZone && (zone.ZoneType == ZoneType.General && zone.Building == null);
                 } else
                 {
                     freeZone = false;
@@ -602,7 +611,7 @@ namespace SimVillage.Model
                 if (!inConstructor)
                 {
                     Finances.addExpenses("Built a " + building.GetType().Name, building.GetCost(), date);
-                    if (calcDistance(map[29, 0].getBuilding(), building) != -1)
+                    if (calcDistance(map[29][0].getBuilding(), building) != -1)
                     {
                         if (building.GetType() == typeof(PowerPlant))
                             powerPlants.Add((PowerPlant)building);
@@ -610,28 +619,36 @@ namespace SimVillage.Model
                     }
                     if (building.GetType() == typeof(Road))
                     {
-                        foreach (Zone zone in map)
+                        foreach (List<Zone> rows in map)
                         {
-                            if (zone.getBuilding() != null && !zone.getBuilding().GetAccessibility() && calcDistance(map[29, 0].getBuilding(), zone.getBuilding()) != -1)
+                            foreach (Zone zone in rows)
                             {
-                                zone.getBuilding().SetAccessibility(true);
-                                switch (zone.getBuilding())
+                                if (zone.Building != null && !zone.Building.GetAccessibility() && calcDistance(map[29][0].Building, zone.Building) != -1)
                                 {
-                                    case Industrial:
-                                        availableIndustrials.Add((Industrial)zone.getBuilding());
-                                        break;
-                                    case Store:
-                                        availableStores.Add((Store)zone.getBuilding());
-                                        break;
-                                    case PowerPlant:
-                                        powerPlants.Add((PowerPlant)zone.getBuilding());
-                                        break;
-                                    default:
-                                        break;
+                                    zone.Building.SetAccessibility(true);
+                                    switch (zone.Building)
+                                    {
+                                        case Industrial:
+                                            availableIndustrials.Add((Industrial)zone.Building);
+                                            break;
+                                        case Store:
+                                            availableStores.Add((Store)zone.Building);
+                                            break;
+                                        case PowerPlant:
+                                            powerPlants.Add((PowerPlant)zone.Building);
+                                            break;
+                                        default:
+                                            break;
+                                    }
                                 }
                             }
                         }
                     }
+                }
+                 
+                foreach ((int, int) zones in buildingZones)
+                {
+                    map[zones.Item1][zones.Item2].BuildBuilding(building);
                 }
                 if (!inConstructor)
                     OnGameChanged();
@@ -730,23 +747,29 @@ namespace SimVillage.Model
             {
                 CollectingTaxes();
                 double upkeep = 0;
-                foreach (Zone zone in map)
+                foreach (List<Zone> rows in map)
                 {
-                    if (zone.ZoneType == ZoneType.General && zone.getBuilding() != null)
+                    foreach (Zone zone in rows)
                     {
-                        upkeep += zone.getBuilding().GetCost() * 0.01;
+                        if (zone.ZoneType == ZoneType.General && zone.Building != null)
+                        {
+                            upkeep += zone.Building.GetCost() * 0.01;
+                        }
                     }
                 }
-                Finances.addExpenses("Monthly running expenses", Convert.ToInt32(upkeep), date);
+                Finances.addExpenses("Monthly running expenses", Convert.ToInt32(upkeep), date.ToString("d"));
             } else if (date.Year > previous_date.Year)
             {
                 foreach (School school in availableSchools)
                     GiveEducation(school);
 
-                foreach (Zone zone in map)
+                foreach (List<Zone> rows in map)
                 {
-                    if (zone.getBuilding() != null && zone.getBuilding().GetType() == typeof(Forest))
-                        ((Forest)zone.getBuilding()).AgeUp();
+                    foreach (Zone zone in rows)
+                    {
+                        if (zone.Building != null && zone.Building.GetType() == typeof(Forest))
+                            ((Forest)zone.Building).AgeUp();
+                    }
                 }
 
                 foreach (Citizen citizen in citizens)
@@ -755,8 +778,8 @@ namespace SimVillage.Model
                     Building.Building workPlace = citizen.GetWorkPlace();
                     if (!citizen.AgeUp())
                     {
-                        map[workPlace.GetX(), workPlace.GetY()].RemoveCitizenFromZone(citizen);
-                        map[home.GetX(), home.GetY()].RemoveCitizenFromZone(citizen);
+                        map[workPlace.GetX()][workPlace.GetY()].RemoveCitizenFromZone(citizen);
+                        map[home.GetX()][home.GetY()].RemoveCitizenFromZone(citizen);
                         citizens.Remove(citizen);
                         PeopleMoveIn(Citizen.ReGen18());
                     }
@@ -802,24 +825,27 @@ namespace SimVillage.Model
                 Residental house = null!;
                 if (availableHouses.Count == 0)
                 {
-                    foreach (Zone zone in map)
+                    foreach (List<Zone> rows in map)
                     {
-                        if (zone.ZoneType == ZoneType.Residental && !zone.Occupied)
+                        foreach (Zone zone in rows)
                         {
-                            zone.BuildBuilding();
-                            calcElectricity();
-                            if (calcDistance(zone.getBuilding(), map[29, 0].getBuilding()) == -1 || !zone.getBuilding().GetIsPowered())
+                            if (zone.ZoneType == ZoneType.Residental && !zone.Occupied)
                             {
-                                zone.DowngradeZone();
-                                zone.SetZone(ZoneType.Residental);
-                                continue;
-                            }
-                            else if (zone.getBuilding().GetIsPowered())
-                            {
-                                zone.DowngradeZone();
-                                zone.SetZone(ZoneType.Residental);
-                                houseZone = zone;
-                                break;
+                                zone.BuildBuilding();
+                                calcElectricity();
+                                if (calcDistance(zone.Building, map[29][0].Building) == -1 || !zone.Building.GetIsPowered())
+                                {
+                                    zone.DowngradeZone();
+                                    zone.SetZone(ZoneType.Residental);
+                                    continue;
+                                }
+                                else if (zone.Building.GetIsPowered())
+                                {
+                                    zone.DowngradeZone();
+                                    zone.SetZone(ZoneType.Residental);
+                                    houseZone = zone;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -876,7 +902,7 @@ namespace SimVillage.Model
                         {
                             houseZone.Occupied = true;
                             houseZone.BuildBuilding();
-                            house = (Residental)houseZone.getBuilding();
+                            house = (Residental)houseZone.Building;
                             availableHouses.Add(house);
                         }
                         if (citizen == null)
@@ -887,8 +913,8 @@ namespace SimVillage.Model
                         } else
                             citizen.SetHome(house);
                         house.MoveIn();
-                        map[house.GetX(), house.GetY()].addCitizenToZone(citizen);
-                        map[building.GetX(), building.GetY()].addCitizenToZone(citizen);
+                        map[house.GetX()][house.GetY()].addCitizenToZone(citizen);
+                        map[building.GetX()][building.GetY()].addCitizenToZone(citizen);
                         building.NewWorker();
                         citizen.SetWorkPlace(building);
                         citizen.SetSalary(500);
@@ -915,7 +941,7 @@ namespace SimVillage.Model
                         {
                             houseZone.Occupied = true;
                             houseZone.BuildBuilding();
-                            house = (Residental)houseZone.getBuilding();
+                            house = (Residental)houseZone.Building;
                             availableHouses.Add(house);
                         }
                         if (citizen == null)
@@ -926,8 +952,8 @@ namespace SimVillage.Model
                         } else
                             citizen.SetHome(house);
                         house.MoveIn();
-                        map[house.GetX(), house.GetY()].addCitizenToZone(citizen);
-                        map[building.GetX(), building.GetY()].addCitizenToZone(citizen);
+                        map[house.GetX()][house.GetY()].addCitizenToZone(citizen);
+                        map[building.GetX()][building.GetY()].addCitizenToZone(citizen);
                         building.NewWorker();
                         citizen.SetWorkPlace(building);
                         citizen.SetSalary(500);
@@ -940,28 +966,31 @@ namespace SimVillage.Model
                 Zone houseZone = null!;
                 if (availableHouses.Count == 0)
                 {
-                    foreach (Zone zone in map)
+                    foreach (List<Zone> rows in map)
                     {
-                        if (zone.ZoneType == ZoneType.Residental)
+                        foreach (Zone zone in rows)
                         {
-                            zone.BuildBuilding();
-                            calcElectricity();
-                            if (calcDistance(zone.getBuilding(), map[29, 0].getBuilding()) == -1)
+                            if (zone.ZoneType == ZoneType.Residental)
                             {
-                                zone.DowngradeZone();
-                                zone.SetZone(ZoneType.Residental);
-                                continue;
+                                zone.BuildBuilding();
+                                calcElectricity();
+                                if (calcDistance(zone.Building, map[29][0].Building) == -1)
+                                {
+                                    zone.DowngradeZone();
+                                    zone.SetZone(ZoneType.Residental);
+                                    continue;
+                                }
+                                else if (zone.Building.GetIsPowered())
+                                {
+                                    zone.DowngradeZone();
+                                    zone.SetZone(ZoneType.Residental);
+                                }
                             }
-                            else if (zone.getBuilding().GetIsPowered())
+                            if (zone.ZoneType == ZoneType.Residental && !zone.Occupied)
                             {
-                                zone.DowngradeZone();
-                                zone.SetZone(ZoneType.Residental);
+                                houseZone = zone;
+                                break;
                             }
-                        }
-                        if (zone.ZoneType == ZoneType.Residental && !zone.Occupied)
-                        {
-                            houseZone = zone;
-                            break;
                         }
                     }
                 } else
@@ -1017,7 +1046,7 @@ namespace SimVillage.Model
                     {
                         for (int j = 0; j < 4 && !found; j++)
                         {
-                            if (map[house.GetX() + i, house.GetY() + j].ZoneType == ZoneType.Industrial)
+                            if (map[house.GetX() + i][house.GetY() + j].ZoneType == ZoneType.Industrial)
                             {
                                 found = true;
                                 break;
@@ -1030,7 +1059,7 @@ namespace SimVillage.Model
                         {
                             houseZone.Occupied = true;
                             houseZone.BuildBuilding();
-                            house = (Residental)houseZone.getBuilding();
+                            house = (Residental)houseZone.Building;
                             availableHouses.Add(house);
                         }
                         citizen = Citizen.ReGen(house);
@@ -1039,8 +1068,8 @@ namespace SimVillage.Model
                         citizen.SetWorkPlace(building);
                         citizen.SetSalary(500);
                         citizens.Add(citizen);
-                        map[house.GetX(), house.GetY()].addCitizenToZone(citizen);
-                        map[building.GetX(), building.GetY()].addCitizenToZone(citizen);
+                        map[house.GetX()][house.GetY()].addCitizenToZone(citizen);
+                        map[building.GetX()][building.GetY()].addCitizenToZone(citizen);
                     }
                 }
                 else if (house != null)
@@ -1065,7 +1094,7 @@ namespace SimVillage.Model
                     {
                         for (int j = 0; j < 4 && !found; j++)
                         {
-                            if (map[house.GetX() + i, house.GetY() + j].ZoneType == ZoneType.Industrial)
+                            if (map[house.GetX() + i][house.GetY() + j].ZoneType == ZoneType.Industrial)
                             {
                                 found = true;
                                 break;
@@ -1078,7 +1107,7 @@ namespace SimVillage.Model
                         {
                             houseZone.Occupied = true;
                             houseZone.BuildBuilding();
-                            house = (Residental)houseZone.getBuilding();
+                            house = (Residental)houseZone.Building;
                             availableHouses.Add(house);
                         }
                         citizen = Citizen.ReGen(house);
@@ -1087,8 +1116,8 @@ namespace SimVillage.Model
                         citizen.SetWorkPlace(building);
                         citizen.SetSalary(500);
                         citizens.Add(citizen);
-                        map[house.GetX(), house.GetY()].addCitizenToZone(citizen);
-                        map[building.GetX(), building.GetY()].addCitizenToZone(citizen);
+                        map[house.GetX()][house.GetY()].addCitizenToZone(citizen);
+                        map[building.GetX()][building.GetY()].addCitizenToZone(citizen);
                     }
                 }
             }

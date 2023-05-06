@@ -8,13 +8,22 @@ namespace SimVillage.Model.Building
 {
     public class Stadium : Building
     {
+        int Radius = 30;
         public Stadium(int x, int y)
         {
             PowerConsumption = 60;
             Size = (2, 2);
-            cost = 600;
+            Cost = 600;
             X = x;
             Y = y;
+        }
+
+        public int GetRadius() { return Radius; }
+
+        public override String ToString()
+        {
+            return "Power consumption: " + PowerConsumption + "\nMaintenance cost: " + Cost / 100 + "\nRadius: " + Radius;
+            
         }
     }
 }

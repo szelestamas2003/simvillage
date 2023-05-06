@@ -12,35 +12,27 @@ namespace SimVillage.Model
 
         public ZoneType ZoneType { get; private set; }
 
-        private Building.Building building = null!;
+        public Building.Building Building { get; private set; } = null!;
 
-        private List<Citizen> citizens = null!;
+        public List<Citizen> Citizens { get; private set; }
 
         private const int cost = 400;
-
-        public Building.Building getBuilding() { return building; }
-
         public int getCost() { return cost; }
-
-        public List<Citizen> getPeople()
-        {
-            return citizens;
-        }
 
         public void addCitizenToZone(Citizen person)
         {
-            citizens.Add(person);
+            Citizens.Add(person);
         }
 
         public void RemoveCitizenFromZone(Citizen person)
         {
-            citizens.Remove(person);
+            Citizens.Remove(person);
         }
 
         public Zone(ZoneType zoneType = ZoneType.General)
         {
             ZoneType = zoneType;
-            citizens = new List<Citizen>();
+            Citizens = new List<Citizen>();
         }
 
         public void BuildBuilding(Building.Building? building = null)
@@ -51,13 +43,13 @@ namespace SimVillage.Model
                 switch (ZoneType)
                 {
                     case ZoneType.Residental:
-                        this.building = new Residental(X, Y);
+                        Building = new Residental(X, Y);
                         break;
                     case ZoneType.Industrial:
-                        this.building = new Industrial(X, Y);
+                        Building = new Industrial(X, Y);
                         break;
                     case ZoneType.Store:
-                        this.building = new Store(X, Y);
+                        Building = new Store(X, Y);
                         break;
                     default:
                         throw new ArgumentNullException();
@@ -65,7 +57,7 @@ namespace SimVillage.Model
             } else
             {
                 if (ZoneType == ZoneType.General)
-                    this.building = building;
+                    Building = building;
                 else
                     throw new ArgumentOutOfRangeException();
             }
@@ -74,11 +66,11 @@ namespace SimVillage.Model
         public int getHappiness()
         {
             int happiness = 0;
-            foreach (Citizen i in citizens)
+            foreach (Citizen i in Citizens)
             {
                 happiness += i.calcHappiness();
             }
-            return citizens.Count == 0 ? 0 : happiness / citizens.Count;
+            return Citizens.Count == 0 ? 0 : happiness / Citizens.Count;
         }
 
         public bool DowngradeZone()
@@ -86,13 +78,13 @@ namespace SimVillage.Model
             if (ZoneType != ZoneType.General)
             {
                 ZoneType = ZoneType.General;
-                building = null!;
+                Building = null!;
                 Occupied = false;
-                citizens.Clear();
+                Citizens.Clear();
                 return true;
-            } else if (building != null)
+            } else if (Building != null)
             {
-                building = null!;
+                Building = null!;
                 Occupied = false;
                 return true;
             }
@@ -101,7 +93,7 @@ namespace SimVillage.Model
 
         public bool SetZone(ZoneType zoneType)
         {
-            if (ZoneType == ZoneType.General && building == null)
+            if (ZoneType == ZoneType.General && Building == null)
             {
                 ZoneType = zoneType;
                 if (ZoneType != ZoneType.Residental)
@@ -113,7 +105,7 @@ namespace SimVillage.Model
 
         public override string ToString()
         {
-            return ZoneType.ToString() + " Zone" + (building != null ? " with " + building.GetType().Name + " on it" : "");
+            return ZoneType.ToString() + " Zone" + (Building != null ? " with " + Building.GetType().Name + " on it" : "");
         }
     }
 }

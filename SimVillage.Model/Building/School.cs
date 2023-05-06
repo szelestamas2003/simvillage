@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SimVillage.Model.Building
+﻿namespace SimVillage.Model.Building
 {
     public class School : Building
     {
@@ -21,7 +15,7 @@ namespace SimVillage.Model.Building
             else
                 Size = (2, 2);
             Type = type;
-            cost = 600;
+            Cost = 600;
             X = x;
             Y = y;
             Students = new List<Citizen>();
@@ -60,6 +54,11 @@ namespace SimVillage.Model.Building
                         student.SetSalary(1500);
                 }
             }
+        }
+
+        public override String ToString()
+        {
+            return "School type: " + Type + "\nCurrent students " + Students.Count + "\nMaximum students: " + MaxStudents + "\nPower consumption: " + PowerConsumption + "\nMaintenance cost: " + Cost / 100;
         }
 
 

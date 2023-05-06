@@ -13,10 +13,12 @@ namespace SimVillage.Model
 
         public async Task saveGame(string path, GameState data)
         {
+            string folder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            folder = Path.Combine(folder, "SimVillage/saves");
             try
             {
-                await using FileStream createStream = File.Create(path);
-                string string2 = JsonSerializer.Serialize(data);
+                Directory.CreateDirectory(folder);
+                await using FileStream createStream = File.Create(Path.Combine(folder, path));
                 await JsonSerializer.SerializeAsync(createStream, data);
             }
             catch

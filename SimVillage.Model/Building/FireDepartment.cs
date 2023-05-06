@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SimVillage.Model.Building
+﻿namespace SimVillage.Model.Building
 {
     public class FireDepartment : Building
     {
         bool UnitAvailable;
+        int Radius = 40;
         public FireDepartment(int x, int y)
         {
             PowerConsumption = 45;
             Size = (1, 1);
-            cost = 500;
+            Cost = 500;
             X = x;
             Y = y;
         }
@@ -26,9 +21,11 @@ namespace SimVillage.Model.Building
         {
             UnitAvailable = true;
         }
+
+        public int GetRadius() { return Radius; }
         public override String ToString()
         {
-            return "Fire Department: Power consmuption: " + PowerConsumption + "Unit available: " + UnitAvailable;
+            return "Power consumption: " + PowerConsumption + "\nUnit available: " + UnitAvailable + "\nMaintenance cost: "+ Cost/100 + "\nRadius: "+ Radius;
         }
     }
 }

@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SimVillage.Model.Building
+﻿namespace SimVillage.Model.Building
 {
     public class Forest : Building
     {
         int Age;
-        public Forest(int x, int y) {
+        int Radius = 3;
+        public Forest(int x, int y)
+        {
             Age = 0;
             Size = (1, 1);
             PowerConsumption = 3;
-            cost = 80;
+            Cost = 80;
             IsAccessible = true;
             X = x;
             Y = y;
@@ -24,6 +20,8 @@ namespace SimVillage.Model.Building
             Age = age;
         }
 
+        public int GetRadius() { return Radius; }
+
         public void AgeUp()
         {
             Age += 1;
@@ -32,7 +30,7 @@ namespace SimVillage.Model.Building
 
         public override String ToString()
         {
-            return "Forest: Age: " + Age + " Power consumption: " + PowerConsumption;
+            return "Age: " + Age + "\nPower consumption: " + PowerConsumption + "\nRadius: " + Radius;
         }
         
     }

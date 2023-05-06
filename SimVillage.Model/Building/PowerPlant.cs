@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SimVillage.Model.Building
+﻿namespace SimVillage.Model.Building
 {
     public class PowerPlant : Building
     {
@@ -13,12 +7,17 @@ namespace SimVillage.Model.Building
         {
             PowerConsumption = 0;
             Size = (2, 2);
-            cost = 1000;
+            Cost = 1000;
             X = x;
             Y = y;
         }
         public int GetGeneratedPower() {  return GeneratedPower; }
         public void SetGeneratedPower(int value) {  GeneratedPower = value; }
+
+        public override String ToString()
+        {
+            return "Generated Power: " + GeneratedPower + "\nMaintenance cost: " + Cost / 100;
+        }
 
     }
 }

@@ -18,11 +18,27 @@ namespace SimVillage.ViewModel
 
         public int Height { get { return model.Height(); } }
 
+        public int CanvasW { get; private set; }
+
+        public int CanvasH { get; private set; }
+
         public string Name { get { return model.Name; } }
 
         public string Date { get; private set; }
 
         public int CitizenCount { get; private set; }
+
+        public int Happiness { get { return model.getHappiness(); } }
+
+        public List<Transaction> Expenses { get { var asd = model.Finances.Expenses; asd.Reverse(); return asd; } }
+
+        public List<Transaction> Incomes { get { var asd = model.Finances.Incomes; asd.Reverse(); return asd; } }
+
+        public int ResidentTax { get { return model.Finances.getTax(ZoneType.Residental); } }
+
+        public int IndustrialTax { get { return model.Finances.getTax(ZoneType.Industrial); } }
+
+        public int StoreTax { get { return model.Finances.getTax(ZoneType.Store); } }
 
         public bool IsMoneyNegative { get; private set; }
 
@@ -48,7 +64,15 @@ namespace SimVillage.ViewModel
 
         public event EventHandler? TenSpeed;
 
+        public event EventHandler? Info;
+
         public event EventHandler? Rename;
+
+        public event EventHandler? ExitGame;
+
+        public event EventHandler? ContinueGame;
+
+        public event EventHandler? PauseMenu;
 
         public DelegateCommand RenameCommand { get; private set; }
 
@@ -59,6 +83,20 @@ namespace SimVillage.ViewModel
         public DelegateCommand FiveSpeedCommand { get; private set; }
 
         public DelegateCommand TenSpeedCommand { get; private set; }
+
+        public DelegateCommand InfoCommand { get; private set; }
+
+        public DelegateCommand NewGameCommand { get; private set; }
+
+        public DelegateCommand LoadGameCommand { get; private set; }
+
+        public DelegateCommand SaveGameCommand { get; private set; }
+
+        public DelegateCommand ExitCommand { get; private set; }
+
+        public DelegateCommand ContinueGameCommand { get; private set; }
+
+        public DelegateCommand PauseMenuCommand { get; private set; }
 
         public SimVillageViewModel(City model)
         {
@@ -94,6 +132,48 @@ namespace SimVillage.ViewModel
             OneSpeedCommand = new DelegateCommand(param => OnOneSpeedCommand());
             FiveSpeedCommand = new DelegateCommand(param => OnFiveSpeedCommand());
             TenSpeedCommand = new DelegateCommand(param => OnTenSpeedCommand());
+            InfoCommand = new DelegateCommand(param => OnInfoCommand());
+            NewGameCommand = new DelegateCommand(param => OnNewGame());
+            LoadGameCommand = new DelegateCommand(param => OnLoadGame());
+            SaveGameCommand = new DelegateCommand(param => OnSaveGame());
+            ExitCommand = new DelegateCommand(param => OnExitGame());
+            ContinueGameCommand = new DelegateCommand(param => OnContinueGame());
+            PauseMenuCommand = new DelegateCommand(param => OnPauseMenu());
+        }
+
+        private void OnPauseMenu()
+        {
+            PauseMenu?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnContinueGame()
+        {
+            ContinueGame?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnExitGame()
+        {
+            ExitGame?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnSaveGame()
+        {
+            SaveGame?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnLoadGame()
+        {
+            LoadGame?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnNewGame()
+        {
+            NewGame?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnInfoCommand()
+        {
+            Info?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnOptionsClicked(int number)
@@ -130,15 +210,20 @@ namespace SimVillage.ViewModel
                         X = i,
                         Y = j,
                         Text = string.Empty,
+                        Top = i * 64,
+                        Left = j * 64,
                         Number = i * Width + j,
                         Name = string.Empty,
-                        CitizenCount = string.Empty,
-                        Happiness = string.Empty,
+                        Info = string.Empty,
                         Clicked = new DelegateCommand(param => OnFieldClicked(Convert.ToInt32(param))),
                         UpgradeCommand = new DelegateCommand(param => UpgradeZone(Convert.ToInt32(param)))
                     });
                 }
             }
+            CanvasW = Width * 64;
+            CanvasH = Height * 64;
+            OnPropertyChanged(nameof(CanvasW));
+            OnPropertyChanged(nameof(CanvasH));
             OnPropertyChanged(nameof(Fields));
         }
 
@@ -257,70 +342,74 @@ namespace SimVillage.ViewModel
                 IsMoneyNegative = false;
             }
 
-            foreach (Zone zone in model.Map)
+            foreach (List<Zone> rows in model.Map)
             {
-                if (zone.getBuilding() != null)
+                foreach (Zone zone in rows)
                 {
-                    switch (zone.getBuilding())
+                    if (zone.Building != null)
                     {
-                        case Road:
-                            Fields[zone.X * Width + zone.Y].Text = "Road";
-                            break;
-                        case Forest:
-                            Fields[zone.X * Width + zone.Y].Text = "Forest";
-                            break;
-                        case PoliceDepartment:
-                            Fields[zone.X * Width + zone.Y].Text = "Police";
-                            break;
-                        case FireDepartment:
-                            Fields[zone.X * Width + zone.Y].Text = "Fire Department";
-                            break;
-                        case PowerLine:
-                            Fields[zone.X * Width + zone.Y].Text = "Power Line";
-                            break;
-                        case PowerPlant:
-                            Fields[zone.X * Width + zone.Y].Text = "Power Plant";
-                            break;
-                        case School s:
-                            if (s.GetSchoolType() == SchoolTypes.Elementary)
-                                Fields[zone.X * Width + zone.Y].Text = "School";
-                            else
-                                Fields[zone.X * Width + zone.Y].Text = "University";
-                            break;
-                        case Stadium:
-                            Fields[zone.X * Width + zone.Y].Text = "Stadium";
-                            break;
-                        case Residental:
-                            Fields[zone.X * Width + zone.Y].Text = "Residental Building";
-                            break;
-                        case Industrial:
-                            Fields[zone.X * Width + zone.Y].Text = "Industrial Building";
-                            break;
-                        case Store:
-                            Fields[zone.X * Width + zone.Y].Text = "Store Building";
-                            break;
-                        default:
-                            Fields[zone.X * Width + zone.Y].Text = string.Empty;
-                            break;
+                        switch (zone.Building)
+                        {
+                            case Road:
+                                Fields[zone.X * Width + zone.Y].Text = "Road";
+                                break;
+                            case Forest:
+                                Fields[zone.X * Width + zone.Y].Text = "Forest";
+                                break;
+                            case PoliceDepartment:
+                                Fields[zone.X * Width + zone.Y].Text = "Police";
+                                break;
+                            case FireDepartment:
+                                Fields[zone.X * Width + zone.Y].Text = "Fire Department";
+                                break;
+                            case PowerLine:
+                                Fields[zone.X * Width + zone.Y].Text = "Power Line";
+                                break;
+                            case PowerPlant:
+                                Fields[zone.X * Width + zone.Y].Text = "Power Plant";
+                                break;
+                            case School s:
+                                if (s.GetSchoolType() == SchoolTypes.Elementary)
+                                    Fields[zone.X * Width + zone.Y].Text = "School";
+                                else
+                                    Fields[zone.X * Width + zone.Y].Text = "University";
+                                break;
+                            case Stadium:
+                                Fields[zone.X * Width + zone.Y].Text = "Stadium";
+                                break;
+                            case Residental:
+                                Fields[zone.X * Width + zone.Y].Text = "Residental Building";
+                                break;
+                            case Industrial:
+                                Fields[zone.X * Width + zone.Y].Text = "Industrial Building";
+                                break;
+                            case Store:
+                                Fields[zone.X * Width + zone.Y].Text = "Store Building";
+                                break;
+                            default:
+                                Fields[zone.X * Width + zone.Y].Text = string.Empty;
+                                break;
+                        }
                     }
-                } else
-                {
-                    Fields[zone.X * Width + zone.Y].Text = zone.ZoneType switch
+                    else
                     {
-                        ZoneType.Residental => "Residental",
-                        ZoneType.Industrial => "Industrial",
-                        ZoneType.Store => "Store",
-                        _ => string.Empty
-                    };
+                        Fields[zone.X * Width + zone.Y].Text = zone.ZoneType switch
+                        {
+                            ZoneType.Residental => "Residental",
+                            ZoneType.Industrial => "Industrial",
+                            ZoneType.Store => "Store",
+                            _ => string.Empty
+                        };
+                    }
+                    Fields[zone.X * Width + zone.Y].Name = zone.ToString();
+                    Fields[zone.X * Width + zone.Y].Info = zone.Building != null ? zone.Building.ToString() : "";
                 }
-                Fields[zone.X * Width + zone.Y].Name = zone.ToString();
-                Fields[zone.X * Width + zone.Y].CitizenCount = "Citizens: " + zone.getPeople().Count;
-                Fields[zone.X * Width + zone.Y].Happiness = "Happiness: " + zone.getHappiness();
             }
             OnPropertyChanged(nameof(CitizenCount));
             OnPropertyChanged(nameof(IsMoneyNegative));
             OnPropertyChanged(nameof(Money));
             OnPropertyChanged(nameof(Fields));
+            OnPropertyChanged(nameof(Happiness));
         }
 
         private void Model_GameCreated(object? sender, EventArgs e)

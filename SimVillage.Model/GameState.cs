@@ -13,6 +13,6 @@ namespace SimVillage.Persistence
         public DateTime Date { get; set; }
         public Finances Finances { get; set; }
         public List<Citizen> Citizens { get; set; }
-        //public Zone[,] Zones;
+        public List<List<Zone>> Zones { get; set; }
     }
 }

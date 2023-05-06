@@ -4,14 +4,14 @@ namespace SimVillage.Model
 {
     public class Citizen
     {
-        int Age;
-        int Salary;
-        EducationLevel EducationLevel;
-        bool Pensioner;
-        int Happiness;
-        int HadToMove = 0;
-        Residental Home;
-        Building.Building WorkPlace;
+        public int Age { get; private set; }
+        public int Salary { get; private set; }
+        public EducationLevel EducationLevel { get; private set; }
+        public bool Pensioner { get; private set; }
+        public int Happiness { get; private set; }
+        public int HadToMove { get; private set; } = 0;
+        public Residental Home { get; private set; }
+        public Building.Building WorkPlace { get; private set; } = null!;
 
 
         private Citizen(int Age, Residental Home)
