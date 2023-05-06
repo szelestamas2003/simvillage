@@ -394,7 +394,8 @@ namespace SimVillage.Model
                 }
             }
             tax = Math.Round(tax);
-            Finances.addIncome("Tax", Convert.ToInt32(tax), date.ToString("d"));
+            if (tax != 0)
+                Finances.addIncome("Tax", Convert.ToInt32(tax), date.ToString("d"));
         }
 
         private void calcElectricity()
@@ -403,7 +404,7 @@ namespace SimVillage.Model
             foreach (List<Zone> rows in map)
             {
                 foreach (Zone zone in rows)
-                    zone.                    Building?.SetIsPowered(false);
+                    zone.Building?.SetIsPowered(false);
             }
 
             foreach (PowerPlant powerPlant in powerPlants)
@@ -552,12 +553,12 @@ namespace SimVillage.Model
                 if (zoneType == ZoneType.Industrial && calcDistance(map[x][y].Building, map[29][0].Building) != -1)
                 {
                     availableIndustrials.Add((Industrial)map[x][y].Building);
-                    map[x][y].                    Building.SetAccessibility(true);
+                    map[x][y].Building.SetAccessibility(true);
                 }
                 else if (zoneType == ZoneType.Store && calcDistance(map[x][y].Building, map[29][0].Building) != -1)
                 {
                     availableStores.Add((Store)map[x][y].Building);
-                    map[x][y].                    Building.SetAccessibility(true);
+                    map[x][y].Building.SetAccessibility(true);
                 }
                 Finances.addExpenses("Built a " + map[x][y].ToString(), map[x][y].getCost(), date.ToString("d"));
                 OnGameChanged();
@@ -615,7 +616,7 @@ namespace SimVillage.Model
                             {
                                 if (zone.Building != null && !zone.Building.GetAccessibility() && calcDistance(map[29][0].Building, zone.Building) != -1)
                                 {
-                                    zone.                                    Building.SetAccessibility(true);
+                                    zone.Building.SetAccessibility(true);
                                     switch (zone.Building)
                                     {
                                         case Industrial:
