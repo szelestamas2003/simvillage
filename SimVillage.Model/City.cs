@@ -605,13 +605,13 @@ namespace SimVillage.Model
             {
                 foreach ((int, int) zones in buildingZones)
                 {
-                    map[zones.Item1, zones.Item2].BuildBuilding(building);
+                    map[zones.Item1][zones.Item2].BuildBuilding(building);
                 }
 
                 if (!inConstructor)
                 {
-                    Finances.addExpenses("Built a " + building.GetType().Name, building.GetCost(), date);
-                    if (calcDistance(map[29][0].getBuilding(), building) != -1)
+                    Finances.addExpenses("Built a " + building.GetType().Name, building.GetCost(), date.ToString("d"));
+                    if (calcDistance(map[29][0].Building, building) != -1)
                     {
                         if (building.GetType() == typeof(PowerPlant))
                             powerPlants.Add((PowerPlant)building);
