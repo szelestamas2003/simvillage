@@ -44,71 +44,73 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Command="{Binding Clicked}" CommandParameter="{Binding Number}" Cursor="Hand">
-                        <Popup IsOpen="{Binding IsClicked}" AllowsTransparency="True">
-                            <Popup.Style>
-                                <Style TargetType="Popup">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsXGtThan25}" Value="True">
-                                            <Setter Property="Placement" Value="Top"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Popup.Style>
-                            <StackPanel Background="White">
-                                <TextBlock Text="{Binding Name}" Padding="5, 5, 5, 0" FontWeight="Bold" FontSize="15"/>
-                                <StackPanel Orientation="Vertical">
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                    <Button Command="{Binding Clicked}" CommandParameter="{Binding Number}" Cursor="Hand" Padding="0">
+                        <Grid>
+                            <Popup IsOpen="{Binding IsClicked}" AllowsTransparency="True">
+                                <Popup.Style>
+                                    <Style TargetType="Popup">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsXGtThan25}" Value="True">
+                                                <Setter Property="Placement" Value="Top"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Popup.Style>
+                                <StackPanel Background="White">
+                                    <TextBlock Text="{Binding Name}" Padding="5, 5, 5, 0" FontWeight="Bold" FontSize="15"/>
+                                    <StackPanel Orientation="Vertical">
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding Info}" Padding="5, 5, 5, 5" FontSize="10">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Info}" Value="">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                    <TextBlock Text="Do you want to upgrade this zone?" Padding="5, 0, 0, 0" FontSize="10">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Text}" Value="Industrial Building">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Text}" Value="Residental Building">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Text}" Value="Store Building">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                    <Button Content="Upgrade" Height="20" Width="60" Background="Wheat" HorizontalAlignment="Left" Margin="5, 0, 0, 5" Command="{Binding UpgradeCommand}" CommandParameter="{Binding Number}">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Text}" Value="Industrial Building">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Text}" Value="Residental Building">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Text}" Value="Store Building">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
                                 </StackPanel>
-                                <TextBlock Text="{Binding Info}" Padding="5, 5, 5, 5" FontSize="10">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Info}" Value="">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                                <TextBlock Text="Do you want to upgrade this zone?" Padding="5, 0, 0, 0" FontSize="10">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Text}" Value="Industrial Building">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Text}" Value="Residental Building">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Text}" Value="Store Building">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                                <Button Content="Upgrade" Height="20" Width="60" Background="Wheat" HorizontalAlignment="Left" Margin="5, 0, 0, 5" Command="{Binding UpgradeCommand}" CommandParameter="{Binding Number}">
-                                    <Button.Style>
-                                        <Style TargetType="Button">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Text}" Value="Industrial Building">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Text}" Value="Residental Building">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Text}" Value="Store Building">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                </Button>
-                            </StackPanel>
-                        </Popup>
+                            </Popup>
+                        </Grid>
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Setter Property="Background" Value="LightGreen"/>

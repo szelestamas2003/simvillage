@@ -8,7 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="View\pixelarts\elementary_school_t.png" />
+    <None Remove="View\pixelarts\fire_t.png" />
+    <None Remove="View\pixelarts\forest.png" />
+    <None Remove="View\pixelarts\road_t.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SimVillage.Model\SimVillage.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="View\pixelarts\elementary_school_t.png" />
+    <Resource Include="View\pixelarts\fire_t.png" />
+    <Resource Include="View\pixelarts\forest.png" />
+    <Resource Include="View\pixelarts\road_t.png" />
   </ItemGroup>
 
 </Project>
