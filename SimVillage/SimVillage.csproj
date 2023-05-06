@@ -2,49 +2,13 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="View\pixelarts\elementary_school.png" />
-    <None Remove="View\pixelarts\elementary_school_t.png" />
-    <None Remove="View\pixelarts\factory.png" />
-    <None Remove="View\pixelarts\fire.png" />
-    <None Remove="View\pixelarts\fire_fighter.png" />
-    <None Remove="View\pixelarts\fire_t.png" />
-    <None Remove="View\pixelarts\forest.png" />
-    <None Remove="View\pixelarts\police.png" />
-    <None Remove="View\pixelarts\power_generator.png" />
-    <None Remove="View\pixelarts\residental_1.png" />
-    <None Remove="View\pixelarts\road.png" />
-    <None Remove="View\pixelarts\road_t.png" />
-    <None Remove="View\pixelarts\shop.png" />
-    <None Remove="View\pixelarts\stadium.png" />
-    <None Remove="View\pixelarts\university.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\SimVillage.Model\SimVillage.Model.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="View\pixelarts\elementary_school.png" />
-    <Resource Include="View\pixelarts\elementary_school_t.png" />
-    <Resource Include="View\pixelarts\factory.png" />
-    <Resource Include="View\pixelarts\fire.png" />
-    <Resource Include="View\pixelarts\fire_fighter.png" />
-    <Resource Include="View\pixelarts\fire_t.png" />
-    <Resource Include="View\pixelarts\forest.png" />
-    <Resource Include="View\pixelarts\police.png" />
-    <Resource Include="View\pixelarts\power_generator.png" />
-    <Resource Include="View\pixelarts\residental_1.png" />
-    <Resource Include="View\pixelarts\road.png" />
-    <Resource Include="View\pixelarts\road_t.png" />
-    <Resource Include="View\pixelarts\shop.png" />
-    <Resource Include="View\pixelarts\stadium.png" />
-    <Resource Include="View\pixelarts\university.png" />
   </ItemGroup>
 
 </Project>
