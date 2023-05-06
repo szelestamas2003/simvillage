@@ -15,7 +15,7 @@ namespace SimVillage.Model.Building
             Age = 0;
             Size = (1, 1);
             PowerConsumption = 3;
-            cost = 80;
+            Cost = 80;
             IsAccessible = true;
             X = x;
             Y = y;

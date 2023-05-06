@@ -12,7 +12,7 @@ namespace SimVillage.Model.Building
         {
             PowerConsumption = 0;
             Size = (1, 1);
-            cost = 20;
+            Cost = 20;
             IsAccessible = true;
             X = x;
             Y = y;

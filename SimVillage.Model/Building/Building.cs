@@ -8,15 +8,15 @@ namespace SimVillage.Model.Building
 {
     public abstract class Building
     {
-        protected (int, int) Size;
-        protected bool Occupied;
-        protected int Density;
-        protected int cost;
-        protected int PowerConsumption;
-        protected bool IsPowered;
-        protected bool IsAccessible;
-        protected int X;
-        protected int Y;
+        public (int, int) Size { get; protected set; }
+        public bool Occupied { get; protected set; }
+        public int Density { get; protected set; }
+        public int Cost { get; protected set; }
+        public int PowerConsumption { get; protected set; }
+        public bool IsPowered { get; protected set; }
+        public bool IsAccessible { get; protected set; }
+        public int X { get; protected set; }
+        public int Y { get; protected set; }
 
 
         public Building((int, int) size, bool occupied, int density, int powerConsumption, int x, int y)
@@ -59,7 +59,7 @@ namespace SimVillage.Model.Building
         }
         public int GetCost()
         {
-            return cost;
+            return Cost;
         }
     }
 }

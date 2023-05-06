@@ -14,7 +14,7 @@ namespace SimVillage.Model.Building
         {
             PowerConsumption = 45;
             Size = (1, 1);
-            cost = 500;
+            Cost = 500;
             X = x;
             Y = y;
         }
@@ -31,7 +31,7 @@ namespace SimVillage.Model.Building
         public int GetRadius() { return Radius; }
         public override String ToString()
         {
-            return "Power consumption: " + PowerConsumption + "\nUnit available: " + UnitAvailable + "\nMaintenance cost: "+ cost/100 + "\nRadius: "+ Radius;
+            return "Power consumption: " + PowerConsumption + "\nUnit available: " + UnitAvailable + "\nMaintenance cost: "+ Cost/100 + "\nRadius: "+ Radius;
         }
     }
 }

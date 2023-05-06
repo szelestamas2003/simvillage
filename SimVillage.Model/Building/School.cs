@@ -21,7 +21,7 @@ namespace SimVillage.Model.Building
             else
                 Size = (2, 2);
             Type = type;
-            cost = 600;
+            Cost = 600;
             X = x;
             Y = y;
             Students = new List<Citizen>();
@@ -64,7 +64,7 @@ namespace SimVillage.Model.Building
 
         public override String ToString()
         {
-            return "School type: " + Type + "\nCurrent students " + Students.Count + "\nMaximum students: " + MaxStudents + "\nPower consumption: " + PowerConsumption + "\nMaintenance cost: " + cost / 100;
+            return "School type: " + Type + "\nCurrent students " + Students.Count + "\nMaximum students: " + MaxStudents + "\nPower consumption: " + PowerConsumption + "\nMaintenance cost: " + Cost / 100;
         }
 
 

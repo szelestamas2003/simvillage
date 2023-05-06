@@ -336,9 +336,9 @@ namespace SimVillage.ViewModel
             {
                 foreach (Zone zone in rows)
                 {
-                    if (zone.getBuilding() != null)
+                    if (zone.Building != null)
                     {
-                        switch (zone.getBuilding())
+                        switch (zone.Building)
                         {
                             case Road:
                                 Fields[zone.X * Width + zone.Y].Text = "Road";
@@ -392,7 +392,7 @@ namespace SimVillage.ViewModel
                         };
                     }
                     Fields[zone.X * Width + zone.Y].Name = zone.ToString();
-                    Fields[zone.X * Width + zone.Y].Info = zone.getBuilding() != null ? zone.getBuilding().ToString() : "";
+                    Fields[zone.X * Width + zone.Y].Info = zone.Building != null ? zone.Building.ToString() : "";
                 }
             }
             OnPropertyChanged(nameof(CitizenCount));

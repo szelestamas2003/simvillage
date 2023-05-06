@@ -12,7 +12,7 @@ namespace SimVillage.Model.Building
         {
             Size = (1, 1);
             PowerConsumption = 4;
-            cost = 40;
+            Cost = 40;
             IsAccessible = true;
             X = x;
             Y = y;
@@ -20,7 +20,7 @@ namespace SimVillage.Model.Building
 
         public override String ToString()
         {
-            return "Power consumption: " + PowerConsumption + "\nMaintenance cost " + cost / 100;
+            return "Power consumption: " + PowerConsumption + "\nMaintenance cost " + Cost / 100;
         }
     }
 }

@@ -125,7 +125,7 @@ namespace SimVillage
         private void ViewModel_NewGame(object? sender, EventArgs e)
         {
             mainWindow.Navigate(gamePageUri);
-            city.newGame("SimVillage");
+            city.NewGame("SimVillage");
             timer.Start();
         }
 
