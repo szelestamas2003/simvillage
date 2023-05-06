@@ -8,11 +8,11 @@ namespace SimVillage.Model.Building
 {
     public abstract class Building
     {
-        public (int, int) Size { get; protected set; }
+        protected (int, int) Size;
         public bool Occupied { get; protected set; }
         public int Density { get; protected set; }
-        public int Cost { get; protected set; }
-        public int PowerConsumption { get; protected set; }
+        protected int Cost;
+        protected int PowerConsumption;
         public bool IsPowered { get; protected set; }
         public bool IsAccessible { get; protected set; }
         public int X { get; protected set; }
