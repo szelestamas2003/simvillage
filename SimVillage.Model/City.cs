@@ -392,7 +392,13 @@ namespace SimVillage.Model
             {
                 throw new InvalidOperationException("No data access is provided");
             }
-            await dataAccess.loadGame(path);
+            GameState g = await dataAccess.loadGame(path);
+            cityName = g.Name;
+            citizens = g.Citizens;
+            Finances = g.Finances;
+            date = g.Date;
+            map = g.Zones;
+            OnGameChanged();
         }
 
         public void UpgradeZone(int x, int y)
