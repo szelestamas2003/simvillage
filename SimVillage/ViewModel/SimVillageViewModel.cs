@@ -97,6 +97,16 @@ namespace SimVillage.ViewModel
         public DelegateCommand ContinueGameCommand { get; private set; }
 
         public DelegateCommand PauseMenuCommand { get; private set; }
+        public DelegateCommand Slot1Command { get; private set; }
+        public DelegateCommand Slot2Command { get; private set; }
+        public DelegateCommand Slot3Command { get; private set; }
+        public DelegateCommand Slot4Command { get; private set; }
+        public DelegateCommand Slot5Command { get; private set; }
+        public DelegateCommand Slot1DeleteCommand { get; private set; }
+        public DelegateCommand Slot2DeleteCommand { get; private set; }
+        public DelegateCommand Slot3DeleteCommand { get; private set; }
+        public DelegateCommand Slot4DeleteCommand { get; private set; }
+        public DelegateCommand Slot5DeleteCommand { get; private set; }
 
         public SimVillageViewModel(City model)
         {
@@ -139,6 +149,28 @@ namespace SimVillage.ViewModel
             ExitCommand = new DelegateCommand(param => OnExitGame());
             ContinueGameCommand = new DelegateCommand(param => OnContinueGame());
             PauseMenuCommand = new DelegateCommand(param => OnPauseMenu());
+
+            Slot1Command = new DelegateCommand(param => OnSlot(1));
+            Slot2Command = new DelegateCommand(param => OnSlot(2));
+            Slot3Command = new DelegateCommand(param => OnSlot(3));
+            Slot4Command = new DelegateCommand(param => OnSlot(4));
+            Slot5Command = new DelegateCommand(param => OnSlot(5));
+
+            Slot1DeleteCommand = new DelegateCommand(param => OnSlotDelete(1));
+            Slot2DeleteCommand = new DelegateCommand(param => OnSlotDelete(2));
+            Slot3DeleteCommand = new DelegateCommand(param => OnSlotDelete(3));
+            Slot4DeleteCommand = new DelegateCommand(param => OnSlotDelete(4));
+            Slot5DeleteCommand = new DelegateCommand(param => OnSlotDelete(5));
+        }
+
+        private void OnSlot(int n)
+        {
+
+        }
+
+        private void OnSlotDelete(int n)
+        {
+
         }
 
         private void OnPauseMenu()

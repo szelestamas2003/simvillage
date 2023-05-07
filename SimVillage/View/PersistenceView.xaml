@@ -5,14 +5,24 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SimVillage"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="Persistence">
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="Persistence" Background="LightGreen">
 
     <Grid>
-        <Button Content="Button" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top" Height="60" Width="600"/>
-        <Button Content="Button" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top" Height="60" Width="600"/>
-        <Button Content="Button" HorizontalAlignment="Center" VerticalAlignment="Top" Height="60" Width="600" Margin="0,180,0,0"/>
-        <Button Content="Button" HorizontalAlignment="Center" Margin="0,260,0,0" VerticalAlignment="Top" Height="60" Width="600"/>
-        <Button Content="Button" HorizontalAlignment="Center" Margin="0,340,0,0" VerticalAlignment="Top" Height="60" Width="600"/>
+        <Button Content="Button" Command="{Binding Slot1Command}" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top" Height="60" Width="400"/>
+        <Button Content="Button" Command="{Binding Slot2Command}" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top" Height="60" Width="400"/>
+        <Button Content="Button" Command="{Binding Slot3Command}" HorizontalAlignment="Center" Margin="0,180,0,0" VerticalAlignment="Top" Height="60" Width="400"/>
+        <Button Content="Button" Command="{Binding Slot4Command}" HorizontalAlignment="Center" Margin="0,260,0,0" VerticalAlignment="Top" Height="60" Width="400"/>
+        <Button Content="Button" Command="{Binding Slot5Command}" HorizontalAlignment="Center" Margin="0,340,0,0" VerticalAlignment="Top" Height="60" Width="400"/>
+        <Button Cursor="Hand" Width="120" Height="60" Command="{Binding ContinueGameCommand}" Margin="340,466,340,74">
+            <Button.Content>
+                <TextBlock Text="Continue"/>
+            </Button.Content>
+        </Button>
+        <Button Content="Delete" Command="{Binding Slot1DeleteCommand}" HorizontalAlignment="Left" Margin="630,20,0,0" VerticalAlignment="Top" Height="60" Width="70"/>
+        <Button Content="Delete" Command="{Binding Slot2DeleteCommand}" HorizontalAlignment="Left" Margin="630,100,0,0" VerticalAlignment="Top" Height="60" Width="70"/>
+        <Button Content="Delete" Command="{Binding Slot3DeleteCommand}" HorizontalAlignment="Left" Margin="630,180,0,0" VerticalAlignment="Top" Height="60" Width="70"/>
+        <Button Content="Delete" Command="{Binding Slot4DeleteCommand}" HorizontalAlignment="Left" Margin="630,260,0,0" VerticalAlignment="Top" Height="60" Width="70"/>
+        <Button Content="Delete" Command="{Binding Slot5DeleteCommand}" HorizontalAlignment="Left" Margin="630,340,0,0" VerticalAlignment="Top" Height="60" Width="70"/>
     </Grid>
 </Page>
