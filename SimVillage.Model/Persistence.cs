@@ -15,11 +15,15 @@ namespace SimVillage.Model
         {
             string folder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             folder = Path.Combine(folder, "SimVillage/saves");
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
             try
             {
                 Directory.CreateDirectory(folder);
                 await using FileStream createStream = File.Create(Path.Combine(folder, path));
-                await JsonSerializer.SerializeAsync(createStream, data);
+                await JsonSerializer.SerializeAsync(createStream, data, options);
             }
             catch
             {
