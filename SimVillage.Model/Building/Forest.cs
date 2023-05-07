@@ -13,6 +13,7 @@
             IsAccessible = true;
             X = x;
             Y = y;
+            
         }
 
         public void SetAge(int age)

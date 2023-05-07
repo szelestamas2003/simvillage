@@ -115,6 +115,68 @@ namespace SimVillage.Model
             canDemolish = boolean;
         }
 
+        static int calcHappiness(List<Citizen> citizens)
+        {
+            int total_happiness = 0;
+            foreach(Citizen c in citizens)
+            {
+                int Happiness = 0;
+                Happiness -= c.GetHadToMove() * 10;
+                int work_distance = City.calcDistance(c.GetHome(), c.GetWorkPlace());
+                work_distance = 15 - work_distance;
+                Happiness += work_distance;
+                Happiness += c.GetSalary() / 10;
+                bool availableForest = false;
+                bool availableStadium = false;
+                if (c.GetEducation() == EducationLevel.Basic)
+                {
+                    Happiness -= 5;
+                }
+                else if (c.GetEducation() == EducationLevel.Middle)
+                {
+                    Happiness += 5;
+                }
+                else
+                {
+                    Happiness += 10;
+                }
+                
+                for (int i = 0; i < mapHeight; i++)
+                {
+                    for(int j = 0; j < mapWidth; j++)
+                    {
+                        if(map[i][j].Building.GetType() == typeof(Forest) && !availableForest)
+                        {
+                            if(calcDistance(c.GetHome(), map[i][j].Building) < 8)
+                            {
+                                availableForest = true;
+                                Happiness += 10;
+                            }
+                        }
+                        else if (map[i][j].Building.GetType() == typeof(Stadium) && !availableStadium)
+                        {
+                            if (calcDistance(c.GetHome(), map[i][j].Building) < 10)
+                            {
+                                availableStadium = true;
+                                Happiness += 15;
+                            }
+                        }
+                        else if (map[i][j].Building.GetType() == typeof(Industrial))
+                        {
+                            if (calcDistance(c.GetHome(), map[i][j].Building) < 8)
+                            { 
+                                Happiness -= 8;
+                            }
+                        }
+                        c.SetHappiness(Happiness);
+                        total_happiness += Happiness;
+                    }
+                }
+                
+            }
+            return total_happiness;
+        }
+
         private void GiveEducation(School school)
         {
             school.GiveEducation();
@@ -539,10 +601,9 @@ namespace SimVillage.Model
         public int getHappiness()
         {
             int happiness = 0;
-            foreach (Citizen i in citizens)
-            {
-                happiness += i.calcHappiness();
-            }
+           
+               happiness = calcHappiness(citizens);
+            
             return citizens.Count != 0 ? happiness / citizens.Count : 0;
         }
 

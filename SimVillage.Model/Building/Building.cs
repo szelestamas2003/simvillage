@@ -29,6 +29,7 @@ namespace SimVillage.Model.Building
         public bool IsAccessible { get; protected set; }
         public int X { get; protected set; }
         public int Y { get; protected set; }
+       
 
 
         public Building((int, int) size, bool occupied, int density, int powerConsumption, int x, int y)
@@ -69,6 +70,7 @@ namespace SimVillage.Model.Building
             PowerConsumption = 0;
             Size = (0, 0);
         }
+        
         public int GetCost()
         {
             return Cost;

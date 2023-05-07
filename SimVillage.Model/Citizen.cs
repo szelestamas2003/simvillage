@@ -23,6 +23,10 @@ namespace SimVillage.Model
             Pensioner = false;
             Happiness = calcHappiness();
         }
+        public void SetHappiness(int happiness)
+        {
+            Happiness = happiness;
+        }
         public int calcHappiness()
         {
             Happiness = 0;
@@ -141,6 +145,10 @@ namespace SimVillage.Model
         }
         public int GetSalary() {
             return Salary;
+        }
+        public int GetHadToMove()
+        {
+            return HadToMove;
         }
     }
 }
