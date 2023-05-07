@@ -145,31 +145,34 @@ namespace SimVillage.Model
                 {
                     for(int j = 0; j < mapWidth; j++)
                     {
-                        if(map[i][j].Building.GetType() == typeof(Forest) && !availableForest)
+                        if (map[i][j].Building != null)
                         {
-                            if(calcDistance(c.GetHome(), map[i][j].Building) < 8)
+                            if (map[i][j].Building.GetType() == typeof(Forest) && !availableForest)
                             {
-                                availableForest = true;
-                                Happiness += 10;
+                                if (calcDistance(c.GetHome(), map[i][j].Building) < 8)
+                                {
+                                    availableForest = true;
+                                    Happiness += 10;
+                                }
                             }
-                        }
-                        else if (map[i][j].Building.GetType() == typeof(Stadium) && !availableStadium)
-                        {
-                            if (calcDistance(c.GetHome(), map[i][j].Building) < 10)
+                            else if (map[i][j].Building.GetType() == typeof(Stadium) && !availableStadium)
                             {
-                                availableStadium = true;
-                                Happiness += 15;
+                                if (calcDistance(c.GetHome(), map[i][j].Building) < 10)
+                                {
+                                    availableStadium = true;
+                                    Happiness += 15;
+                                }
                             }
-                        }
-                        else if (map[i][j].Building.GetType() == typeof(Industrial))
-                        {
-                            if (calcDistance(c.GetHome(), map[i][j].Building) < 8)
-                            { 
-                                Happiness -= 8;
+                            else if (map[i][j].Building.GetType() == typeof(Industrial))
+                            {
+                                if (calcDistance(c.GetHome(), map[i][j].Building) < 8)
+                                {
+                                    Happiness -= 8;
+                                }
                             }
+                            c.SetHappiness(Happiness);
+                            total_happiness += Happiness;
                         }
-                        c.SetHappiness(Happiness);
-                        total_happiness += Happiness;
                     }
                 }
                 
