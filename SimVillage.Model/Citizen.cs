@@ -11,10 +11,10 @@ namespace SimVillage.Model
         public int Happiness { get; private set; }
         public int HadToMove { get; private set; } = 0;
         public Residental Home { get; private set; }
-        public Building.Building WorkPlace { get; private set; } = null!;
+        public Building.Building WorkPlace { get; set; } = null!;
 
 
-        private Citizen(int Age, Residental Home)
+        public Citizen(int Age, Residental Home)
         {
             this.Age = Age;
             this.Home = Home;

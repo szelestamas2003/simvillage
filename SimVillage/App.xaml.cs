@@ -117,9 +117,13 @@ namespace SimVillage
             await city.Save("save1.json");
         }
 
-        private void ViewModel_LoadGame(object? sender, EventArgs e)
+        private async void ViewModel_LoadGame(object? sender, EventArgs e)
         {
-            mainWindow.Navigate(persistenceViewUri);
+            //mainWindow.Navigate(persistenceViewUri);
+            city.NewGame("Loading");
+            mainWindow.Navigate(gamePageUri);
+            await city.Load("save1.json");
+            timer.Start();
         }
 
         private void ViewModel_NewGame(object? sender, EventArgs e)

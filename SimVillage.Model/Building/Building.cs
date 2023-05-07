@@ -21,14 +21,14 @@ namespace SimVillage.Model.Building
     public abstract class Building
     {
         protected (int, int) Size;
-        public bool Occupied { get; protected set; }
-        public int Density { get; protected set; }
+        public bool Occupied { get; set; }
+        public int Density { get; set; }
         protected int Cost;
         protected int PowerConsumption;
-        public bool IsPowered { get; protected set; }
-        public bool IsAccessible { get; protected set; }
-        public int X { get; protected set; }
-        public int Y { get; protected set; }
+        public bool IsPowered { get; set; }
+        public bool IsAccessible { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
        
 
 
