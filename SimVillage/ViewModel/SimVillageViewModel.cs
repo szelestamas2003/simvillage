@@ -74,6 +74,10 @@ namespace SimVillage.ViewModel
 
         public event EventHandler? PauseMenu;
 
+        public event EventHandler<SlotEventArgs>? LoadingSlot;
+
+        public event EventHandler<SlotEventArgs>? SlotDelete;
+
         public DelegateCommand RenameCommand { get; private set; }
 
         public DelegateCommand PauseGameCommand { get; private set; }
@@ -165,12 +169,12 @@ namespace SimVillage.ViewModel
 
         private void OnSlot(int n)
         {
-
+            LoadingSlot?.Invoke(this, new SlotEventArgs { Slot = n});
         }
 
         private void OnSlotDelete(int n)
         {
-
+            SlotDelete?.Invoke(this, new SlotEventArgs { Slot = n });
         }
 
         private void OnPauseMenu()

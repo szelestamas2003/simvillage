@@ -56,6 +56,8 @@ namespace SimVillage
             viewModel.ExitGame += new EventHandler(ViewModel_ExitGame);
             viewModel.ContinueGame += new EventHandler(ViewModel_ContinueGame);
             viewModel.PauseMenu += new EventHandler(ViewModel_PauseMenu);
+            viewModel.LoadingSlot += new EventHandler<SlotEventArgs>(ViewModel_Loading);
+            viewModel.SlotDelete += new EventHandler<SlotEventArgs>(ViewModel_SlotDelete);
 
             mainWindow = new MainWindow();
             mainWindow.KeyDown += new KeyEventHandler(OnButtonKeyDown);
@@ -70,6 +72,20 @@ namespace SimVillage
             timer = new Timer();
             timer.Interval = 5000;
             timer.Elapsed += new ElapsedEventHandler(Timer_Tick);
+        }
+
+        private void ViewModel_SlotDelete(object? sender, SlotEventArgs e)
+        {
+
+        }
+
+        private async void ViewModel_Loading(object? sender, SlotEventArgs e)
+        {
+            city.NewGame("Loading");
+            mainWindow.GoBack();
+            mainWindow.GoBack();
+            await city.Load("save1.json");
+            timer.Start();
         }
 
         private void ViewModel_PauseMenu(object? sender, EventArgs e)
@@ -121,7 +137,8 @@ namespace SimVillage
         {
             //mainWindow.Navigate(persistenceViewUri);
             city.NewGame("Loading");
-            mainWindow.Navigate(gamePageUri);
+            mainWindow.GoBack();
+            mainWindow.GoBack();
             await city.Load("save1.json");
             timer.Start();
         }
