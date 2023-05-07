@@ -3,8 +3,8 @@
     public class School : Building
     {
         int MaxStudents;
-        SchoolTypes Type;
-        List<Citizen> Students;
+        public SchoolTypes Type { get; set; }
+        public List<Citizen> Students { get; private set; }
 
         public School(int x, int y, SchoolTypes type)
         {
