@@ -118,7 +118,40 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="elementary_school_t" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\View\cursors\elementary_school_t.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="factory_t" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\View\cursors\factory_t.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="fire_department_t" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\View\cursors\fire_department_t.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="forest_t" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\View\cursors\forest_t.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="police_t" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\View\cursors\police_t.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="power_generator_t" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\View\cursors\power_generator_t.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="power_line_t" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\View\cursors\power_line_t.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="residental_t" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\View\residental_t.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\View\cursors\residental_t.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="road_t" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\View\cursors\road_t.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="shop_t" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\View\cursors\shop_t.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="stadium_t" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\View\cursors\stadium_t.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="university_t" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\View\cursors\university_t.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

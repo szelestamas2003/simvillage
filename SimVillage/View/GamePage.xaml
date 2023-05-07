@@ -39,7 +39,13 @@
         <ItemsControl Grid.Row="1" ItemsSource="{Binding Fields}" x:Name="container" ClipToBounds="True">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas PreviewMouseRightButtonDown="Canvas_MouseDown" Name="canvas" PreviewMouseRightButtonUp="Canvas_MouseUp" MouseMove="Canvas_MouseMove" Width="{Binding CanvasW}" Height="{Binding CanvasH}"/>
+                    <Canvas PreviewMouseRightButtonDown="Canvas_MouseDown" Name="canvas" PreviewMouseRightButtonUp="Canvas_MouseUp" MouseMove="Canvas_MouseMove" Width="{Binding CanvasW}" Height="{Binding CanvasH}">
+                        <Canvas.Style>
+                            <Style TargetType="Canvas">
+                                <Setter Property="Cursor" Value="Hand"/>
+                            </Style>
+                        </Canvas.Style>
+                    </Canvas>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemContainerStyle>
@@ -294,7 +300,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Margin="0, 0, 5, 0" Padding="15,5,15,5" Command="{Binding Clicked}" CommandParameter="{Binding Number}">
+                    <Button Margin="0, 0, 5, 0" Padding="15,5,15,5" Command="{Binding Clicked}" CommandParameter="{Binding Number}" Click="Options_Clicked">
                         <Button.Content>
                             <Image MaxHeight="32">
                                 <Image.Style>

@@ -63,9 +63,119 @@ namespace SimVillage.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] elementary_school_t {
+            get {
+                object obj = ResourceManager.GetObject("elementary_school_t", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] factory_t {
+            get {
+                object obj = ResourceManager.GetObject("factory_t", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] fire_department_t {
+            get {
+                object obj = ResourceManager.GetObject("fire_department_t", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] forest_t {
+            get {
+                object obj = ResourceManager.GetObject("forest_t", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] police_t {
+            get {
+                object obj = ResourceManager.GetObject("police_t", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] power_generator_t {
+            get {
+                object obj = ResourceManager.GetObject("power_generator_t", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] power_line_t {
+            get {
+                object obj = ResourceManager.GetObject("power_line_t", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] residental_t {
             get {
                 object obj = ResourceManager.GetObject("residental_t", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] road_t {
+            get {
+                object obj = ResourceManager.GetObject("road_t", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] shop_t {
+            get {
+                object obj = ResourceManager.GetObject("shop_t", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] stadium_t {
+            get {
+                object obj = ResourceManager.GetObject("stadium_t", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] university_t {
+            get {
+                object obj = ResourceManager.GetObject("university_t", resourceCulture);
                 return ((byte[])(obj));
             }
         }
