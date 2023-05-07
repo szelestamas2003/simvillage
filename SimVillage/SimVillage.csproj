@@ -8,7 +8,47 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="View\pixelarts\factory_t.png" />
+    <None Remove="View\pixelarts\forest_t.png" />
+    <None Remove="View\pixelarts\police_t.png" />
+    <None Remove="View\pixelarts\residental_t.png" />
+    <None Remove="View\pixelarts\road.png" />
+    <None Remove="View\pixelarts\road_t.png" />
+    <None Remove="View\pixelarts\shop_t.png" />
+    <None Remove="View\pixelarts\stadium_t.png" />
+    <None Remove="View\pixelarts\stadium_t_bl.png" />
+    <None Remove="View\pixelarts\stadium_t_br.png" />
+    <None Remove="View\pixelarts\stadium_t_ul.png" />
+    <None Remove="View\pixelarts\stadium_t_ur.png" />
+    <None Remove="View\pixelarts\university_t.png" />
+    <None Remove="View\pixelarts\university_t_bl.png" />
+    <None Remove="View\pixelarts\university_t_br.png" />
+    <None Remove="View\pixelarts\university_t_ul.png" />
+    <None Remove="View\pixelarts\university_t_ur.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SimVillage.Model\SimVillage.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="View\pixelarts\factory_t.png" />
+    <Resource Include="View\pixelarts\forest_t.png" />
+    <Resource Include="View\pixelarts\police_t.png" />
+    <Resource Include="View\pixelarts\residental_t.png" />
+    <Resource Include="View\pixelarts\road.png" />
+    <Resource Include="View\pixelarts\road_t.png" />
+    <Resource Include="View\pixelarts\shop_t.png" />
+    <Resource Include="View\pixelarts\stadium_t.png" />
+    <Resource Include="View\pixelarts\stadium_t_bl.png" />
+    <Resource Include="View\pixelarts\stadium_t_br.png" />
+    <Resource Include="View\pixelarts\stadium_t_ul.png" />
+    <Resource Include="View\pixelarts\stadium_t_ur.png" />
+    <Resource Include="View\pixelarts\university_t.png" />
+    <Resource Include="View\pixelarts\university_t_bl.png" />
+    <Resource Include="View\pixelarts\university_t_br.png" />
+    <Resource Include="View\pixelarts\university_t_ul.png" />
+    <Resource Include="View\pixelarts\university_t_ur.png" />
   </ItemGroup>
 
 </Project>

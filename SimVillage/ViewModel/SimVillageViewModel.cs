@@ -26,9 +26,9 @@ namespace SimVillage.ViewModel
 
         public string Date { get; private set; }
 
-        public int CitizenCount { get; private set; }
+        public string CitizenCount { get; private set; }
 
-        public int Happiness { get { return model.getHappiness(); } }
+        public string Happiness { get; private set; }
 
         public List<Transaction> Expenses { get { var asd = model.Finances.Expenses; asd.Reverse(); return asd; } }
 
@@ -42,7 +42,7 @@ namespace SimVillage.ViewModel
 
         public bool IsMoneyNegative { get; private set; }
 
-        public int Money { get; private set; }
+        public string Money { get; private set; }
 
         public string BuildInfo { get; private set; }
 
@@ -50,7 +50,7 @@ namespace SimVillage.ViewModel
 
         private Field field = null!;
 
-        public event EventHandler? NewGame;
+        public event EventHandler<NewGameEventArgs>? NewGame;
 
         public event EventHandler? LoadGame;
 
@@ -66,15 +66,11 @@ namespace SimVillage.ViewModel
 
         public event EventHandler? Info;
 
-        public event EventHandler? Rename;
-
         public event EventHandler? ExitGame;
 
         public event EventHandler? ContinueGame;
 
         public event EventHandler? PauseMenu;
-
-        public DelegateCommand RenameCommand { get; private set; }
 
         public DelegateCommand PauseGameCommand { get; private set; }
 
@@ -104,8 +100,10 @@ namespace SimVillage.ViewModel
             model.gameAdvanced += new EventHandler(Model_GameAdvanced);
             model.gameChanged += new EventHandler(Model_GameChanged);
             model.gameCreated += new EventHandler(Model_GameCreated);
-            Date = model.Date.ToString("yyyy") + " " + model.Date.ToString("M");
-            Money = model.GetBudget();
+            Date = "📅 " + model.Date.ToString("yyyy") + " " + model.Date.ToString("M");
+            Money = "💲 " + model.GetBudget();
+            CitizenCount = model.Citizens != null ? "👤 " + model.Citizens.Count : "👤 0";
+            Happiness = "🙂 " + model.getHappiness();
 
             Fields = new ObservableCollection<Field>();
 
@@ -127,18 +125,24 @@ namespace SimVillage.ViewModel
                 new Option { Text = "Stadium", Number = 11, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param))), Info = "2x2 - Makes people happy."},
                 new Option { Text = "Demolish", Number = 12, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param))), Info = "Demolish what you don't need."}
             };
-            RenameCommand = new DelegateCommand(param => OnRename());
             PauseGameCommand = new DelegateCommand(param => OnPauseGame());
             OneSpeedCommand = new DelegateCommand(param => OnOneSpeedCommand());
             FiveSpeedCommand = new DelegateCommand(param => OnFiveSpeedCommand());
             TenSpeedCommand = new DelegateCommand(param => OnTenSpeedCommand());
             InfoCommand = new DelegateCommand(param => OnInfoCommand());
-            NewGameCommand = new DelegateCommand(param => OnNewGame());
+            NewGameCommand = new DelegateCommand(param => OnNewGame(Convert.ToString(param)));
             LoadGameCommand = new DelegateCommand(param => OnLoadGame());
             SaveGameCommand = new DelegateCommand(param => OnSaveGame());
             ExitCommand = new DelegateCommand(param => OnExitGame());
             ContinueGameCommand = new DelegateCommand(param => OnContinueGame());
             PauseMenuCommand = new DelegateCommand(param => OnPauseMenu());
+        }
+
+        public void SetTax(int residentalTax, int industrialTax, int StoreTax)
+        {
+            model.Finances.setTax(ZoneType.Residental, residentalTax);
+            model.Finances.setTax(ZoneType.Industrial, industrialTax);
+            model.Finances.setTax(ZoneType.Store, StoreTax);
         }
 
         private void OnPauseMenu()
@@ -166,9 +170,10 @@ namespace SimVillage.ViewModel
             LoadGame?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnNewGame()
+        private void OnNewGame(string? param)
         {
-            NewGame?.Invoke(this, EventArgs.Empty);
+            if (!string.IsNullOrEmpty(param))
+                NewGame?.Invoke(this, new NewGameEventArgs { Name = param });
         }
 
         private void OnInfoCommand()
@@ -324,16 +329,13 @@ namespace SimVillage.ViewModel
             PauseGame?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnRename()
-        {
-            Rename?.Invoke(this, EventArgs.Empty);
-        }
-
         private void Model_GameChanged(object? sender, EventArgs e)
         {
-            CitizenCount = model.Citizens.Count;
-            Money = model.GetBudget();
-            if(Money < 0)
+            CitizenCount = "👤 " +  model.Citizens.Count;
+            Money = "💲 " +  model.GetBudget();
+            Happiness = "🙂 " + model.getHappiness();
+
+            if(model.GetBudget() < 0)
             {
                 IsMoneyNegative = true;
             }
@@ -372,10 +374,26 @@ namespace SimVillage.ViewModel
                                 if (s.GetSchoolType() == SchoolTypes.Elementary)
                                     Fields[zone.X * Width + zone.Y].Text = "School";
                                 else
-                                    Fields[zone.X * Width + zone.Y].Text = "University";
+                                {
+                                    if (zone.X == zone.Building.X && zone.Y == zone.Building.Y)
+                                        Fields[zone.X * Width + zone.Y].Text = "University UL";
+                                    else if (zone.X == zone.Building.X && zone.Building.Y + 1 == zone.Y)
+                                        Fields[zone.X * Width + zone.Y].Text = "University UR";
+                                    else if (zone.X == zone.Building.X + 1 && zone.Y == zone.Building.Y)
+                                        Fields[zone.X * Width + zone.Y].Text = "University BL";
+                                    else
+                                        Fields[zone.X * Width + zone.Y].Text = "University BR";
+                                }
                                 break;
                             case Stadium:
-                                Fields[zone.X * Width + zone.Y].Text = "Stadium";
+                                if (zone.X == zone.Building.X && zone.Y == zone.Building.Y)
+                                    Fields[zone.X * Width + zone.Y].Text = "Stadium UL";
+                                else if (zone.X == zone.Building.X && zone.Building.Y + 1 == zone.Y)
+                                    Fields[zone.X * Width + zone.Y].Text = "Stadium UR";
+                                else if (zone.X == zone.Building.X + 1 && zone.Y == zone.Building.Y)
+                                    Fields[zone.X * Width + zone.Y].Text = "Stadium BL";
+                                else
+                                    Fields[zone.X * Width + zone.Y].Text = "Stadium BR";
                                 break;
                             case Residental:
                                 Fields[zone.X * Width + zone.Y].Text = "Residental Building";
@@ -420,7 +438,7 @@ namespace SimVillage.ViewModel
 
         private void Model_GameAdvanced(object? sender, EventArgs e)
         {
-            Date = model.Date.ToString("yyyy") + " " + model.Date.ToString("M");
+            Date = "📅 " + model.Date.ToString("yyyy") + " " + model.Date.ToString("M");
             OnPropertyChanged(nameof(Date));
         }
     }

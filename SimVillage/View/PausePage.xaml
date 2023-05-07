@@ -37,11 +37,40 @@
                 <TextBlock Text="Continue" Foreground="Yellow" FontSize="20"/>
             </Button.Content>
         </Button>
-        <Button Grid.Row="2" BorderThickness="0" Cursor="Hand" Width="120" Command="{Binding NewGameCommand}" Margin="0, 20, 0, 0">
-            <Button.Content>
-                <TextBlock Text="New Game" Foreground="Yellow" FontSize="20"/>
-            </Button.Content>
-        </Button>
+        <StackPanel Orientation="Vertical" Grid.Row="2" Margin="0, 20, 0, 0">
+            <Button BorderThickness="0" x:Name="newButton" Cursor="Hand" Width="120" Click="newButton_Click">
+                <Button.Content>
+                    <TextBlock Text="New Game" Foreground="Yellow" FontSize="20"/>
+                </Button.Content>
+            </Button>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" x:Name="newStackPanel" Visibility="Collapsed">
+                <TextBox Width="130" Height="20" Margin="0, 10, 10, 0" KeyDown="OnKeyDown" x:Name="CityName">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                            <Style.Resources>
+                                <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                                    <VisualBrush.Visual>
+                                        <Label Content="Your new town's name" Foreground="LightGray" Background="White"/>
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
+                            </Style.Resources>
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                                    <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                                </Trigger>
+                                <Trigger Property="Text" Value="{x:Null}">
+                                    <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsKeyboardFocused" Value="True">
+                                    <Setter Property="Background" Value="White" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+                <Button Content="Create City" Background="LightYellow" Height="20" Margin="0, 10, 0, 0" Command="{Binding NewGameCommand}" CommandParameter="{Binding ElementName=CityName, Path=Text}"/>
+            </StackPanel>
+        </StackPanel>
         <Button Grid.Row="3" BorderThickness="0" Cursor="Hand" Width="120" Command="{Binding SaveGameCommand}" Margin="0, 20, 0, 0">
             <Button.Content>
                 <TextBlock Text="Save Game" Foreground="Yellow" FontSize="20"/>

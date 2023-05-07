@@ -50,7 +50,7 @@ namespace SimVillage
             viewModel.FiveSpeed += new EventHandler(ViewModel_FiveSpeed);
             viewModel.TenSpeed += new EventHandler(ViewModel_TenSpeed);
             viewModel.Info += new EventHandler(ViewModel_Info);
-            viewModel.NewGame += new EventHandler(ViewModel_NewGame);
+            viewModel.NewGame += new EventHandler<NewGameEventArgs>(ViewModel_NewGame);
             viewModel.LoadGame += new EventHandler(ViewModel_LoadGame);
             viewModel.SaveGame += new EventHandler(ViewModel_SaveGame);
             viewModel.ExitGame += new EventHandler(ViewModel_ExitGame);
@@ -122,10 +122,10 @@ namespace SimVillage
             mainWindow.Navigate(persistenceViewUri);
         }
 
-        private void ViewModel_NewGame(object? sender, EventArgs e)
+        private void ViewModel_NewGame(object? sender, NewGameEventArgs e)
         {
             mainWindow.Navigate(gamePageUri);
-            city.NewGame("SimVillage");
+            city.NewGame(e.Name);
             timer.Start();
         }
 
@@ -136,9 +136,7 @@ namespace SimVillage
             info.DataContext = viewModel;
             if ((bool)info.ShowDialog()!)
             {
-                city.Finances.setTax(ZoneType.Residental, (int)info.Rslider.Value);
-                city.Finances.setTax(ZoneType.Industrial, (int)info.Islider.Value);
-                city.Finances.setTax(ZoneType.Store, (int)info.Sslider.Value);
+                viewModel.SetTax((int)info.Rslider.Value, (int)info.Islider.Value, (int)info.Sslider.Value);
             }
             timer.Start();
             info = null!;
