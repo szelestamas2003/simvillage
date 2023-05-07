@@ -50,7 +50,7 @@
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Command="{Binding Clicked}" CommandParameter="{Binding Number}" Cursor="Hand" Padding="0" Height="64" Width="64">
+                    <Button Command="{Binding Clicked}" CommandParameter="{Binding Number}" Padding="0" Height="64" Width="64">
                         <Grid>
                             <Popup IsOpen="{Binding IsClicked}" AllowsTransparency="True">
                                 <Popup.Style>
@@ -116,15 +116,12 @@
                                     </Button>
                                 </StackPanel>
                             </Popup>
+                            <Image Source="/View/pixelarts/grass.png"/>
                             <Image>
                                 <Image.Style>
                                     <Style TargetType="Image">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Text}" Value="Road">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                                <Setter Property="Source" Value="/View/pixelarts/road_t.png"/>
-                                            </DataTrigger>
                                             <DataTrigger Binding="{Binding Text}" Value="Industrial Building">
                                                 <Setter Property="Visibility" Value="Visible"/>
                                                 <Setter Property="Source" Value="/View/pixelarts/factory_t.png"/>
@@ -177,6 +174,82 @@
                                                 <Setter Property="Visibility" Value="Visible"/>
                                                 <Setter Property="Source" Value="/View/pixelarts/stadium_t_br.png"/>
                                             </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="School L">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/elementary_school_t_l.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="School R">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/elementary_school_t_r.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Power Line">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/power_line_t.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Power Plant UL">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/power_generator_t_ul.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Power Plant UR">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/power_generator_t_ur.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Power Plant BL">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/power_generator_t_bl.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Power Plant BR">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/power_generator_t_br.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Fire Department">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/fire_department_t.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Road">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/road_t.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Road H">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/road_t_h.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Road UR">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/road_t_ur.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Road UL">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/road_t_ul.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Road BL">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/road_t_bl.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Road BR">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/road_t_br.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Road 4">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/road_t_4.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Road HU">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/road_t_hu.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Road HB">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/road_t_hb.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Road VR">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/road_t_vr.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Road VL">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/road_t_vl.png"/>
+                                            </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </Image.Style>
@@ -184,35 +257,19 @@
                         </Grid>
                         <Button.Style>
                             <Style TargetType="Button">
-                                <Setter Property="Background" Value="LightGreen"/>
                                 <Setter Property="BorderThickness" Value="0"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Text}" Value="Industrial">
                                         <Setter Property="BorderBrush" Value="Yellow"/>
-                                        <Setter Property="BorderThickness" Value="1"/>
+                                        <Setter Property="BorderThickness" Value="5"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Text}" Value="Store">
                                         <Setter Property="BorderBrush" Value="Blue"/>
-                                        <Setter Property="BorderThickness" Value="1"/>
+                                        <Setter Property="BorderThickness" Value="5"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Text}" Value="Residental">
                                         <Setter Property="BorderBrush" Value="Green"/>
-                                        <Setter Property="BorderThickness" Value="1"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Text}" Value="School">
-                                        <Setter Property="Background" Value="Orange"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Text}" Value="University">
-                                        <Setter Property="Background" Value="OrangeRed"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Text}" Value="Fire Department">
-                                        <Setter Property="Background" Value="DarkRed"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Text}" Value="Power Line">
-                                        <Setter Property="Background" Value="LightGray"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Text}" Value="Power Plant">
-                                        <Setter Property="Background" Value="Black"/>
+                                        <Setter Property="BorderThickness" Value="5"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -239,7 +296,7 @@
                 <DataTemplate>
                     <Button Margin="0, 0, 5, 0" Padding="15,5,15,5" Command="{Binding Clicked}" CommandParameter="{Binding Number}">
                         <Button.Content>
-                            <Image MaxHeight="32" MaxWidth="32">
+                            <Image MaxHeight="32">
                                 <Image.Style>
                                     <Style TargetType="Image">
                                         <Style.Triggers>
@@ -266,6 +323,21 @@
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Text}" Value="Forest">
                                                 <Setter Property="Source" Value="/View/pixelarts/forest_t.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="School">
+                                                <Setter Property="Source" Value="/View/pixelarts/elementary_school_t.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Power Line">
+                                                <Setter Property="Source" Value="/View/pixelarts/power_line_t.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Power Plant">
+                                                <Setter Property="Source" Value="/View/pixelarts/power_generator_t.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Fire Department">
+                                                <Setter Property="Source" Value="/View/pixelarts/fire_department_t.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Demolish">
+                                                <Setter Property="Source" Value="/View/pixelarts/fire_t.png"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

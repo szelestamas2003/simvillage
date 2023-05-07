@@ -8,12 +8,33 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="View\pixelarts\elementary_school_t.png" />
+    <None Remove="View\pixelarts\elementary_school_t_l.png" />
+    <None Remove="View\pixelarts\elementary_school_t_r.png" />
     <None Remove="View\pixelarts\factory_t.png" />
+    <None Remove="View\pixelarts\fire_department_t.png" />
+    <None Remove="View\pixelarts\fire_t.png" />
     <None Remove="View\pixelarts\forest_t.png" />
+    <None Remove="View\pixelarts\grass.png" />
     <None Remove="View\pixelarts\police_t.png" />
+    <None Remove="View\pixelarts\power_generator_t.png" />
+    <None Remove="View\pixelarts\power_generator_t_bl.png" />
+    <None Remove="View\pixelarts\power_generator_t_br.png" />
+    <None Remove="View\pixelarts\power_generator_t_ul.png" />
+    <None Remove="View\pixelarts\power_generator_t_ur.png" />
+    <None Remove="View\pixelarts\power_line_t.png" />
     <None Remove="View\pixelarts\residental_t.png" />
-    <None Remove="View\pixelarts\road.png" />
     <None Remove="View\pixelarts\road_t.png" />
+    <None Remove="View\pixelarts\road_t_4.png" />
+    <None Remove="View\pixelarts\road_t_bl.png" />
+    <None Remove="View\pixelarts\road_t_br.png" />
+    <None Remove="View\pixelarts\road_t_h.png" />
+    <None Remove="View\pixelarts\road_t_hb.png" />
+    <None Remove="View\pixelarts\road_t_hu.png" />
+    <None Remove="View\pixelarts\road_t_ul.png" />
+    <None Remove="View\pixelarts\road_t_ur.png" />
+    <None Remove="View\pixelarts\road_t_vl.png" />
+    <None Remove="View\pixelarts\road_t_vr.png" />
     <None Remove="View\pixelarts\shop_t.png" />
     <None Remove="View\pixelarts\stadium_t.png" />
     <None Remove="View\pixelarts\stadium_t_bl.png" />
@@ -32,12 +53,33 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="View\pixelarts\elementary_school_t.png" />
+    <Resource Include="View\pixelarts\elementary_school_t_l.png" />
+    <Resource Include="View\pixelarts\elementary_school_t_r.png" />
     <Resource Include="View\pixelarts\factory_t.png" />
+    <Resource Include="View\pixelarts\fire_department_t.png" />
+    <Resource Include="View\pixelarts\fire_t.png" />
     <Resource Include="View\pixelarts\forest_t.png" />
+    <Resource Include="View\pixelarts\grass.png" />
     <Resource Include="View\pixelarts\police_t.png" />
+    <Resource Include="View\pixelarts\power_generator_t.png" />
+    <Resource Include="View\pixelarts\power_generator_t_bl.png" />
+    <Resource Include="View\pixelarts\power_generator_t_br.png" />
+    <Resource Include="View\pixelarts\power_generator_t_ul.png" />
+    <Resource Include="View\pixelarts\power_generator_t_ur.png" />
+    <Resource Include="View\pixelarts\power_line_t.png" />
     <Resource Include="View\pixelarts\residental_t.png" />
-    <Resource Include="View\pixelarts\road.png" />
     <Resource Include="View\pixelarts\road_t.png" />
+    <Resource Include="View\pixelarts\road_t_4.png" />
+    <Resource Include="View\pixelarts\road_t_bl.png" />
+    <Resource Include="View\pixelarts\road_t_br.png" />
+    <Resource Include="View\pixelarts\road_t_h.png" />
+    <Resource Include="View\pixelarts\road_t_hb.png" />
+    <Resource Include="View\pixelarts\road_t_hu.png" />
+    <Resource Include="View\pixelarts\road_t_ul.png" />
+    <Resource Include="View\pixelarts\road_t_ur.png" />
+    <Resource Include="View\pixelarts\road_t_vl.png" />
+    <Resource Include="View\pixelarts\road_t_vr.png" />
     <Resource Include="View\pixelarts\shop_t.png" />
     <Resource Include="View\pixelarts\stadium_t.png" />
     <Resource Include="View\pixelarts\stadium_t_bl.png" />
@@ -49,6 +91,21 @@
     <Resource Include="View\pixelarts\university_t_br.png" />
     <Resource Include="View\pixelarts\university_t_ul.png" />
     <Resource Include="View\pixelarts\university_t_ur.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

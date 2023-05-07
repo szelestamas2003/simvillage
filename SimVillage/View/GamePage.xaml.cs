@@ -21,6 +21,7 @@ namespace SimVillage
     /// </summary>
     public partial class GamePage : Page
     {
+        private Cursor Residental = CursorHelper.FromByteArray(Properties.Resources.residental_t);
         Canvas canvas = null!;
         Point StartPos { get; set; }
         TranslateTransform Translate { get; set; }
@@ -146,5 +147,22 @@ namespace SimVillage
             Translate.Y = -canvas.Height * 2 / 3 + 64;
             canvas.RenderTransform = Translate;
         }
+
+        /*private void Options_Clicked(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            if (button.Background == Brushes.White)
+            {
+                Image image = (Image)button.Content;
+                string source = image.Source.ToString();
+                string path = source.Substring(source.LastIndexOf(",") + 1);
+                switch (path)
+                {
+                    case "/View/pixelarts/residental_t.png":
+                        canvas.Cursor = Residental;
+                        break;
+                }
+            }
+        }*/
     }
 }

@@ -353,7 +353,113 @@ namespace SimVillage.ViewModel
                         switch (zone.Building)
                         {
                             case Road:
-                                Fields[zone.X * Width + zone.Y].Text = "Road";
+                                List<Road> roads = new List<Road>();
+                                for (int i = -1; i < 2; i++)
+                                {
+                                    for (int j = -1; j < 2; j++)
+                                    {
+                                        if (Math.Abs(i) != Math.Abs(j) && zone.X + i >= 0 && zone.X + i < Height && zone.Y + j >= 0 && zone.Y + j < Width && model.Map[zone.X + i][zone.Y + j].Building != null)
+                                        {
+                                            if (model.Map[zone.X + i][zone.Y + j].Building.GetType() == typeof(Road))
+                                                roads.Add((Road)model.Map[zone.X + i][zone.Y + j].Building);
+                                        }
+                                    }
+                                }
+                                if (roads.Count == 0)
+                                    Fields[zone.X * Width + zone.Y].Text = "Road";
+                                else if (roads.Count == 1)
+                                {
+                                    if (roads[0].Y > zone.Y || roads[0].Y < zone.Y)
+                                        Fields[zone.X * Width + zone.Y].Text = "Road H";
+                                    else
+                                        Fields[zone.X * Width + zone.Y].Text = "Road";
+                                } else if (roads.Count == 2)
+                                {
+                                    bool up = false;
+                                    bool right = false;
+                                    int hor = 0;
+                                    int ver = 0;
+                                    foreach (Road road in roads)
+                                    {
+                                        if (road.Y == zone.Y)
+                                        {
+                                            ver++;
+                                            if (road.X < zone.X)
+                                                up = true;
+                                        }
+                                        else if (road.X == zone.X)
+                                        {
+                                            hor++;
+                                            if (road.Y > zone.Y)
+                                                right = true;
+                                        }
+                                    }
+                                    if (hor == 2)
+                                        Fields[zone.X * Width + zone.Y].Text = "Road H";
+                                    else if (ver == 2)
+                                        Fields[zone.X * Width + zone.Y].Text = "Road";
+                                     else if (up)
+                                    {
+                                        if (right)
+                                            Fields[zone.X * Width + zone.Y].Text = "Road UR";
+                                        else
+                                            Fields[zone.X * Width + zone.Y].Text = "Road UL";
+                                    } else
+                                    {
+                                        if (right)
+                                            Fields[zone.X * Width + zone.Y].Text = "Road BR";
+                                        else
+                                            Fields[zone.X * Width + zone.Y].Text = "Road BL";
+                                    }
+                                } else if (roads.Count == 3)
+                                {
+                                    bool vertical = false;
+                                    List<Road> toRemoveH = new List<Road>();
+                                    List<Road> toRemoveV = new List<Road>();
+                                    bool horizontal = false;
+                                    foreach (Road road in roads)
+                                    {
+                                        if (road.Y < zone.Y || zone.Y < road.Y)
+                                        {
+                                            if (horizontal)
+                                            {
+                                                toRemoveH.Add(road);
+                                                horizontal = false;
+                                            } else
+                                            {
+                                                horizontal = true;
+                                                toRemoveH.Add(road);
+                                            }
+                                        } else if (road.X > zone.X || road.X < zone.X)
+                                        {
+                                            if (vertical)
+                                            {
+                                                toRemoveV.Add(road);
+                                                vertical = false;
+                                            } else
+                                            {
+                                                toRemoveV.Add(road);
+                                                vertical = true;
+                                            }
+                                        }
+                                    }
+                                    if (!horizontal)
+                                    {
+                                        roads.RemoveAll(i => toRemoveH.Contains(i));
+                                        if (roads[0].X < zone.X)
+                                            Fields[zone.X * Width + zone.Y].Text = "Road HU";
+                                        else
+                                            Fields[zone.X * Width + zone.Y].Text = "Road HB";
+                                    } else if (!vertical)
+                                    {
+                                        roads.RemoveAll(i => toRemoveV.Contains(i));
+                                        if (roads[0].Y < zone.Y)
+                                            Fields[zone.X * Width + zone.Y].Text = "Road VL";
+                                        else
+                                            Fields[zone.X * Width + zone.Y].Text = "Road VR";
+                                    }
+                                } else if (roads.Count == 4)
+                                    Fields[zone.X * Width + zone.Y].Text = "Road 4";
                                 break;
                             case Forest:
                                 Fields[zone.X * Width + zone.Y].Text = "Forest";
@@ -368,11 +474,23 @@ namespace SimVillage.ViewModel
                                 Fields[zone.X * Width + zone.Y].Text = "Power Line";
                                 break;
                             case PowerPlant:
-                                Fields[zone.X * Width + zone.Y].Text = "Power Plant";
+                                if (zone.X == zone.Building.X && zone.Y == zone.Building.Y)
+                                    Fields[zone.X * Width + zone.Y].Text = "Power Plant UL";
+                                else if (zone.X == zone.Building.X && zone.Building.Y + 1 == zone.Y)
+                                    Fields[zone.X * Width + zone.Y].Text = "Power Plant UR";
+                                else if (zone.X == zone.Building.X + 1 && zone.Y == zone.Building.Y)
+                                    Fields[zone.X * Width + zone.Y].Text = "Power Plant BL";
+                                else
+                                    Fields[zone.X * Width + zone.Y].Text = "Power Plant BR";
                                 break;
                             case School s:
                                 if (s.GetSchoolType() == SchoolTypes.Elementary)
-                                    Fields[zone.X * Width + zone.Y].Text = "School";
+                                {
+                                    if (zone.X == zone.Building.X && zone.Y == zone.Building.Y)
+                                        Fields[zone.X * Width + zone.Y].Text = "School L";
+                                    else
+                                        Fields[zone.X * Width + zone.Y].Text = "School R";
+                                }
                                 else
                                 {
                                     if (zone.X == zone.Building.X && zone.Y == zone.Building.Y)
