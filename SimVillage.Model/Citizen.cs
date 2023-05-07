@@ -21,35 +21,16 @@ namespace SimVillage.Model
             Salary = 0;
             EducationLevel = EducationLevel.Basic;
             Pensioner = false;
-            Happiness = calcHappiness();
         }
         public void SetHappiness(int happiness)
         {
             Happiness = happiness;
         }
-        public int calcHappiness()
+        public int GetHappiness()
         {
-            Happiness = 0;
-            Happiness -= HadToMove * 10;
-            int work_distance = City.calcDistance(Home, WorkPlace);
-            work_distance = 15 - work_distance;
-            Happiness += work_distance;
-            Happiness += Salary / 10;
-            if(EducationLevel == EducationLevel.Basic)
-            {
-                Happiness -= 5;
-            }
-            else if(EducationLevel == EducationLevel.Middle) 
-            {
-                Happiness += 5;
-            }
-            else
-            {
-                Happiness += 10;
-            }
             return Happiness;
-
         }
+       
 
         public void PlusHadToMove()
         {
