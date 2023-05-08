@@ -28,6 +28,8 @@ namespace SimVillage.ViewModel
 
         public string CitizenCount { get; private set; }
 
+        public int Speed { get; set; }
+
         public string Happiness { get; private set; }
 
         public List<Transaction> Expenses { get { var asd = model.Finances.Expenses; asd.Reverse(); return asd; } }
@@ -104,6 +106,7 @@ namespace SimVillage.ViewModel
             Money = "💲 " + model.GetBudget();
             CitizenCount = model.Citizens != null ? "👤 " + model.Citizens.Count : "👤 0";
             Happiness = "🙂 " + model.getHappiness();
+            Speed = 5;
 
             Fields = new ObservableCollection<Field>();
 
@@ -311,21 +314,29 @@ namespace SimVillage.ViewModel
 
         private void OnTenSpeedCommand()
         {
+            Speed = 10;
+            OnPropertyChanged(nameof(Speed));
             TenSpeed?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnFiveSpeedCommand()
         {
+            Speed = 5;
+            OnPropertyChanged(nameof(Speed));
             FiveSpeed?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnOneSpeedCommand()
         {
+            Speed = 1;
+            OnPropertyChanged(nameof(Speed));
             OneSpeed?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnPauseGame()
         {
+            Speed = 0;
+            OnPropertyChanged(nameof(Speed));
             PauseGame?.Invoke(this, EventArgs.Empty);
         }
 

@@ -14,10 +14,54 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <DockPanel HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Center">
-            <Button Content="Pause" Command="{Binding PauseGameCommand}" Width="50" Height="30"/>
-            <Button Content="1x" Command="{Binding OneSpeedCommand}" Width="50" Height="30"/>
-            <Button Content="5x" Command="{Binding FiveSpeedCommand}" Width="50" Height="30"/>
-            <Button Content="10x" Command="{Binding TenSpeedCommand}" Width="50" Height="30"/>
+            <Button Content="Pause" Command="{Binding PauseGameCommand}" Width="50" Height="30">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="White"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Speed}" Value="0">
+                                <Setter Property="Background" Value="LightBlue"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Content="1x" Command="{Binding OneSpeedCommand}" Width="50" Height="30">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="White"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Speed}" Value="1">
+                                <Setter Property="Background" Value="LightBlue"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Content="5x" Command="{Binding FiveSpeedCommand}" Width="50" Height="30">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="White"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Speed}" Value="5">
+                                <Setter Property="Background" Value="LightBlue"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Content="10x" Command="{Binding TenSpeedCommand}" Width="50" Height="30">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="White"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Speed}" Value="10">
+                                <Setter Property="Background" Value="LightBlue"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
             <TextBlock TextWrapping="Wrap" Text="{Binding Date}" Height="30" Padding="10, 0, 10, 0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <TextBlock TextWrapping="Wrap" Text="{Binding Name}" Height="30" Padding="10, 0, 10, 0" VerticalAlignment="Center"/>
             <TextBlock TextWrapping="Wrap" Text="{Binding CitizenCount}" Height="30" Padding="10, 0, 10, 0" VerticalAlignment="Center"/>

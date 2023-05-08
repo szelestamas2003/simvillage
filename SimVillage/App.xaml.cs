@@ -131,6 +131,7 @@ namespace SimVillage
 
         private void ViewModel_Info(object? sender, EventArgs e)
         {
+            bool paused = !timer.Enabled;
             timer.Stop();
             InfoWindow info = new InfoWindow();
             info.DataContext = viewModel;
@@ -138,7 +139,8 @@ namespace SimVillage
             {
                 viewModel.SetTax((int)info.Rslider.Value, (int)info.Islider.Value, (int)info.Sslider.Value);
             }
-            timer.Start();
+            if (!paused)
+                timer.Start();
             info = null!;
         }
 
