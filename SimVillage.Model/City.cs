@@ -120,14 +120,16 @@ namespace SimVillage.Model
             int total_happiness = 0;
             foreach(Citizen c in citizens)
             {
+                bool availableForest = false;
+                bool availableStadium = false;
                 int Happiness = 0;
+                
                 Happiness -= c.GetHadToMove() * 10;
-                int work_distance = City.calcDistance(c.GetHome(), c.GetWorkPlace());
+                int work_distance = calcDistance(c.GetHome(), c.GetWorkPlace());
                 work_distance = 15 - work_distance;
                 Happiness += work_distance;
                 Happiness += c.GetSalary() / 10;
-                bool availableForest = false;
-                bool availableStadium = false;
+                
                 if (c.GetEducation() == EducationLevel.Basic)
                 {
                     Happiness -= 5;
@@ -147,6 +149,7 @@ namespace SimVillage.Model
                     {
                         if (map[i][j].Building != null)
                         {
+                            
                             if (map[i][j].Building.GetType() == typeof(Forest) && !availableForest)
                             {
                                 if (calcDistance(c.GetHome(), map[i][j].Building) < 8)
@@ -170,6 +173,7 @@ namespace SimVillage.Model
                                     Happiness -= 8;
                                 }
                             }
+
                             c.SetHappiness(Happiness);
                             total_happiness += Happiness;
                         }
@@ -620,11 +624,20 @@ namespace SimVillage.Model
 
         public int getHappiness()
         {
+            calcHappiness(citizens);
             int happiness = 0;
-           
-               happiness = calcHappiness(citizens);
-            
-            return citizens.Count != 0 ? happiness / citizens.Count : 0;
+            foreach(Citizen c in citizens)
+            {
+                happiness += c.GetHappiness();
+            }
+            if(citizens.Count > 0)
+            {
+                return happiness / citizens.Count;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public bool newZone(int x, int y, ZoneType zoneType)

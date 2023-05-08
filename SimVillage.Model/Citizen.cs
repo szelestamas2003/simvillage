@@ -24,7 +24,7 @@ namespace SimVillage.Model
         }
         public void SetHappiness(int happiness)
         {
-            Happiness = happiness;
+            this.Happiness = happiness;
         }
         public int GetHappiness()
         {
