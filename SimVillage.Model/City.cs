@@ -120,6 +120,8 @@ namespace SimVillage.Model
             int total_happiness = 0;
             foreach(Citizen c in citizens)
             {
+                if (c.GetHome() == null)
+                    continue;
                 bool availableForest = false;
                 bool availableStadium = false;
                 int Happiness = 0;
