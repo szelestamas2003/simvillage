@@ -626,6 +626,8 @@ namespace SimVillage.Model
 
         public int getHappiness()
         {
+            if (citizens == null)
+                return 0;
             calcHappiness(citizens);
             int happiness = 0;
             foreach(Citizen c in citizens)

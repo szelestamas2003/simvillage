@@ -54,7 +54,6 @@ namespace SimVillage.ViewModel
 
         private bool doSave = false;
 
-        public event EventHandler? NewGame;
         public event EventHandler<NewGameEventArgs>? NewGame;
 
         public event EventHandler? LoadGame;
@@ -81,8 +80,6 @@ namespace SimVillage.ViewModel
         public event EventHandler<SlotEventArgs>? SavingSlot;
 
         public event EventHandler<SlotEventArgs>? SlotDelete;
-
-        public DelegateCommand RenameCommand { get; private set; }
 
         public DelegateCommand PauseGameCommand { get; private set; }
 
