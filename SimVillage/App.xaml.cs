@@ -78,6 +78,7 @@ namespace SimVillage
         private async void ViewModel_SlotDelete(object? sender, SlotEventArgs e)
         {
             await city.DeleteSave(e.Slot);
+            MessageBox.Show("Deleted your save from slot " + e.Slot, "Note", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
 
         private async void ViewModel_Loading(object? sender, SlotEventArgs e)
@@ -93,6 +94,7 @@ namespace SimVillage
         private async void ViewModel_Saving(object? sender, SlotEventArgs e)
         {
             await city.Save(e.Slot);
+            MessageBox.Show("Saved your game to slot " + e.Slot, "Note", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
 
         private void ViewModel_PauseMenu(object? sender, EventArgs e)
