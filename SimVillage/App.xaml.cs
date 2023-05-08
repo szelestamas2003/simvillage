@@ -86,6 +86,7 @@ namespace SimVillage
             //city.NewGame("Loading");
             //mainWindow.GoBack();
             //mainWindow.GoBack();
+            city.NewGame("Loading");
             await city.Load(e.Slot);
             timer.Start();
             mainWindow.Navigate(gamePageUri);
