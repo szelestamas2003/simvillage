@@ -253,6 +253,11 @@ namespace SimVillage.Model
                         }
                         zone.BuildBuilding(building);
                     }
+                    if (building.GetType() == typeof(Residental))
+                    {
+                        if (availableHouses.Contains(building))
+                            availableHouses.Remove((Residental)building);
+                    }
                     List<(int, int)> buildingZones = new List<(int, int)>();
                     if (building.GetSize().Item1 == 1)
                     {
