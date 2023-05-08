@@ -66,11 +66,18 @@ namespace SimVillage.Model
         public int getHappiness()
         {
             int happiness = 0;
-            foreach (Citizen i in Citizens)
+            foreach (Citizen c in Citizens)
             {
-                happiness += i.Happiness;
+                happiness += c.GetHappiness();
             }
-            return Citizens.Count == 0 ? 0 : happiness / Citizens.Count;
+            if (Citizens.Count > 0)
+            {
+                return happiness / Citizens.Count;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public bool DowngradeZone()
