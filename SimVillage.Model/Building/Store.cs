@@ -8,8 +8,8 @@ namespace SimVillage.Model.Building
 {
     public class Store : Building
     {
-        int MaxWorkers;
-        int Workers;
+        public int MaxWorkers { get; set; }
+        public int Workers { get; set; }
         public Store(int x, int y)
         {
             PowerConsumption = 30;

@@ -56,6 +56,9 @@ namespace SimVillage
             viewModel.ExitGame += new EventHandler(ViewModel_ExitGame);
             viewModel.ContinueGame += new EventHandler(ViewModel_ContinueGame);
             viewModel.PauseMenu += new EventHandler(ViewModel_PauseMenu);
+            viewModel.LoadingSlot += new EventHandler<SlotEventArgs>(ViewModel_Loading);
+            viewModel.SavingSlot += new EventHandler<SlotEventArgs>(ViewModel_Saving);
+            viewModel.SlotDelete += new EventHandler<SlotEventArgs>(ViewModel_SlotDelete);
 
             mainWindow = new MainWindow();
             mainWindow.KeyDown += new KeyEventHandler(OnButtonKeyDown);
@@ -70,6 +73,28 @@ namespace SimVillage
             timer = new Timer();
             timer.Interval = 5000;
             timer.Elapsed += new ElapsedEventHandler(Timer_Tick);
+        }
+
+        private async void ViewModel_SlotDelete(object? sender, SlotEventArgs e)
+        {
+            await city.DeleteSave(e.Slot);
+            MessageBox.Show("Deleted your save from slot " + e.Slot, "Note", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+        }
+
+        private async void ViewModel_Loading(object? sender, SlotEventArgs e)
+        {
+            //city.NewGame("Loading");
+            //mainWindow.GoBack();
+            //mainWindow.GoBack();
+            await city.Load(e.Slot);
+            timer.Start();
+            mainWindow.Navigate(gamePageUri);
+        }
+
+        private async void ViewModel_Saving(object? sender, SlotEventArgs e)
+        {
+            await city.Save(e.Slot);
+            MessageBox.Show("Saved your game to slot " + e.Slot, "Note", MessageBoxButton.OK, MessageBoxImage.Asterisk);
         }
 
         private void ViewModel_PauseMenu(object? sender, EventArgs e)
@@ -114,10 +139,10 @@ namespace SimVillage
 
         private async void ViewModel_SaveGame(object? sender, EventArgs e)
         {
-            await city.Save("save1.json");
+            mainWindow.Navigate(persistenceViewUri);
         }
 
-        private void ViewModel_LoadGame(object? sender, EventArgs e)
+        private async void ViewModel_LoadGame(object? sender, EventArgs e)
         {
             mainWindow.Navigate(persistenceViewUri);
         }

@@ -2,11 +2,8 @@
 {
     public class Finances
     {
-        private List<Transaction> expenses = null!;
-        private List<Transaction> incomes = null!;
-
-        public List<Transaction> Expenses { get { return expenses; } }
-        public List<Transaction> Incomes { get { return incomes; } }
+        public List<Transaction> Expenses { get; set; }
+        public List<Transaction> Incomes { get; set; }
 
         public int ResidentTax { get { return residentTax; } }
 
@@ -25,13 +22,13 @@
         public Finances(int budget)
         {
             this.budget = budget;
-            expenses = new List<Transaction>();
-            incomes = new List<Transaction>();
+            Expenses = new List<Transaction>();
+            Incomes = new List<Transaction>();
         }
 
         public void addExpenses(string name, int cost, string date)
         {
-            expenses.Add(new Transaction(name, cost, date));
+            Expenses.Add(new Transaction(name, cost, date));
             budget -= cost;
         }
 
@@ -68,7 +65,7 @@
 
         public void addIncome(string name, int cost, string date)
         {
-            incomes.Add(new Transaction(name, cost, date));
+            Incomes.Add(new Transaction(name, cost, date));
             budget += cost;
         }
 

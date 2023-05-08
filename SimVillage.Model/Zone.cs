@@ -12,9 +12,9 @@ namespace SimVillage.Model
 
         public ZoneType ZoneType { get; private set; }
 
-        public Building.Building Building { get; private set; } = null!;
+        public Building.Building Building { get; set; } = null!;
 
-        public List<Citizen> Citizens { get; private set; }
+        public List<Citizen> Citizens { get; set; }
 
         private const int cost = 400;
         public int getCost() { return cost; }

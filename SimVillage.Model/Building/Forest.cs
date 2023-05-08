@@ -2,7 +2,7 @@
 {
     public class Forest : Building
     {
-        int Age;
+        public int Age { get; set; }
         int Radius = 3;
         public Forest(int x, int y)
         {
