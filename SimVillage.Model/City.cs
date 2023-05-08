@@ -371,7 +371,7 @@ namespace SimVillage.Model
             OnGameChanged();
         }
 
-        public async Task Save(string path)
+        public async Task Save(int slot)
         {
             if (dataAccess == null)
             {
@@ -383,22 +383,27 @@ namespace SimVillage.Model
             g.Finances = Finances;
             g.Date = date;
             g.Zones = map;
-            await dataAccess.saveGame(path, g);
+            await dataAccess.saveGame(slot, g);
         }
 
-        public async Task Load(string path)
+        public async Task Load(int slot)
         {
             if (dataAccess == null)
             {
                 throw new InvalidOperationException("No data access is provided");
             }
-            GameState g = await dataAccess.loadGame(path);
+            GameState g = await dataAccess.loadGame(slot);
             cityName = g.Name;
             citizens = g.Citizens;
             Finances = g.Finances;
             date = g.Date;
             map = g.Zones;
             OnGameChanged();
+        }
+
+        public async Task DeleteSave(int slot)
+        {
+            await dataAccess.deleteGame(slot);
         }
 
         public void UpgradeZone(int x, int y)
@@ -478,6 +483,7 @@ namespace SimVillage.Model
                     zone.Building?.SetIsPowered(false);
             }
 
+            if (powerPlants is null) return;
             foreach (PowerPlant powerPlant in powerPlants)
             {
                 int powerConsumption = 0;
@@ -893,6 +899,7 @@ namespace SimVillage.Model
             {
                 Zone houseZone = null!;
                 Residental house = null!;
+                if (availableHouses is null) return;
                 if (availableHouses.Count == 0)
                 {
                     foreach (List<Zone> rows in map)

@@ -57,6 +57,7 @@ namespace SimVillage
             viewModel.ContinueGame += new EventHandler(ViewModel_ContinueGame);
             viewModel.PauseMenu += new EventHandler(ViewModel_PauseMenu);
             viewModel.LoadingSlot += new EventHandler<SlotEventArgs>(ViewModel_Loading);
+            viewModel.SavingSlot += new EventHandler<SlotEventArgs>(ViewModel_Saving);
             viewModel.SlotDelete += new EventHandler<SlotEventArgs>(ViewModel_SlotDelete);
 
             mainWindow = new MainWindow();
@@ -74,18 +75,24 @@ namespace SimVillage
             timer.Elapsed += new ElapsedEventHandler(Timer_Tick);
         }
 
-        private void ViewModel_SlotDelete(object? sender, SlotEventArgs e)
+        private async void ViewModel_SlotDelete(object? sender, SlotEventArgs e)
         {
-
+            await city.DeleteSave(e.Slot);
         }
 
         private async void ViewModel_Loading(object? sender, SlotEventArgs e)
         {
-            city.NewGame("Loading");
-            mainWindow.GoBack();
-            mainWindow.GoBack();
-            await city.Load("save1.json");
+            //city.NewGame("Loading");
+            //mainWindow.GoBack();
+            //mainWindow.GoBack();
+            await city.Load(e.Slot);
             timer.Start();
+            mainWindow.Navigate(gamePageUri);
+        }
+
+        private async void ViewModel_Saving(object? sender, SlotEventArgs e)
+        {
+            await city.Save(e.Slot);
         }
 
         private void ViewModel_PauseMenu(object? sender, EventArgs e)
@@ -130,18 +137,12 @@ namespace SimVillage
 
         private async void ViewModel_SaveGame(object? sender, EventArgs e)
         {
-            await city.Save("save1.json");
+            mainWindow.Navigate(persistenceViewUri);
         }
 
         private async void ViewModel_LoadGame(object? sender, EventArgs e)
         {
-            //mainWindow.Navigate(persistenceViewUri);
-            city.NewGame("Loading");
-            //mainWindow.GoBack();
-            //mainWindow.GoBack();
-            await city.Load("save1.json");
-            timer.Start();
-            mainWindow.Navigate(gamePageUri);
+            mainWindow.Navigate(persistenceViewUri);
         }
 
         private void ViewModel_NewGame(object? sender, EventArgs e)

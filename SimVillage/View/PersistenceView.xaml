@@ -13,11 +13,11 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <Button Content="Button" Grid.Column="0" Command="{Binding Slot1Command}" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top" Height="60" Width="400"/>
-        <Button Content="Button" Grid.Column="0" Command="{Binding Slot2Command}" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top" Height="60" Width="400"/>
-        <Button Content="Button" Grid.Column="0" Command="{Binding Slot3Command}" HorizontalAlignment="Center" Margin="0,180,0,0" VerticalAlignment="Top" Height="60" Width="400"/>
-        <Button Content="Button" Grid.Column="0" Command="{Binding Slot4Command}" HorizontalAlignment="Center" Margin="0,260,0,0" VerticalAlignment="Top" Height="60" Width="400"/>
-        <Button Content="Button" Grid.Column="0" Command="{Binding Slot5Command}" HorizontalAlignment="Center" Margin="0,340,0,0" VerticalAlignment="Top" Height="60" Width="400"/>
+        <Button Content="Slot 1" Grid.Column="0" Command="{Binding Slot1Command}" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top" Height="60" Width="400"/>
+        <Button Content="Slot 2" Grid.Column="0" Command="{Binding Slot2Command}" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top" Height="60" Width="400"/>
+        <Button Content="Slot 3" Grid.Column="0" Command="{Binding Slot3Command}" HorizontalAlignment="Center" Margin="0,180,0,0" VerticalAlignment="Top" Height="60" Width="400"/>
+        <Button Content="Slot 4" Grid.Column="0" Command="{Binding Slot4Command}" HorizontalAlignment="Center" Margin="0,260,0,0" VerticalAlignment="Top" Height="60" Width="400"/>
+        <Button Content="Slot 5" Grid.Column="0" Command="{Binding Slot5Command}" HorizontalAlignment="Center" Margin="0,340,0,0" VerticalAlignment="Top" Height="60" Width="400"/>
         <Button Cursor="Hand" Width="120" Height="60" Command="{Binding ContinueGameCommand}" Margin="340,466,340,74">
             <Button.Content>
                 <TextBlock Text="Back"/>

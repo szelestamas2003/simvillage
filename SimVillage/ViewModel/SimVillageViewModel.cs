@@ -115,8 +115,8 @@ namespace SimVillage.ViewModel
         public DelegateCommand Slot4DeleteCommand { get; private set; }
         public DelegateCommand Slot5DeleteCommand { get; private set; }
 
-        public DelegateCommand SetSaveCommand { get; private set; }
-        public DelegateCommand SetLoadCommand { get; private set; }
+        //public DelegateCommand SetSaveCommand { get; private set; }
+        //public DelegateCommand SetLoadCommand { get; private set; }
 
         public SimVillageViewModel(City model)
         {
@@ -172,8 +172,8 @@ namespace SimVillage.ViewModel
             Slot4DeleteCommand = new DelegateCommand(param => OnSlotDelete(4));
             Slot5DeleteCommand = new DelegateCommand(param => OnSlotDelete(5));
 
-            SetSaveCommand = new DelegateCommand(param => OnSetSave());
-            SetLoadCommand = new DelegateCommand(param => OnSetLoad());
+            //SetSaveCommand = new DelegateCommand(param => OnSetSave());
+            //SetLoadCommand = new DelegateCommand(param => OnSetLoad());
         }
 
         private void OnSetSave()
@@ -222,11 +222,13 @@ namespace SimVillage.ViewModel
 
         private void OnSaveGame()
         {
+            OnSetSave();
             SaveGame?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnLoadGame()
         {
+            OnSetLoad();
             LoadGame?.Invoke(this, EventArgs.Empty);
         }
 
