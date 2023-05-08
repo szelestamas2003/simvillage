@@ -137,10 +137,11 @@ namespace SimVillage
         {
             //mainWindow.Navigate(persistenceViewUri);
             city.NewGame("Loading");
-            mainWindow.GoBack();
-            mainWindow.GoBack();
+            //mainWindow.GoBack();
+            //mainWindow.GoBack();
             await city.Load("save1.json");
             timer.Start();
+            mainWindow.Navigate(gamePageUri);
         }
 
         private void ViewModel_NewGame(object? sender, EventArgs e)

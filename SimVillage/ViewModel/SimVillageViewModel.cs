@@ -50,6 +50,8 @@ namespace SimVillage.ViewModel
 
         private Field field = null!;
 
+        private bool doSave = false;
+
         public event EventHandler? NewGame;
 
         public event EventHandler? LoadGame;
@@ -75,6 +77,7 @@ namespace SimVillage.ViewModel
         public event EventHandler? PauseMenu;
 
         public event EventHandler<SlotEventArgs>? LoadingSlot;
+        public event EventHandler<SlotEventArgs>? SavingSlot;
 
         public event EventHandler<SlotEventArgs>? SlotDelete;
 
@@ -111,6 +114,9 @@ namespace SimVillage.ViewModel
         public DelegateCommand Slot3DeleteCommand { get; private set; }
         public DelegateCommand Slot4DeleteCommand { get; private set; }
         public DelegateCommand Slot5DeleteCommand { get; private set; }
+
+        public DelegateCommand SetSaveCommand { get; private set; }
+        public DelegateCommand SetLoadCommand { get; private set; }
 
         public SimVillageViewModel(City model)
         {
@@ -165,11 +171,33 @@ namespace SimVillage.ViewModel
             Slot3DeleteCommand = new DelegateCommand(param => OnSlotDelete(3));
             Slot4DeleteCommand = new DelegateCommand(param => OnSlotDelete(4));
             Slot5DeleteCommand = new DelegateCommand(param => OnSlotDelete(5));
+
+            SetSaveCommand = new DelegateCommand(param => OnSetSave());
+            SetLoadCommand = new DelegateCommand(param => OnSetLoad());
+        }
+
+        private void OnSetSave()
+        {
+            doSave = true;
+            return;
+        }
+
+        private void OnSetLoad()
+        {
+            doSave = false;
+            return;
         }
 
         private void OnSlot(int n)
         {
-            LoadingSlot?.Invoke(this, new SlotEventArgs { Slot = n});
+            if (doSave)
+            {
+                SavingSlot?.Invoke(this, new SlotEventArgs { Slot = n });
+            }
+            else
+            {
+                LoadingSlot?.Invoke(this, new SlotEventArgs { Slot = n });
+            }
         }
 
         private void OnSlotDelete(int n)
