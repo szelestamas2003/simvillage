@@ -21,6 +21,18 @@ namespace SimVillage
     /// </summary>
     public partial class GamePage : Page
     {
+        private Cursor Residental = CursorHelper.FromByteArray(Properties.Resources.residental_t);
+        private Cursor Store = CursorHelper.FromByteArray(Properties.Resources.shop_t);
+        private Cursor Police = CursorHelper.FromByteArray(Properties.Resources.police_t);
+        private Cursor Forest = CursorHelper.FromByteArray(Properties.Resources.forest_t);
+        private Cursor PowerGenerator = CursorHelper.FromByteArray(Properties.Resources.power_generator_t);
+        private Cursor Road = CursorHelper.FromByteArray(Properties.Resources.road_t);
+        private Cursor University = CursorHelper.FromByteArray(Properties.Resources.university_t);
+        private Cursor PowerLine = CursorHelper.FromByteArray(Properties.Resources.power_line_t);
+        private Cursor FireDepartment = CursorHelper.FromByteArray(Properties.Resources.fire_department_t);
+        private Cursor School = CursorHelper.FromByteArray(Properties.Resources.elementary_school_t);
+        private Cursor Industrial = CursorHelper.FromByteArray(Properties.Resources.factory_t);
+        private Cursor Stadium = CursorHelper.FromByteArray(Properties.Resources.stadium_t);
         Canvas canvas = null!;
         Point StartPos { get; set; }
         TranslateTransform Translate { get; set; }
@@ -99,7 +111,6 @@ namespace SimVillage
         public static T FindChild<T>(DependencyObject parent, string childName)
             where T : DependencyObject
         {
-            // Confirm parent and childName are valid. 
             if (parent == null) return null!;
 
             T foundChild = null!;
@@ -108,30 +119,24 @@ namespace SimVillage
             for (int i = 0; i < childrenCount; i++)
             {
                 var child = VisualTreeHelper.GetChild(parent, i);
-                // If the child is not of the request child type child
                 T? childType = child as T;
                 if (childType == null)
                 {
-                    // recursively drill down the tree
                     foundChild = FindChild<T>(child, childName);
 
-                    // If the child is found, break so we do not overwrite the found child. 
                     if (foundChild != null) break;
                 }
                 else if (!string.IsNullOrEmpty(childName))
                 {
                     var frameworkElement = child as FrameworkElement;
-                    // If the child's name is set for search
                     if (frameworkElement != null && frameworkElement.Name == childName)
                     {
-                        // if the child's name is of the request name
                         foundChild = (T)child;
                         break;
                     }
                 }
                 else
                 {
-                    // child element found.
                     foundChild = (T)child;
                     break;
                 }
@@ -145,6 +150,57 @@ namespace SimVillage
             canvas = FindChild<Canvas>(container, "canvas");
             Translate.Y = -canvas.Height * 2 / 3 + 64;
             canvas.RenderTransform = Translate;
+        }
+
+        private void Options_Clicked(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            if (button.Background == Brushes.White)
+            {
+                Image image = (Image)button.Content;
+                string source = image.Source.ToString();
+                string path = source.Substring(source.LastIndexOf(",") + 1);
+                switch (path)
+                {
+                    case "/View/pixelarts/residental_t.png":
+                        canvas.Cursor = Residental;
+                        break;
+                    case "/View/pixelarts/shop_t.png":
+                        canvas.Cursor = Store;
+                        break;
+                    case "/View/pixelarts/fire_department_t.png":
+                        canvas.Cursor = FireDepartment;
+                        break;
+                    case "/View/pixelarts/forest_t.png":
+                        canvas.Cursor = Forest;
+                        break;
+                    case "/View/pixelarts/police_t.png":
+                        canvas.Cursor = Police;
+                        break;
+                    case "/View/pixelarts/elementary_school_t.png":
+                        canvas.Cursor = School;
+                        break;
+                    case "/View/pixelarts/factory_t.png":
+                        canvas.Cursor = Industrial;
+                        break;
+                    case "/View/pixelarts/stadium_t.png":
+                        canvas.Cursor = Stadium;
+                        break;
+                    case "/View/pixelarts/power_line_t.png":
+                        canvas.Cursor = PowerLine;
+                        break;
+                    case "/View/pixelarts/power_generator_t.png":
+                        canvas.Cursor = PowerGenerator;
+                        break;
+                    case "/View/pixelarts/university_t.png":
+                        canvas.Cursor = University;
+                        break;
+                    case "/View/pixelarts/road_t.png":
+                        canvas.Cursor = Road;
+                        break;
+                }
+            } else
+                canvas.Cursor = Cursors.Hand;
         }
     }
 }

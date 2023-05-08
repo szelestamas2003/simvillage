@@ -26,9 +26,11 @@ namespace SimVillage.ViewModel
 
         public string Date { get; private set; }
 
-        public int CitizenCount { get; private set; }
+        public string CitizenCount { get; private set; }
 
-        public int Happiness { get { return model.getHappiness(); } }
+        public int Speed { get; set; }
+
+        public string Happiness { get; private set; }
 
         public List<Transaction> Expenses { get { var asd = model.Finances.Expenses; asd.Reverse(); return asd; } }
 
@@ -42,7 +44,7 @@ namespace SimVillage.ViewModel
 
         public bool IsMoneyNegative { get; private set; }
 
-        public int Money { get; private set; }
+        public string Money { get; private set; }
 
         public string BuildInfo { get; private set; }
 
@@ -53,6 +55,7 @@ namespace SimVillage.ViewModel
         private bool doSave = false;
 
         public event EventHandler? NewGame;
+        public event EventHandler<NewGameEventArgs>? NewGame;
 
         public event EventHandler? LoadGame;
 
@@ -67,8 +70,6 @@ namespace SimVillage.ViewModel
         public event EventHandler? TenSpeed;
 
         public event EventHandler? Info;
-
-        public event EventHandler? Rename;
 
         public event EventHandler? ExitGame;
 
@@ -124,8 +125,11 @@ namespace SimVillage.ViewModel
             model.gameAdvanced += new EventHandler(Model_GameAdvanced);
             model.gameChanged += new EventHandler(Model_GameChanged);
             model.gameCreated += new EventHandler(Model_GameCreated);
-            Date = model.Date.ToString("yyyy") + " " + model.Date.ToString("M");
-            Money = model.GetBudget();
+            Date = "📅 " + model.Date.ToString("yyyy") + " " + model.Date.ToString("M");
+            Money = "💲 " + model.GetBudget();
+            CitizenCount = model.Citizens != null ? "👤 " + model.Citizens.Count : "👤 0";
+            Happiness = "🙂 " + model.getHappiness();
+            Speed = 5;
 
             Fields = new ObservableCollection<Field>();
 
@@ -147,13 +151,12 @@ namespace SimVillage.ViewModel
                 new Option { Text = "Stadium", Number = 11, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param))), Info = "2x2 - Makes people happy."},
                 new Option { Text = "Demolish", Number = 12, Clicked = new DelegateCommand(param => OnOptionsClicked(Convert.ToInt32(param))), Info = "Demolish what you don't need."}
             };
-            RenameCommand = new DelegateCommand(param => OnRename());
             PauseGameCommand = new DelegateCommand(param => OnPauseGame());
             OneSpeedCommand = new DelegateCommand(param => OnOneSpeedCommand());
             FiveSpeedCommand = new DelegateCommand(param => OnFiveSpeedCommand());
             TenSpeedCommand = new DelegateCommand(param => OnTenSpeedCommand());
             InfoCommand = new DelegateCommand(param => OnInfoCommand());
-            NewGameCommand = new DelegateCommand(param => OnNewGame());
+            NewGameCommand = new DelegateCommand(param => OnNewGame(Convert.ToString(param)));
             LoadGameCommand = new DelegateCommand(param => OnLoadGame());
             SaveGameCommand = new DelegateCommand(param => OnSaveGame());
             ExitCommand = new DelegateCommand(param => OnExitGame());
@@ -205,6 +208,13 @@ namespace SimVillage.ViewModel
             SlotDelete?.Invoke(this, new SlotEventArgs { Slot = n });
         }
 
+        public void SetTax(int residentalTax, int industrialTax, int StoreTax)
+        {
+            model.Finances.setTax(ZoneType.Residental, residentalTax);
+            model.Finances.setTax(ZoneType.Industrial, industrialTax);
+            model.Finances.setTax(ZoneType.Store, StoreTax);
+        }
+
         private void OnPauseMenu()
         {
             PauseMenu?.Invoke(this, EventArgs.Empty);
@@ -232,9 +242,10 @@ namespace SimVillage.ViewModel
             LoadGame?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnNewGame()
+        private void OnNewGame(string? param)
         {
-            NewGame?.Invoke(this, EventArgs.Empty);
+            if (!string.IsNullOrEmpty(param))
+                NewGame?.Invoke(this, new NewGameEventArgs { Name = param });
         }
 
         private void OnInfoCommand()
@@ -372,34 +383,39 @@ namespace SimVillage.ViewModel
 
         private void OnTenSpeedCommand()
         {
+            Speed = 10;
+            OnPropertyChanged(nameof(Speed));
             TenSpeed?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnFiveSpeedCommand()
         {
+            Speed = 5;
+            OnPropertyChanged(nameof(Speed));
             FiveSpeed?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnOneSpeedCommand()
         {
+            Speed = 1;
+            OnPropertyChanged(nameof(Speed));
             OneSpeed?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnPauseGame()
         {
+            Speed = 0;
+            OnPropertyChanged(nameof(Speed));
             PauseGame?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void OnRename()
-        {
-            Rename?.Invoke(this, EventArgs.Empty);
         }
 
         private void Model_GameChanged(object? sender, EventArgs e)
         {
-            CitizenCount = model.Citizens.Count;
-            Money = model.GetBudget();
-            if(Money < 0)
+            CitizenCount = "👤 " +  model.Citizens.Count;
+            Money = "💲 " +  model.GetBudget();
+            Happiness = "🙂 " + model.getHappiness();
+
+            if(model.GetBudget() < 0)
             {
                 IsMoneyNegative = true;
             }
@@ -417,7 +433,113 @@ namespace SimVillage.ViewModel
                         switch (zone.Building)
                         {
                             case Road:
-                                Fields[zone.X * Width + zone.Y].Text = "Road";
+                                List<Road> roads = new List<Road>();
+                                for (int i = -1; i < 2; i++)
+                                {
+                                    for (int j = -1; j < 2; j++)
+                                    {
+                                        if (Math.Abs(i) != Math.Abs(j) && zone.X + i >= 0 && zone.X + i < Height && zone.Y + j >= 0 && zone.Y + j < Width && model.Map[zone.X + i][zone.Y + j].Building != null)
+                                        {
+                                            if (model.Map[zone.X + i][zone.Y + j].Building.GetType() == typeof(Road))
+                                                roads.Add((Road)model.Map[zone.X + i][zone.Y + j].Building);
+                                        }
+                                    }
+                                }
+                                if (roads.Count == 0)
+                                    Fields[zone.X * Width + zone.Y].Text = "Road";
+                                else if (roads.Count == 1)
+                                {
+                                    if (roads[0].Y > zone.Y || roads[0].Y < zone.Y)
+                                        Fields[zone.X * Width + zone.Y].Text = "Road H";
+                                    else
+                                        Fields[zone.X * Width + zone.Y].Text = "Road";
+                                } else if (roads.Count == 2)
+                                {
+                                    bool up = false;
+                                    bool right = false;
+                                    int hor = 0;
+                                    int ver = 0;
+                                    foreach (Road road in roads)
+                                    {
+                                        if (road.Y == zone.Y)
+                                        {
+                                            ver++;
+                                            if (road.X < zone.X)
+                                                up = true;
+                                        }
+                                        else if (road.X == zone.X)
+                                        {
+                                            hor++;
+                                            if (road.Y > zone.Y)
+                                                right = true;
+                                        }
+                                    }
+                                    if (hor == 2)
+                                        Fields[zone.X * Width + zone.Y].Text = "Road H";
+                                    else if (ver == 2)
+                                        Fields[zone.X * Width + zone.Y].Text = "Road";
+                                     else if (up)
+                                    {
+                                        if (right)
+                                            Fields[zone.X * Width + zone.Y].Text = "Road UR";
+                                        else
+                                            Fields[zone.X * Width + zone.Y].Text = "Road UL";
+                                    } else
+                                    {
+                                        if (right)
+                                            Fields[zone.X * Width + zone.Y].Text = "Road BR";
+                                        else
+                                            Fields[zone.X * Width + zone.Y].Text = "Road BL";
+                                    }
+                                } else if (roads.Count == 3)
+                                {
+                                    bool vertical = false;
+                                    List<Road> toRemoveH = new List<Road>();
+                                    List<Road> toRemoveV = new List<Road>();
+                                    bool horizontal = false;
+                                    foreach (Road road in roads)
+                                    {
+                                        if (road.Y < zone.Y || zone.Y < road.Y)
+                                        {
+                                            if (horizontal)
+                                            {
+                                                toRemoveH.Add(road);
+                                                horizontal = false;
+                                            } else
+                                            {
+                                                horizontal = true;
+                                                toRemoveH.Add(road);
+                                            }
+                                        } else if (road.X > zone.X || road.X < zone.X)
+                                        {
+                                            if (vertical)
+                                            {
+                                                toRemoveV.Add(road);
+                                                vertical = false;
+                                            } else
+                                            {
+                                                toRemoveV.Add(road);
+                                                vertical = true;
+                                            }
+                                        }
+                                    }
+                                    if (!horizontal)
+                                    {
+                                        roads.RemoveAll(i => toRemoveH.Contains(i));
+                                        if (roads[0].X < zone.X)
+                                            Fields[zone.X * Width + zone.Y].Text = "Road HU";
+                                        else
+                                            Fields[zone.X * Width + zone.Y].Text = "Road HB";
+                                    } else if (!vertical)
+                                    {
+                                        roads.RemoveAll(i => toRemoveV.Contains(i));
+                                        if (roads[0].Y < zone.Y)
+                                            Fields[zone.X * Width + zone.Y].Text = "Road VL";
+                                        else
+                                            Fields[zone.X * Width + zone.Y].Text = "Road VR";
+                                    }
+                                } else if (roads.Count == 4)
+                                    Fields[zone.X * Width + zone.Y].Text = "Road 4";
                                 break;
                             case Forest:
                                 Fields[zone.X * Width + zone.Y].Text = "Forest";
@@ -432,16 +554,44 @@ namespace SimVillage.ViewModel
                                 Fields[zone.X * Width + zone.Y].Text = "Power Line";
                                 break;
                             case PowerPlant:
-                                Fields[zone.X * Width + zone.Y].Text = "Power Plant";
+                                if (zone.X == zone.Building.X && zone.Y == zone.Building.Y)
+                                    Fields[zone.X * Width + zone.Y].Text = "Power Plant UL";
+                                else if (zone.X == zone.Building.X && zone.Building.Y + 1 == zone.Y)
+                                    Fields[zone.X * Width + zone.Y].Text = "Power Plant UR";
+                                else if (zone.X == zone.Building.X + 1 && zone.Y == zone.Building.Y)
+                                    Fields[zone.X * Width + zone.Y].Text = "Power Plant BL";
+                                else
+                                    Fields[zone.X * Width + zone.Y].Text = "Power Plant BR";
                                 break;
                             case School s:
                                 if (s.GetSchoolType() == SchoolTypes.Elementary)
-                                    Fields[zone.X * Width + zone.Y].Text = "School";
+                                {
+                                    if (zone.X == zone.Building.X && zone.Y == zone.Building.Y)
+                                        Fields[zone.X * Width + zone.Y].Text = "School L";
+                                    else
+                                        Fields[zone.X * Width + zone.Y].Text = "School R";
+                                }
                                 else
-                                    Fields[zone.X * Width + zone.Y].Text = "University";
+                                {
+                                    if (zone.X == zone.Building.X && zone.Y == zone.Building.Y)
+                                        Fields[zone.X * Width + zone.Y].Text = "University UL";
+                                    else if (zone.X == zone.Building.X && zone.Building.Y + 1 == zone.Y)
+                                        Fields[zone.X * Width + zone.Y].Text = "University UR";
+                                    else if (zone.X == zone.Building.X + 1 && zone.Y == zone.Building.Y)
+                                        Fields[zone.X * Width + zone.Y].Text = "University BL";
+                                    else
+                                        Fields[zone.X * Width + zone.Y].Text = "University BR";
+                                }
                                 break;
                             case Stadium:
-                                Fields[zone.X * Width + zone.Y].Text = "Stadium";
+                                if (zone.X == zone.Building.X && zone.Y == zone.Building.Y)
+                                    Fields[zone.X * Width + zone.Y].Text = "Stadium UL";
+                                else if (zone.X == zone.Building.X && zone.Building.Y + 1 == zone.Y)
+                                    Fields[zone.X * Width + zone.Y].Text = "Stadium UR";
+                                else if (zone.X == zone.Building.X + 1 && zone.Y == zone.Building.Y)
+                                    Fields[zone.X * Width + zone.Y].Text = "Stadium BL";
+                                else
+                                    Fields[zone.X * Width + zone.Y].Text = "Stadium BR";
                                 break;
                             case Residental:
                                 Fields[zone.X * Width + zone.Y].Text = "Residental Building";
@@ -486,7 +636,7 @@ namespace SimVillage.ViewModel
 
         private void Model_GameAdvanced(object? sender, EventArgs e)
         {
-            Date = model.Date.ToString("yyyy") + " " + model.Date.ToString("M");
+            Date = "📅 " + model.Date.ToString("yyyy") + " " + model.Date.ToString("M");
             OnPropertyChanged(nameof(Date));
         }
     }
