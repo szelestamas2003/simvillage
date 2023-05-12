@@ -138,12 +138,12 @@ namespace SimVillage
             mainWindow.Close();
         }
 
-        private async void ViewModel_SaveGame(object? sender, EventArgs e)
+        private void ViewModel_SaveGame(object? sender, EventArgs e)
         {
             mainWindow.Navigate(persistenceViewUri);
         }
 
-        private async void ViewModel_LoadGame(object? sender, EventArgs e)
+        private void ViewModel_LoadGame(object? sender, EventArgs e)
         {
             mainWindow.Navigate(persistenceViewUri);
         }

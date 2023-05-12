@@ -125,7 +125,7 @@ namespace SimVillage.ViewModel
             Date = "📅 " + model.Date.ToString("yyyy") + " " + model.Date.ToString("M");
             Money = "💲 " + model.GetBudget();
             CitizenCount = model.Citizens != null ? "👤 " + model.Citizens.Count : "👤 0";
-            Happiness = "🙂 " + model.getHappiness();
+            Happiness = model.Citizens != null ? "🙂 " + model.getHappiness() : "🙂 0";
             Speed = 5;
 
             Fields = new ObservableCollection<Field>();

@@ -21,7 +21,7 @@ namespace SimVillage.Model
 
         public Finances Finances { get; private set; } = null!;
 
-        private static List<List<Zone>> map = null!;
+        private List<List<Zone>> map = null!;
 
         public int Width() { return mapWidth;}
 
@@ -115,13 +115,11 @@ namespace SimVillage.Model
             canDemolish = boolean;
         }
 
-        static int calcHappiness(List<Citizen> citizens)
+        private int calcHappiness()
         {
             int total_happiness = 0;
             foreach(Citizen c in citizens)
             {
-                if (c.GetHome() == null)
-                    continue;
                 bool availableForest = false;
                 bool availableStadium = false;
                 int Happiness = 0;
@@ -364,15 +362,21 @@ namespace SimVillage.Model
                 {
                     foreach (Citizen citizen in Citizens)
                     {
-                        citizen.SetWorkPlace(null!);
-                        citizen.SetSalary(0);
+                        if (citizen.GetWorkPlace() == building)
+                        {
+                            citizen.SetWorkPlace(null!);
+                            citizen.SetSalary(0);
+                        }
                     }
                 } else
                 {
                     foreach (Citizen citizen in Citizens)
                     {
-                        citizen.SetWorkPlace(null!);
-                        citizen.SetSalary(0);
+                        if (citizen.GetWorkPlace() == building)
+                        {
+                            citizen.SetWorkPlace(null!);
+                            citizen.SetSalary(0);
+                        }
                     }
                 }
                 Finances.addExpenses("Demolished a " + zone.ToString() + " and you had conflict with people", building!.GetCost() / 2, date.ToString("d"));
@@ -551,7 +555,7 @@ namespace SimVillage.Model
             }
         }
 
-        static public int calcDistance(Building.Building from, Building.Building to)
+        public int calcDistance(Building.Building from, Building.Building to)
         {
             List<int> distances = new List<int>();
             HashSet<Road> visited = new HashSet<Road>();
@@ -561,13 +565,8 @@ namespace SimVillage.Model
             return distances.Count != 0 ? distances[0] : -1;
         }
 
-        static private void distancesFromTo(Building.Building from, Building.Building current, Building.Building to, List<int> distances, HashSet<Road> visited, int n)
+        private void distancesFromTo(Building.Building from, Building.Building current, Building.Building to, List<int> distances, HashSet<Road> visited, int n)
         {
-            if (map == null)
-            {
-                return;
-            }
-
             bool found = false;
             List<(int, int)> buildingZones = new List<(int, int)>();
             if (current.GetSize().Item1 == 1)
@@ -626,9 +625,7 @@ namespace SimVillage.Model
 
         public int getHappiness()
         {
-            if (citizens == null)
-                return 0;
-            calcHappiness(citizens);
+            calcHappiness();
             int happiness = 0;
             foreach(Citizen c in citizens)
             {
@@ -669,9 +666,6 @@ namespace SimVillage.Model
 
         public void BuildBuilding(Building.Building building, bool inConstructor = false)
         {
-            if (building == null)
-                return;
-            
             bool freeZone = true;
             List<(int, int)> buildingZones = new List<(int, int)>();
             if (building.GetSize().Item1 == 1)
