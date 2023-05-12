@@ -173,6 +173,16 @@ namespace SimVillage.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] splash {
+            get {
+                object obj = ResourceManager.GetObject("splash", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] stadium_t {
             get {
                 object obj = ResourceManager.GetObject("stadium_t", resourceCulture);
