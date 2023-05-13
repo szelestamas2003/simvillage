@@ -16,6 +16,8 @@ namespace SimVillage.Model
 
         public List<Citizen> Citizens { get; private set; }
 
+        public string Info { get { return "Happiness: " + getHappiness(); } }
+
         private const int cost = 400;
         public int getCost() { return cost; }
 
