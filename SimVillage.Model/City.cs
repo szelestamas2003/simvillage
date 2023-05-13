@@ -446,6 +446,36 @@ namespace SimVillage.Model
             Finances = g.Finances;
             date = g.Date;
             map = g.Zones;
+            foreach (List<Zone> rows in map)
+            {
+                foreach (Zone zone in rows)
+                {
+                    if (zone.Building != null && zone.Building.IsAccessible && zone.Building.IsPowered)
+                    {
+                        switch (zone.Building)
+                        {
+                            case Industrial i:
+                                if (i.FreeSpace())
+                                    availableIndustrials.Add(i);
+                                break;
+                            case Residental r:
+                                if (r.FreeSpace())
+                                    availableHouses.Add(r);
+                                break;
+                            case Store s:
+                                if (s.FreeSpace())
+                                    availableStores.Add(s);
+                                break;
+                            case School sch:
+                                availableSchools.Add(sch);
+                                break;
+                            case PowerPlant p:
+                                powerPlants.Add(p);
+                                break;
+                        }
+                    }
+                }
+            }
             OnGameChanged();
         }
 

@@ -31,7 +31,8 @@
         }
         public void SetStudents(Citizen student)
         {
-            Students.Append(student);
+            if (Students.Count < MaxStudents)
+                Students.Append(student);
         }
         public SchoolTypes GetSchoolType()
         {
