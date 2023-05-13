@@ -36,6 +36,7 @@ test_model:
   before_script:    
     # Restore NuGet packages to the local .nuget folder (inside the project directory).
     - dotnet restore SimVillageTest --packages .nuget
+  tags: [windows]
   script:
     - dotnet test SimVillageTest --no-restore
   # Cache and keep downloaded NuGet dependencies between CI pipelines
