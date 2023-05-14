@@ -19,14 +19,12 @@ namespace SimVillage.Model.Building
             X = x;
             Y = y;
         }
-        public int GetMaxInhabitants() { return MaxInhabitants; }
-        public int GetInhabitans() { return Inhabitans; }
 
-        public void SetMaxInhabitants(int MaxInhabitants) { this.MaxInhabitants = MaxInhabitants; }
         public void MoveOut()
         {
             Inhabitans--;
         }
+
         public void MoveIn()
         {
             Inhabitans++;

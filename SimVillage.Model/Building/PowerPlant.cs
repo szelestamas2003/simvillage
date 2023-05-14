@@ -12,7 +12,6 @@
             Y = y;
         }
         public int GetGeneratedPower() {  return GeneratedPower; }
-        public void SetGeneratedPower(int value) {  GeneratedPower = value; }
 
         public override String ToString()
         {

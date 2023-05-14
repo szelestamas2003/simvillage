@@ -36,11 +36,11 @@ namespace SimVillage.ViewModel
 
         public List<Transaction> Incomes { get { var asd = model.Finances.Incomes; asd.Reverse(); return asd; } }
 
-        public int ResidentTax { get { return model.Finances.getTax(ZoneType.Residental); } }
+        public int ResidentTax { get { return model.Finances.ResidentTax; } }
 
-        public int IndustrialTax { get { return model.Finances.getTax(ZoneType.Industrial); } }
+        public int IndustrialTax { get { return model.Finances.IndustrialTax; } }
 
-        public int StoreTax { get { return model.Finances.getTax(ZoneType.Store); } }
+        public int StoreTax { get { return model.Finances.StoreTax; } }
 
         public bool IsMoneyNegative { get; private set; }
 
@@ -190,11 +190,11 @@ namespace SimVillage.ViewModel
             doSave = false;
         }
 
-        public void SetTax(int residentalTax, int industrialTax, int StoreTax)
+        public void SetTax(int residentalTax, int industrialTax, int storeTax)
         {
-            model.Finances.setTax(ZoneType.Residental, residentalTax);
-            model.Finances.setTax(ZoneType.Industrial, industrialTax);
-            model.Finances.setTax(ZoneType.Store, StoreTax);
+            model.Finances.ResidentTax = residentalTax;
+            model.Finances.IndustrialTax = industrialTax;
+            model.Finances.StoreTax = storeTax;
         }
 
         private void OnPauseMenu()
@@ -546,7 +546,7 @@ namespace SimVillage.ViewModel
                                     Fields[zone.X * Width + zone.Y].Text = "Power Plant BR";
                                 break;
                             case School s:
-                                if (s.GetSchoolType() == SchoolTypes.Elementary)
+                                if (s.Type == SchoolTypes.Elementary)
                                 {
                                     if (zone.X == zone.Building.X && zone.Y == zone.Building.Y)
                                         Fields[zone.X * Width + zone.Y].Text = "School L";

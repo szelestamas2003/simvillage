@@ -9,12 +9,16 @@ namespace SimVillage.Model
 {
     public class Persistence
     {
-        private string folder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        private string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "SimVillage/saves");
         public Persistence() { }
 
         public async Task saveGame(StoredGame storedgame, GameState data)
         {
-            folder = Path.Combine(folder, "SimVillage/saves");
+            string fileName = "slot" + storedgame.Slot.ToString() + "_" + data.Name + ".json";
+            if (storedgame.Name != string.Empty)
+            {
+                File.Delete(Path.Combine(folder, "slot" + storedgame.Slot.ToString() + "_" + storedgame.Name + ".json"));
+            }
             var options = new JsonSerializerOptions
             {
                 WriteIndented = true
@@ -22,7 +26,7 @@ namespace SimVillage.Model
             try
             {
                 Directory.CreateDirectory(folder);
-                await using FileStream createStream = File.Create(Path.Combine(folder, "slot" + storedgame.Slot.ToString() + "_" + data.Name + ".json"));
+                await using FileStream createStream = File.Create(Path.Combine(folder, fileName));
                 await JsonSerializer.SerializeAsync(createStream, data, options);
             }
             catch
@@ -33,7 +37,6 @@ namespace SimVillage.Model
 
         public async Task<GameState> loadGame(StoredGame storedgame)
         {
-            folder = Path.Combine(folder, "SimVillage/saves");
             try
             {
                 string jsonString = File.ReadAllText(Path.Combine(folder, "slot" + storedgame.Slot.ToString() + "_" + storedgame.Name + ".json"));

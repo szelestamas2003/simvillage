@@ -68,7 +68,7 @@ namespace SimVillage.Model
             int happiness = 0;
             foreach (Citizen c in Citizens)
             {
-                happiness += c.GetHappiness();
+                happiness += c.Happiness;
             }
             if (Citizens.Count > 0)
             {
