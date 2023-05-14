@@ -115,17 +115,30 @@ namespace SimVillage.Model
             canDemolish = boolean;
         }
 
-        static int calcHappiness(List<Citizen> citizens)
+        public int calcHappiness(List<Citizen> citizens)
         {
             int total_happiness = 0;
-            foreach(Citizen c in citizens)
+            foreach (Citizen c in citizens)
             {
+                int taxes = 0;
+                taxes += Finances.getTax(ZoneType.Residental);
+                taxes += Finances.getTax(ZoneType.Industrial);
+                taxes += Finances.getTax(ZoneType.Store);
+                int tax_effect = 40 - taxes;
+              
                 if (c.GetHome() == null)
                     continue;
                 bool availableForest = false;
                 bool availableStadium = false;
                 int Happiness = 0;
+                Happiness = +tax_effect;
+
                 
+                
+               
+
+
+
                 Happiness -= c.GetHadToMove() * 10;
                 int work_distance = calcDistance(c.GetHome(), c.GetWorkPlace());
                 work_distance = 15 - work_distance;
@@ -175,7 +188,10 @@ namespace SimVillage.Model
                                     Happiness -= 8;
                                 }
                             }
-
+                            if(Happiness < 0)
+                                Happiness = 0;
+                            if(Happiness > 100)
+                                Happiness = 100;
                             c.SetHappiness(Happiness);
                             total_happiness += Happiness;
                         }
@@ -891,6 +907,8 @@ namespace SimVillage.Model
 
         private void GoToSchool()
         {
+            if (availableSchools == null)
+                return;
             if (citizens.Count == 0 || availableSchools.Count == 0)
                 return;
 
