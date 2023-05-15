@@ -600,7 +600,9 @@ namespace SimVillage.ViewModel
                         };
                     }
                     Fields[zone.X * Width + zone.Y].Name = zone.ToString();
-                    Fields[zone.X * Width + zone.Y].Info = zone.Building != null ? zone.Building.ToString() + zone.Info : "";
+                    Fields[zone.X * Width + zone.Y].Info = null != zone.Building ? zone.Building.ToString() : "";
+                    if (zone.ZoneType != ZoneType.General)
+                        Fields[zone.X * Width + zone.Y].Info += zone.Info;
                 }
             }
             OnPropertyChanged(nameof(CitizenCount));

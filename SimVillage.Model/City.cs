@@ -140,13 +140,10 @@ namespace SimVillage.Model
             foreach (Citizen c in citizens)
             {
                 int taxes = 0;
-                taxes += Finances.getTax(ZoneType.Residental);
-                taxes += Finances.getTax(ZoneType.Industrial);
-                taxes += Finances.getTax(ZoneType.Store);
+                taxes += Finances.ResidentTax;
+                taxes += Finances.IndustrialTax;
+                taxes += Finances.StoreTax;
                 int tax_effect = 40 - taxes;
-              
-                if (c.GetHome() == null)
-                    continue;
                 bool availableForest = false;
                 bool availableStadium = false;
                 bool availablePolice = false;
@@ -181,6 +178,7 @@ namespace SimVillage.Model
                             
                             if (map[i][j].Building.GetType() == typeof(Forest) && !availableForest)
                             {
+                                Forest f = (Forest)map[i][j].Building;
                                 if (calcDistance(c.Home, map[i][j].Building) < f.GetRadius())
                                 {
                                     availableForest = true;
