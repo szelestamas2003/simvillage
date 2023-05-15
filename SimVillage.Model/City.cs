@@ -15,13 +15,13 @@ namespace SimVillage.Model
 
         private string cityName = string.Empty;
 
-        private SaveStore store;
-
         private DateTime date = new DateTime(2000, 1, 1);
 
         private Persistence dataAccess;
 
         public Finances Finances { get; private set; } = null!;
+
+        public StoredGame[] StoredGames { get { return dataAccess.StoredGames; } }
 
         private List<List<Zone>> map = null!;
 
@@ -32,8 +32,6 @@ namespace SimVillage.Model
         public string Name { get { return cityName; } }
 
         public DateTime Date { get { return date; } }
-
-        public StoredGame[] StoredGames;
 
         public List<List<Zone>> Map { get { return map; } }
 
@@ -64,25 +62,12 @@ namespace SimVillage.Model
         public City(Persistence dataAccess)
         {
             this.dataAccess = dataAccess;
-            store = new SaveStore();
-            StoredGames = new StoredGame[5];
             UpdateStoredGames();
         }
 
         private async void UpdateStoredGames()
         {
-            foreach (string item in await store.GetFilesAsync())
-            {
-                int slot = Convert.ToInt32(item.Substring(item.IndexOf("_") - 1, 1));
-                string name = item.Substring(item.IndexOf("_") + 1, item.IndexOf(".") - item.IndexOf("_") - 1);
-                StoredGames[slot - 1] = new StoredGame { Slot = slot, Name = name, Modified = await store.GetModifiedTimeAsync(item)};
-            }
-
-            for (int i = 0; i < 5; i++)
-            {
-                if (StoredGames[i] == null)
-                    StoredGames[i] = new StoredGame { Slot = i + 1, Name = string.Empty };
-            }
+            await dataAccess.UpdateStoredGames();
             OnStoredGamesChanged();
         }
 
@@ -429,7 +414,7 @@ namespace SimVillage.Model
             g.Finances = Finances;
             g.Date = date;
             g.Zones = map;
-            await dataAccess.saveGame(StoredGames[slot - 1], g);
+            await dataAccess.saveGame(dataAccess.StoredGames[slot - 1], g);
             UpdateStoredGames();
         }
 
@@ -440,7 +425,7 @@ namespace SimVillage.Model
             {
                 throw new InvalidOperationException("No data access is provided");
             }
-            GameState g = await dataAccess.loadGame(StoredGames[slot - 1]);
+            GameState g = await dataAccess.loadGame(dataAccess.StoredGames[slot - 1]);
             cityName = g.Name;
             citizens = g.Citizens;
             Finances = g.Finances;
