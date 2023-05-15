@@ -10,6 +10,7 @@ namespace SimVillage.Model.Building
     {
         public int MaxWorkers { get; set; }
         public int Workers { get; set; }
+        public int radius = 6;
         public Industrial(int x, int y)
         {
             PowerConsumption = 30;
@@ -39,6 +40,10 @@ namespace SimVillage.Model.Building
         public override String ToString()
         {
             return "Current workers: " + Workers + "\nMaximum workers: " + MaxWorkers + "\nBuilding level " + Density + "\nPower consumption: " + PowerConsumption + "\n";
+        }
+        public int GetRadius()
+        {
+            return radius;
         }
 
 

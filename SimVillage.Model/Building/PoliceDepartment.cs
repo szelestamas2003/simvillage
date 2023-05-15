@@ -8,7 +8,7 @@ namespace SimVillage.Model.Building
 {
     public class PoliceDepartment : Building
     {
-        int Radius = 40;
+        int Radius = 30;
         public PoliceDepartment(int x, int y)
         {
             PowerConsumption = 45;

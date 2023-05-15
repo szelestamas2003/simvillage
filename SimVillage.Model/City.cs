@@ -132,6 +132,7 @@ namespace SimVillage.Model
                     continue;
                 bool availableForest = false;
                 bool availableStadium = false;
+                bool availablePolice = false;
                 int Happiness = 0;
                 Happiness = +tax_effect;
 
@@ -169,15 +170,17 @@ namespace SimVillage.Model
                             
                             if (map[i][j].Building.GetType() == typeof(Forest) && !availableForest)
                             {
-                                if (calcDistance(c.GetHome(), map[i][j].Building) < 8)
+                                Forest f = (Forest)map[i][j].Building;
+                                if (calcDistance(c.GetHome(), map[i][j].Building) < f.GetRadius())
                                 {
                                     availableForest = true;
-                                    Happiness += 10;
+                                    Happiness += f.Age;
                                 }
                             }
                             else if (map[i][j].Building.GetType() == typeof(Stadium) && !availableStadium)
                             {
-                                if (calcDistance(c.GetHome(), map[i][j].Building) < 10)
+                                Stadium s = (Stadium)map[i][j].Building;
+                                if (calcDistance(c.GetHome(), map[i][j].Building) < s.GetRadius())
                                 {
                                     availableStadium = true;
                                     Happiness += 15;
@@ -185,10 +188,21 @@ namespace SimVillage.Model
                             }
                             else if (map[i][j].Building.GetType() == typeof(Industrial))
                             {
-                                if (calcDistance(c.GetHome(), map[i][j].Building) < 8)
+                                Industrial k = (Industrial)map[i][j].Building;
+                                if (calcDistance(c.GetHome(), map[i][j].Building) < k.GetRadius())
                                 {
                                     Happiness -= 8;
                                 }
+                            }
+                            else if (map[i][j].Building.GetType() == typeof(PoliceDepartment) && !availablePolice)
+                            {
+                                PoliceDepartment p = (PoliceDepartment)map[i][j].Building;
+                                if (calcDistance(c.GetHome(), map[i][j].Building) < p.GetRadius())
+                                {
+                                    availablePolice = true;
+                                    Happiness += 7;
+                                }
+
                             }
                             if(Happiness < 0)
                                 Happiness = 0;
