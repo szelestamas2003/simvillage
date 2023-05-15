@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SimVillage.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -27,6 +28,7 @@ namespace SimVillage
         private Cursor Forest = CursorHelper.FromByteArray(Properties.Resources.forest_t);
         private Cursor PowerGenerator = CursorHelper.FromByteArray(Properties.Resources.power_generator_t);
         private Cursor Road = CursorHelper.FromByteArray(Properties.Resources.road_t);
+        private Cursor RoadH = CursorHelper.FromByteArray(Properties.Resources.road_t_h);
         private Cursor University = CursorHelper.FromByteArray(Properties.Resources.university_t);
         private Cursor PowerLine = CursorHelper.FromByteArray(Properties.Resources.power_line_t);
         private Cursor FireDepartment = CursorHelper.FromByteArray(Properties.Resources.fire_department_t);
@@ -85,21 +87,42 @@ namespace SimVillage
         {
             if (canvas.IsMouseCaptured)
             {
-                Point p = e.GetPosition(container);
-                Vector diff = p - StartPos;
-                StartPos = p;
-                if (Translate.X + diff.X < -canvas.Width * 2 / 3 + 4 * 64)
-                    Translate.X = -canvas.Width * 2 / 3 + 4 * 64;
-                else if (Translate.X + diff.X > 0)
-                    Translate.X = 0;
-                else
-                    Translate.X += diff.X;
-                if (Translate.Y + diff.Y < -canvas.Height * 2 / 3 + 64)
-                    Translate.Y = -canvas.Height * 2 / 3 + 64;
-                else if (Translate.Y + diff.Y > 0)
-                    Translate.Y = 0;
-                else
-                    Translate.Y += diff.Y;
+                    Point p = e.GetPosition(container);
+                    Vector diff = p - StartPos;
+                    StartPos = p;
+                    if (Translate.X + diff.X < -canvas.Width * 2 / 3 + 4 * 64)
+                        Translate.X = -canvas.Width * 2 / 3 + 4 * 64;
+                    else if (Translate.X + diff.X > 0)
+                        Translate.X = 0;
+                    else
+                        Translate.X += diff.X;
+                    if (Translate.Y + diff.Y < -canvas.Height * 2 / 3 + 64)
+                        Translate.Y = -canvas.Height * 2 / 3 + 64;
+                    else if (Translate.Y + diff.Y > 0)
+                        Translate.Y = 0;
+                    else
+                        Translate.Y += diff.Y;
+            }
+            if (canvas.Cursor == Road || canvas.Cursor == RoadH)
+            {
+                Field field = null!;
+                foreach (object children in canvas.Children)
+                {
+                    Field child = (Field)((ContentPresenter)children).Content;
+                    
+                    if (child.Left < e.GetPosition(canvas).X && child.Left > e.GetPosition(canvas).X - 64 && child.Top < e.GetPosition(canvas).Y && child.Top > e.GetPosition(canvas).Y - 64)
+                    {
+                        field = child;
+                        break;
+                    }
+                }
+                if (field != null && (((Field)((ContentPresenter)canvas.Children[field.X * (int)(canvas.Width / 64) + field.Y - 1]).Content).Text.StartsWith("Road") || ((Field)((ContentPresenter)canvas.Children[field.X * (int)(canvas.Width / 64) + field.Y + 1]).Content).Text.StartsWith("Road")))
+                {
+                    canvas.Cursor = RoadH;
+                } else
+                {
+                    canvas.Cursor = Road;
+                }
             }
         }
 

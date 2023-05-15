@@ -145,8 +145,14 @@
   <data name="road_t" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\View\cursors\road_t.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="road_t_h" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\View\cursors\road_t_h.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="shop_t" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\View\cursors\shop_t.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="splash" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\View\splash.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="stadium_t" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\View\cursors\stadium_t.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
