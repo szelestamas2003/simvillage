@@ -68,10 +68,10 @@ namespace SimVillage
             }
             else if (e.Key == Key.S)
             {
-                if (Translate.Y - 64 > -canvas.Height * 2 / 3 + 64)
+                if (Translate.Y - 64 > -canvas.Height * 2 / 3 + 44)
                     Translate.Y -= 64;
                 else
-                    Translate.Y = -canvas.Height * 2 / 3 + 64;
+                    Translate.Y = -canvas.Height * 2 / 3 + 44;
             }
         }
 
@@ -94,8 +94,8 @@ namespace SimVillage
                     Translate.X = 0;
                 else
                     Translate.X += diff.X;
-                if (Translate.Y + diff.Y < -canvas.Height * 2 / 3 + 64)
-                    Translate.Y = -canvas.Height * 2 / 3 + 64;
+                if (Translate.Y + diff.Y < -canvas.Height * 2 / 3 + 44)
+                    Translate.Y = -canvas.Height * 2 / 3 + 44;
                 else if (Translate.Y + diff.Y > 0)
                     Translate.Y = 0;
                 else
@@ -148,7 +148,7 @@ namespace SimVillage
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             canvas = FindChild<Canvas>(container, "canvas");
-            Translate.Y = -canvas.Height * 2 / 3 + 64;
+            Translate.Y = -canvas.Height * 2 / 3 + 44;
             canvas.RenderTransform = Translate;
         }
 

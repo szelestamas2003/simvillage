@@ -410,10 +410,10 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <!-- <StatusBar Grid.Row="3">
+        <StatusBar Grid.Row="3">
             <StatusBarItem>
                 <TextBlock Text="{Binding BuildInfo}"/>
             </StatusBarItem>
-        </StatusBar> -->
+        </StatusBar>
     </Grid>
 </Page>
