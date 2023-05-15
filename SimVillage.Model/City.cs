@@ -67,7 +67,8 @@ namespace SimVillage.Model
 
         private async void UpdateStoredGames()
         {
-            await dataAccess.UpdateStoredGames();
+            if (dataAccess.GetType() == typeof(Persistence))
+                await dataAccess.UpdateStoredGames();
             OnStoredGamesChanged();
         }
 
