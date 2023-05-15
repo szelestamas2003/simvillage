@@ -16,11 +16,6 @@
             
         }
 
-        public void SetAge(int age)
-        {
-            Age = age;
-        }
-
         public int GetRadius() { return Radius; }
 
         public void AgeUp()

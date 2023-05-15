@@ -25,33 +25,33 @@
         {
             return MaxStudents;
         }
+
         public int GetStudents()
         {
             return Students.Count;
         }
+
         public void SetStudents(Citizen student)
         {
-            Students.Append(student);
+            if (Students.Count < MaxStudents)
+                Students.Append(student);
         }
-        public SchoolTypes GetSchoolType()
-        {
-            return Type;
-        }
+
         public void GiveEducation()
         {
             foreach(Citizen student in Students)
             {
                 if(Type == SchoolTypes.Elementary)
                 {
-                    student.SetEducation(EducationLevel.Middle);
-                    if (student.GetWorkPlace() != null)
-                        student.SetSalary(1000);
+                    student.EducationLevel = EducationLevel.Middle;
+                    if (student.WorkPlace != null)
+                        student.Salary = 1000;
                 }
                 else if(Type == SchoolTypes.University)
                 {
-                    student.SetEducation(EducationLevel.Higher);
-                    if (student.GetWorkPlace() != null)
-                        student.SetSalary(1500);
+                    student.EducationLevel = EducationLevel.Higher;
+                    if (student.WorkPlace != null)
+                        student.Salary = 1500;
                 }
             }
         }
@@ -60,7 +60,5 @@
         {
             return "School type: " + Type + "\nCurrent students " + Students.Count + "\nMaximum students: " + MaxStudents + "\nPower consumption: " + PowerConsumption + "\nMaintenance cost: " + Cost / 100;
         }
-
-
     }
 }

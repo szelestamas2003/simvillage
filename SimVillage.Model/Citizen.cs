@@ -5,12 +5,12 @@ namespace SimVillage.Model
     public class Citizen
     {
         public int Age { get; private set; }
-        public int Salary { get; private set; }
-        public EducationLevel EducationLevel { get; private set; }
+        public int Salary { get; set; }
+        public EducationLevel EducationLevel { get; set; }
         public bool Pensioner { get; private set; }
-        public int Happiness { get; private set; }
+        public int Happiness { get; set; }
         public int HadToMove { get; private set; } = 0;
-        public Residental Home { get; private set; }
+        public Residental Home { get; set; }
         public Building.Building WorkPlace { get; set; } = null!;
 
 
@@ -22,29 +22,11 @@ namespace SimVillage.Model
             EducationLevel = EducationLevel.Basic;
             Pensioner = false;
         }
-        public void SetHappiness(int happiness)
-        {
-            this.Happiness = happiness;
-        }
-        public int GetHappiness()
-        {
-            return Happiness;
-        }
-       
 
         public void PlusHadToMove()
         {
             HadToMove++;
         }
-
-        public Residental GetHome() { return Home; }
-
-        public void SetHome(Residental home)
-        {
-            Home = home;
-        }
-
-        public Building.Building GetWorkPlace() { return WorkPlace; }
 
         public bool AgeUp()
         {
@@ -72,20 +54,14 @@ namespace SimVillage.Model
             Salary = 0;
             WorkPlace = null!;
         }
-        public void SetEducation(EducationLevel level)
-        {
-            EducationLevel = level;
-        }
+
         public void MoveOut()
         {
             WorkPlace = null!;
             Home = null!;
             Salary = 0;
         }
-        public void SetWorkPlace(Building.Building work)
-        {
-            WorkPlace = work;
-        }
+
         static public Citizen ReGen(Residental home)
         {
             Random r = new Random();
@@ -93,15 +69,13 @@ namespace SimVillage.Model
             Citizen citizen = new Citizen(age, home);
             return citizen;
         }
+
         static public Citizen ReGen18()
         {
             Citizen citizen = new Citizen(18, null!);
             return citizen;
         }
-        public EducationLevel GetEducation()
-        {
-            return EducationLevel;
-        }
+
         public bool ChanceToPassAway()
         {
             Random r = new Random();
@@ -119,17 +93,6 @@ namespace SimVillage.Model
                 return false;
             }
 
-        }
-        public void SetSalary(int salary)
-        {
-            Salary = salary;
-        }
-        public int GetSalary() {
-            return Salary;
-        }
-        public int GetHadToMove()
-        {
-            return HadToMove;
         }
     }
 }

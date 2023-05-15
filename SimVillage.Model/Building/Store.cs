@@ -19,14 +19,12 @@ namespace SimVillage.Model.Building
             X = x;
             Y = y;
         }
-        public int GetMaxWorkers() { return MaxWorkers; }
-        public int GetWorkers() { return Workers; }
 
-        public void SetMaxWorkers(int MaxWorkers) { this.MaxWorkers = MaxWorkers; }
         public void NewWorker()
         {
             Workers++;
         }
+
         public void WorkerLeft()
         {
             Workers--;

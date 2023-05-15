@@ -70,10 +70,10 @@ namespace SimVillage
             }
             else if (e.Key == Key.S)
             {
-                if (Translate.Y - 64 > -canvas.Height * 2 / 3 + 64)
+                if (Translate.Y - 64 > -canvas.Height * 2 / 3 + 44)
                     Translate.Y -= 64;
                 else
-                    Translate.Y = -canvas.Height * 2 / 3 + 64;
+                    Translate.Y = -canvas.Height * 2 / 3 + 44;
             }
         }
 
@@ -87,21 +87,21 @@ namespace SimVillage
         {
             if (canvas.IsMouseCaptured)
             {
-                    Point p = e.GetPosition(container);
-                    Vector diff = p - StartPos;
-                    StartPos = p;
-                    if (Translate.X + diff.X < -canvas.Width * 2 / 3 + 4 * 64)
-                        Translate.X = -canvas.Width * 2 / 3 + 4 * 64;
-                    else if (Translate.X + diff.X > 0)
-                        Translate.X = 0;
-                    else
-                        Translate.X += diff.X;
-                    if (Translate.Y + diff.Y < -canvas.Height * 2 / 3 + 64)
-                        Translate.Y = -canvas.Height * 2 / 3 + 64;
-                    else if (Translate.Y + diff.Y > 0)
-                        Translate.Y = 0;
-                    else
-                        Translate.Y += diff.Y;
+                Point p = e.GetPosition(container);
+                Vector diff = p - StartPos;
+                StartPos = p;
+                if (Translate.X + diff.X < -canvas.Width * 2 / 3 + 4 * 64)
+                    Translate.X = -canvas.Width * 2 / 3 + 4 * 64;
+                else if (Translate.X + diff.X > 0)
+                    Translate.X = 0;
+                else
+                    Translate.X += diff.X;
+                if (Translate.Y + diff.Y < -canvas.Height * 2 / 3 + 44)
+                    Translate.Y = -canvas.Height * 2 / 3 + 44;
+                else if (Translate.Y + diff.Y > 0)
+                    Translate.Y = 0;
+                else
+                    Translate.Y += diff.Y;
             }
             if (canvas.Cursor == Road || canvas.Cursor == RoadH)
             {
@@ -171,7 +171,7 @@ namespace SimVillage
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             canvas = FindChild<Canvas>(container, "canvas");
-            Translate.Y = -canvas.Height * 2 / 3 + 64;
+            Translate.Y = -canvas.Height * 2 / 3 + 44;
             canvas.RenderTransform = Translate;
         }
 
@@ -220,6 +220,9 @@ namespace SimVillage
                         break;
                     case "/View/pixelarts/road_t.png":
                         canvas.Cursor = Road;
+                        break;
+                    case "/View/pixelarts/fire_t.png":
+                        canvas.Cursor = Cursors.Hand;
                         break;
                 }
             } else

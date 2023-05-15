@@ -4,45 +4,28 @@ using System.Text.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
+using SimVillage.Model.Building;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace SimVillage.Model
 {
     public class Persistence
     {
-        private string folder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        public Persistence() { }
-
-        private string getFileName(int slot)
-        {
-            string fileName = "";
-            switch (slot)
-            {
-                case 1:
-                    fileName = "save1.json";
-                    break;
-                case 2:
-                    fileName = "save2.json";
-                    break;
-                case 3:
-                    fileName = "save3.json";
-                    break;
-                case 4:
-                    fileName = "save4.json";
-                    break;
-                case 5:
-                    fileName = "save5.json";
-                    break;
-
-                default:
-                    break;
-            }
-            return fileName;
+        private SaveStore store;
+        public StoredGame[] StoredGames;
+        private string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "SimVillage/saves");
+        public Persistence() {
+            store = new SaveStore();
+            StoredGames = new StoredGame[5];
         }
 
-        public async Task saveGame(int slot, GameState data)
+        public async Task saveGame(StoredGame storedgame, GameState data)
         {
-            folder = Path.Combine(folder, "SimVillage/saves");
-            string path = getFileName(slot);
+            string fileName = "slot" + storedgame.Slot.ToString() + "_" + data.Name + ".json";
+            if (storedgame.Name != string.Empty)
+            {
+                File.Delete(Path.Combine(folder, "slot" + storedgame.Slot.ToString() + "_" + storedgame.Name + ".json"));
+            }
             var options = new JsonSerializerOptions
             {
                 WriteIndented = true
@@ -50,7 +33,7 @@ namespace SimVillage.Model
             try
             {
                 Directory.CreateDirectory(folder);
-                await using FileStream createStream = File.Create(Path.Combine(folder, path));
+                await using FileStream createStream = File.Create(Path.Combine(folder, fileName));
                 await JsonSerializer.SerializeAsync(createStream, data, options);
             }
             catch
@@ -59,13 +42,11 @@ namespace SimVillage.Model
             }
         }
 
-        public async Task<GameState> loadGame(int slot)
+        public async Task<GameState> loadGame(StoredGame storedgame)
         {
-            folder = Path.Combine(folder, "SimVillage/saves");
-            string path = getFileName(slot);
             try
             {
-                string jsonString = File.ReadAllText(Path.Combine(folder, path));
+                string jsonString = File.ReadAllText(Path.Combine(folder, "slot" + storedgame.Slot.ToString() + "_" + storedgame.Name + ".json"));
                 MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(jsonString));
                 GameState? result = await JsonSerializer.DeserializeAsync<GameState>(stream);
                 return result == null ? throw new GameStateException() : result;
@@ -76,16 +57,20 @@ namespace SimVillage.Model
             }
         }
 
-        public async Task deleteGame(int slot)
+        public async Task UpdateStoredGames()
         {
-            folder = Path.Combine(folder, "SimVillage/saves");
-            string fileName = getFileName(slot);
-            string uri = Path.Combine(folder, fileName);
-            if (File.Exists(uri))
+            foreach (string item in await store.GetFilesAsync())
             {
-                File.Delete(uri);
+                int slot = Convert.ToInt32(item.Substring(item.IndexOf("_") - 1, 1));
+                string name = item.Substring(item.IndexOf("_") + 1, item.IndexOf(".") - item.IndexOf("_") - 1);
+                StoredGames[slot - 1] = new StoredGame { Slot = slot, Name = name, Modified = await store.GetModifiedTimeAsync(item) };
             }
-            return;
+
+            for (int i = 0; i < 5; i++)
+            {
+                if (StoredGames[i] == null)
+                    StoredGames[i] = new StoredGame { Slot = i + 1, Name = string.Empty };
+            }
         }
     }
 }

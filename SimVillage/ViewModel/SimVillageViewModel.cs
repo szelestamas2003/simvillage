@@ -36,13 +36,15 @@ namespace SimVillage.ViewModel
 
         public List<Transaction> Incomes { get { var asd = model.Finances.Incomes; asd.Reverse(); return asd; } }
 
-        public int ResidentTax { get { return model.Finances.getTax(ZoneType.Residental); } }
+        public int ResidentTax { get { return model.Finances.ResidentTax; } }
 
-        public int IndustrialTax { get { return model.Finances.getTax(ZoneType.Industrial); } }
+        public int IndustrialTax { get { return model.Finances.IndustrialTax; } }
 
-        public int StoreTax { get { return model.Finances.getTax(ZoneType.Store); } }
+        public int StoreTax { get { return model.Finances.StoreTax; } }
 
         public bool IsMoneyNegative { get; private set; }
+
+        public ObservableCollection<StoredGameViewModel> StoredGames { get; private set; }
 
         public string Money { get; private set; }
 
@@ -77,9 +79,8 @@ namespace SimVillage.ViewModel
         public event EventHandler? PauseMenu;
 
         public event EventHandler<SlotEventArgs>? LoadingSlot;
-        public event EventHandler<SlotEventArgs>? SavingSlot;
 
-        public event EventHandler<SlotEventArgs>? SlotDelete;
+        public event EventHandler<SlotEventArgs>? SavingSlot;
 
         public DelegateCommand PauseGameCommand { get; private set; }
 
@@ -102,19 +103,6 @@ namespace SimVillage.ViewModel
         public DelegateCommand ContinueGameCommand { get; private set; }
 
         public DelegateCommand PauseMenuCommand { get; private set; }
-        public DelegateCommand Slot1Command { get; private set; }
-        public DelegateCommand Slot2Command { get; private set; }
-        public DelegateCommand Slot3Command { get; private set; }
-        public DelegateCommand Slot4Command { get; private set; }
-        public DelegateCommand Slot5Command { get; private set; }
-        public DelegateCommand Slot1DeleteCommand { get; private set; }
-        public DelegateCommand Slot2DeleteCommand { get; private set; }
-        public DelegateCommand Slot3DeleteCommand { get; private set; }
-        public DelegateCommand Slot4DeleteCommand { get; private set; }
-        public DelegateCommand Slot5DeleteCommand { get; private set; }
-
-        //public DelegateCommand SetSaveCommand { get; private set; }
-        //public DelegateCommand SetLoadCommand { get; private set; }
 
         public SimVillageViewModel(City model)
         {
@@ -122,15 +110,18 @@ namespace SimVillage.ViewModel
             model.gameAdvanced += new EventHandler(Model_GameAdvanced);
             model.gameChanged += new EventHandler(Model_GameChanged);
             model.gameCreated += new EventHandler(Model_GameCreated);
+            model.StoredGamesChanged += new EventHandler(Model_StoredGamesChanged);
             Date = "📅 " + model.Date.ToString("yyyy") + " " + model.Date.ToString("M");
             Money = "💲 " + model.GetBudget();
             CitizenCount = model.Citizens != null ? "👤 " + model.Citizens.Count : "👤 0";
-            Happiness = "🙂 " + model.getHappiness();
+            Happiness = model.Citizens != null ? "🙂 " + model.getHappiness() : "🙂 0";
             Speed = 5;
 
             Fields = new ObservableCollection<Field>();
 
             GenerateMap();
+            StoredGames = new ObservableCollection<StoredGameViewModel>();
+             
             BuildInfo = "Select an option!";
             Options = new List<Option>
             {
@@ -159,57 +150,51 @@ namespace SimVillage.ViewModel
             ExitCommand = new DelegateCommand(param => OnExitGame());
             ContinueGameCommand = new DelegateCommand(param => OnContinueGame());
             PauseMenuCommand = new DelegateCommand(param => OnPauseMenu());
+        }
 
-            Slot1Command = new DelegateCommand(param => OnSlot(1));
-            Slot2Command = new DelegateCommand(param => OnSlot(2));
-            Slot3Command = new DelegateCommand(param => OnSlot(3));
-            Slot4Command = new DelegateCommand(param => OnSlot(4));
-            Slot5Command = new DelegateCommand(param => OnSlot(5));
+        private void Model_StoredGamesChanged(object? sender, EventArgs e)
+        {
+            StoredGames.Clear();
+            foreach (StoredGame game in model.StoredGames)
+            {
+                StoredGames.Add(new StoredGameViewModel
+                {
+                    SlotNumber = game.Slot,
+                    Slot = "Slot " + game.Slot,
+                    Name = game.Name,
+                    SlotClickedCommand = new DelegateCommand(param => OnSlotClicked(Convert.ToInt32(param))),
+                    Modified = game.Name != string.Empty ? game.Modified.ToString("G") : string.Empty
+                });
+            }
+        }
 
-            Slot1DeleteCommand = new DelegateCommand(param => OnSlotDelete(1));
-            Slot2DeleteCommand = new DelegateCommand(param => OnSlotDelete(2));
-            Slot3DeleteCommand = new DelegateCommand(param => OnSlotDelete(3));
-            Slot4DeleteCommand = new DelegateCommand(param => OnSlotDelete(4));
-            Slot5DeleteCommand = new DelegateCommand(param => OnSlotDelete(5));
-
-            //SetSaveCommand = new DelegateCommand(param => OnSetSave());
-            //SetLoadCommand = new DelegateCommand(param => OnSetLoad());
+        private void OnSlotClicked(int number)
+        {
+            if (doSave)
+            {
+                SavingSlot?.Invoke(this, new SlotEventArgs { Slot = number });
+            }
+            else
+            {
+                LoadingSlot?.Invoke(this, new SlotEventArgs { Slot = number });
+            }
         }
 
         private void OnSetSave()
         {
             doSave = true;
-            return;
         }
 
         private void OnSetLoad()
         {
             doSave = false;
-            return;
         }
 
-        private void OnSlot(int n)
+        public void SetTax(int residentalTax, int industrialTax, int storeTax)
         {
-            if (doSave)
-            {
-                SavingSlot?.Invoke(this, new SlotEventArgs { Slot = n });
-            }
-            else
-            {
-                LoadingSlot?.Invoke(this, new SlotEventArgs { Slot = n });
-            }
-        }
-
-        private void OnSlotDelete(int n)
-        {
-            SlotDelete?.Invoke(this, new SlotEventArgs { Slot = n });
-        }
-
-        public void SetTax(int residentalTax, int industrialTax, int StoreTax)
-        {
-            model.Finances.setTax(ZoneType.Residental, residentalTax);
-            model.Finances.setTax(ZoneType.Industrial, industrialTax);
-            model.Finances.setTax(ZoneType.Store, StoreTax);
+            model.Finances.ResidentTax = residentalTax;
+            model.Finances.IndustrialTax = industrialTax;
+            model.Finances.StoreTax = storeTax;
         }
 
         private void OnPauseMenu()
@@ -561,7 +546,7 @@ namespace SimVillage.ViewModel
                                     Fields[zone.X * Width + zone.Y].Text = "Power Plant BR";
                                 break;
                             case School s:
-                                if (s.GetSchoolType() == SchoolTypes.Elementary)
+                                if (s.Type == SchoolTypes.Elementary)
                                 {
                                     if (zone.X == zone.Building.X && zone.Y == zone.Building.Y)
                                         Fields[zone.X * Width + zone.Y].Text = "School L";

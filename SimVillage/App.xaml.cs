@@ -1,4 +1,5 @@
 ﻿using SimVillage.Model;
+using SimVillage.Persistence;
 using SimVillage.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -58,7 +59,6 @@ namespace SimVillage
             viewModel.PauseMenu += new EventHandler(ViewModel_PauseMenu);
             viewModel.LoadingSlot += new EventHandler<SlotEventArgs>(ViewModel_Loading);
             viewModel.SavingSlot += new EventHandler<SlotEventArgs>(ViewModel_Saving);
-            viewModel.SlotDelete += new EventHandler<SlotEventArgs>(ViewModel_SlotDelete);
 
             mainWindow = new MainWindow();
             mainWindow.KeyDown += new KeyEventHandler(OnButtonKeyDown);
@@ -75,27 +75,30 @@ namespace SimVillage
             timer.Elapsed += new ElapsedEventHandler(Timer_Tick);
         }
 
-        private async void ViewModel_SlotDelete(object? sender, SlotEventArgs e)
-        {
-            await city.DeleteSave(e.Slot);
-            MessageBox.Show("Deleted your save from slot " + e.Slot, "Note", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-        }
-
         private async void ViewModel_Loading(object? sender, SlotEventArgs e)
         {
-            //city.NewGame("Loading");
-            //mainWindow.GoBack();
-            //mainWindow.GoBack();
-            city.NewGame("Loading");
-            await city.Load(e.Slot);
-            timer.Start();
-            mainWindow.Navigate(gamePageUri);
+            try
+            {
+                await city.Load(e.Slot);
+                mainWindow.Navigate(gamePageUri);
+                timer.Start();
+            } catch (GameStateException)
+            {
+                MessageBox.Show("Occured an error during loading the game", "Warning", MessageBoxButton.OK);
+            }
         }
 
         private async void ViewModel_Saving(object? sender, SlotEventArgs e)
         {
-            await city.Save(e.Slot);
-            MessageBox.Show("Saved your game to slot " + e.Slot, "Note", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            try
+            {
+                await city.Save(e.Slot);
+                MessageBox.Show("Saved your game to slot " + e.Slot, "Note", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                mainWindow.GoBack();
+            } catch(GameStateException)
+            {
+                MessageBox.Show("Saving the game is not successful", "Warning", MessageBoxButton.OK);
+            }
         }
 
         private void ViewModel_PauseMenu(object? sender, EventArgs e)
@@ -138,12 +141,12 @@ namespace SimVillage
             mainWindow.Close();
         }
 
-        private async void ViewModel_SaveGame(object? sender, EventArgs e)
+        private void ViewModel_SaveGame(object? sender, EventArgs e)
         {
             mainWindow.Navigate(persistenceViewUri);
         }
 
-        private async void ViewModel_LoadGame(object? sender, EventArgs e)
+        private void ViewModel_LoadGame(object? sender, EventArgs e)
         {
             mainWindow.Navigate(persistenceViewUri);
         }
