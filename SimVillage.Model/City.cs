@@ -13,8 +13,6 @@ namespace SimVillage.Model
 
         private bool canDemolish = false;
 
-        private bool IsGameOver = false;
-
         private string cityName = string.Empty;
 
         private DateTime date = new DateTime(2000, 1, 1);
@@ -707,7 +705,7 @@ namespace SimVillage.Model
             {
                 if(happiness / citizens.Count == 0)
                 {
-                    IsGameOver = true;
+
                 }
                 return happiness / citizens.Count;
             }

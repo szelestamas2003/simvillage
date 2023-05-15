@@ -39,6 +39,6 @@
 
         public DelegateCommand? Clicked { get; set; }
 
-        public string Info { get; set; }
+        public string Info { get; set; } = string.Empty;
     }
 }

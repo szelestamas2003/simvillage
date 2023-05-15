@@ -9,10 +9,10 @@ namespace SimVillage.Persistence
 {
     public class GameState
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public DateTime Date { get; set; }
-        public Finances Finances { get; set; }
-        public List<Citizen> Citizens { get; set; }
-        public List<List<Zone>> Zones { get; set; }
+        public Finances Finances { get; set; } = null!;
+        public List<Citizen> Citizens { get; set; } = null!;
+        public List<List<Zone>> Zones { get; set; } = null!;
     }
 }
