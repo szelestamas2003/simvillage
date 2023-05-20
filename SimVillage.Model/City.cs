@@ -139,12 +139,15 @@ namespace SimVillage.Model
         private int calcHappiness()
         {
             int total_happiness = 0;
+            List<Citizen> remove = new List<Citizen>();
             foreach (Citizen c in citizens)
             {
                 int taxes = 0;
                 taxes += Finances.ResidentTax;
-                taxes += Finances.IndustrialTax;
-                taxes += Finances.StoreTax;
+                if (c.WorkPlace.GetType() == typeof(Industrial))
+                    taxes += Finances.IndustrialTax;
+                else
+                    taxes += Finances.StoreTax;
                 int tax_effect = 40 - taxes;
                 bool availableForest = false;
                 bool availableStadium = false;
@@ -177,7 +180,6 @@ namespace SimVillage.Model
                     {
                         if (map[i][j].Building != null)
                         {
-                            
                             if (map[i][j].Building.GetType() == typeof(Forest) && !availableForest)
                             {
                                 Forest f = (Forest)map[i][j].Building;
@@ -218,6 +220,30 @@ namespace SimVillage.Model
                                 Happiness = 0;
                             if(Happiness > 100)
                                 Happiness = 100;
+
+                            if (!c.Pensioner && Happiness < 10)
+                            {
+                                c.Home.MoveOut();
+                                if (c.Home.FreeSpace())
+                                    availableHouses.Add(c.Home);
+                                if (c.WorkPlace.GetType() == typeof(Store))
+                                {
+                                    Store store = (Store)c.WorkPlace;
+                                    store.WorkerLeft();
+                                    if (store.FreeSpace())
+                                        availableStores.Add(store);
+                                } else
+                                {
+                                    Industrial industrial = (Industrial)c.WorkPlace;
+                                    industrial.WorkerLeft();
+                                    if (industrial.FreeSpace())
+                                        availableIndustrials.Add(industrial);
+                                }
+                                map[c.Home.X][c.Home.Y].RemoveCitizenFromZone(c);
+                                map[c.WorkPlace.X][c.WorkPlace.Y].RemoveCitizenFromZone(c);
+                                c.MoveOut();
+                                remove.Add(c);
+                            }
                             c.Happiness = Happiness;
                             total_happiness += Happiness;
                         }
@@ -225,6 +251,7 @@ namespace SimVillage.Model
                 }
                 
             }
+            citizens.RemoveAll(c => remove.Contains(c));
             return total_happiness;
         }
 
@@ -711,7 +738,7 @@ namespace SimVillage.Model
 
         private void CheckGameOver()
         {
-            if ((peopleAtStart == 0 && citizens.Count == 0)|| GetHappiness() < 10)
+            if ((peopleAtStart == 0 && citizens.Count == 0) || (citizens.Count != 0 && GetHappiness() < 10))
             {
                 gameOver = true;
                 OnGameOver();

@@ -37,7 +37,7 @@ namespace SimVillage.Model.Building
 
         public override String ToString()
         {
-            return "Current inhabitants: " + Inhabitans + "\nMaximum inhabitants: " + MaxInhabitants + "\nBuilding level " + Density + "\nPower consumption: " + PowerConsumption;
+            return "Current inhabitants: " + Inhabitans + "\nMaximum inhabitants: " + MaxInhabitants + "\nBuilding level " + Density + "\nPower consumption: " + PowerConsumption + "\n";
 
         }
     }
