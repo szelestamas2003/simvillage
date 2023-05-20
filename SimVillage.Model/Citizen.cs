@@ -12,7 +12,7 @@ namespace SimVillage.Model
         public int HadToMove { get; private set; } = 0;
         public Residental Home { get; set; }
         public Building.Building WorkPlace { get; set; } = null!;
-        public List<double> PaidTaxes { get; private set; }
+        public List<double> PaidTaxes { get; set; } = null!
         public double Pension { get; private set; }
 
 
