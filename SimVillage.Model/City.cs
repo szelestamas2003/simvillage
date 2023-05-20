@@ -221,7 +221,7 @@ namespace SimVillage.Model
                             if(Happiness > 100)
                                 Happiness = 100;
 
-                            if (!c.Pensioner && Happiness < 10)
+                            if (!c.Pensioner && Happiness < 5 && !remove.Contains(c))
                             {
                                 c.Home.MoveOut();
                                 if (c.Home.FreeSpace())
@@ -755,7 +755,7 @@ namespace SimVillage.Model
 
         private void CheckGameOver()
         {
-            if ((peopleAtStart == 0 && citizens.Count == 0) || (citizens.Count != 0 && GetHappiness() < 10))
+            if (peopleAtStart == 0 && (citizens.Count == 0 || (citizens.Count != 0 && GetHappiness() < 10)))
             {
                 gameOver = true;
                 OnGameOver();
