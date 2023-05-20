@@ -13,6 +13,8 @@ namespace SimVillage.Model
 
         private bool canDemolish = false;
 
+        private bool gameOver;
+
         private string cityName = string.Empty;
 
         private DateTime date = new DateTime(2000, 1, 1);
@@ -47,15 +49,17 @@ namespace SimVillage.Model
 
         private List<PowerPlant> powerPlants = null!;
 
-        public EventHandler? gameAdvanced;
+        public EventHandler? GameAdvanced;
 
-        public EventHandler? gameCreated;
+        public EventHandler? GameCreated;
 
-        public EventHandler? gameChanged;
+        public EventHandler? GameChanged;
 
         public EventHandler? ConflictDemolish;
 
         public EventHandler? StoredGamesChanged;
+
+        public EventHandler? GameOver;
 
         public List<Citizen> Citizens { get { return citizens; } }
 
@@ -87,7 +91,7 @@ namespace SimVillage.Model
             availableHouses = new List<Residental>();
             availableSchools = new List<School>();
             powerPlants = new List<PowerPlant>();
-
+            gameOver = false;
 
             map = new List<List<Zone>>(mapHeight);
 
@@ -229,10 +233,16 @@ namespace SimVillage.Model
             school.GiveEducation();
         }
 
-        public void demolishZone(int x, int y)
+        public void DemolishZone(int x, int y)
         {
             if (y == 0 && x == 29)
                 return;
+
+            if (gameOver)
+            {
+                OnGameOver();
+                return;
+            }
             Building.Building building = map[x][y].Building;
             Zone zone = map[x][y];
             bool conflict = false;
@@ -314,11 +324,11 @@ namespace SimVillage.Model
                         if (map[zones.Item1][zones.Item2].DowngradeZone())
                         {
                             if (map[zones.Item1][zones.Item2].ZoneType != ZoneType.General)
-                                Finances.addIncome("Demolished a " + map[x][y].ToString(), map[x][y].getCost() / 2, date.ToString("d"));
+                                Finances.AddIncome("Demolished a " + map[x][y].ToString(), map[x][y].GetCost() / 2, date.ToString("d"));
                         }
                         if (building != null && added_money == false)
                         {
-                            Finances.addIncome("Demolished a " + map[x][y].ToString(), building.Cost / 2, date.ToString("d"));
+                            Finances.AddIncome("Demolished a " + map[x][y].ToString(), building.Cost / 2, date.ToString("d"));
                             added_money = true;
                         }
                     }
@@ -327,7 +337,7 @@ namespace SimVillage.Model
             {
                 if (map[x][y].DowngradeZone())
                 {
-                    Finances.addIncome("Demolished a " + map[x][y].ToString(), map[x][y].getCost() / 2, date.ToString("d"));
+                    Finances.AddIncome("Demolished a " + map[x][y].ToString(), map[x][y].GetCost() / 2, date.ToString("d"));
                 }
             }
             if (conflict && canDemolish)
@@ -419,7 +429,7 @@ namespace SimVillage.Model
                         }
                     }
                 }
-                Finances.addExpenses("Demolished a " + zone.ToString() + " and you had conflict with people", building!.Cost / 2, date.ToString("d"));
+                Finances.AddExpenses("Demolished a " + zone.ToString() + " and you had conflict with people", building!.Cost / 2, date.ToString("d"));
                 citizens.RemoveAll(i => CitizensLeft.Contains(i));
                 canDemolish = false;
             }
@@ -490,6 +500,12 @@ namespace SimVillage.Model
 
         public void UpgradeZone(int x, int y)
         {
+            if (gameOver)
+            {
+                OnGameOver();
+                return;
+            }
+
             if (map[x][y].ZoneType != ZoneType.General && map[x][y].Building != null && map[x][y].Building.Density < 3)
             {
                 switch (map[x][y].Building)
@@ -514,9 +530,9 @@ namespace SimVillage.Model
                         break;
                 }
                 if (map[x][y].Building.Density == 2)
-                    Finances.addExpenses("Upgraded " + map[x][y].ToString() + " to level 2", map[x][y].getCost(), date.ToString("d"));
+                    Finances.AddExpenses("Upgraded " + map[x][y].ToString() + " to level 2", map[x][y].GetCost(), date.ToString("d"));
                 else
-                    Finances.addExpenses("Upgraded " + map[x][y].ToString() + " to level 3", map[x][y].getCost(), date.ToString("d"));
+                    Finances.AddExpenses("Upgraded " + map[x][y].ToString() + " to level 3", map[x][y].GetCost(), date.ToString("d"));
                 OnGameChanged();
             }
         }
@@ -553,7 +569,7 @@ namespace SimVillage.Model
             }
             tax = Math.Round(tax);
             if (tax != 0)
-                Finances.addIncome("Tax", Convert.ToInt32(tax), date.ToString("d"));
+                Finances.AddIncome("Tax", Convert.ToInt32(tax), date.ToString("d"));
         }
 
         private void calcElectricity()
@@ -625,7 +641,7 @@ namespace SimVillage.Model
             }
         }
 
-        public int calcDistance(Building.Building from, Building.Building to)
+        private int calcDistance(Building.Building from, Building.Building to)
         {
             List<int> distances = new List<int>();
             HashSet<Road> visited = new HashSet<Road>();
@@ -693,7 +709,21 @@ namespace SimVillage.Model
             }
         }
 
-        public int getHappiness()
+        private void CheckGameOver()
+        {
+            if ((peopleAtStart == 0 && citizens.Count == 0)|| GetHappiness() < 10)
+            {
+                gameOver = true;
+                OnGameOver();
+            }
+        }
+
+        private void OnGameOver()
+        {
+            GameOver?.Invoke(this, EventArgs.Empty);
+        }
+
+        public int GetHappiness()
         {
             calcHappiness();
             int happiness = 0;
@@ -703,10 +733,6 @@ namespace SimVillage.Model
             }
             if(citizens.Count > 0)
             {
-                if(happiness / citizens.Count == 0)
-                {
-
-                }
                 return happiness / citizens.Count;
             }
             else
@@ -715,8 +741,14 @@ namespace SimVillage.Model
             }
         }
 
-        public bool newZone(int x, int y, ZoneType zoneType)
+        public bool NewZone(int x, int y, ZoneType zoneType)
         {
+            if (gameOver)
+            {
+                OnGameOver();
+                return false;
+            }
+
             if (map[x][y].SetZone(zoneType))
             {
                 if (zoneType == ZoneType.Industrial && calcDistance(map[x][y].Building, map[29][0].Building) != -1)
@@ -729,7 +761,7 @@ namespace SimVillage.Model
                     availableStores.Add((Store)map[x][y].Building);
                     map[x][y].Building.IsAccessible = true;
                 }
-                Finances.addExpenses("Built a " + map[x][y].ToString(), map[x][y].getCost(), date.ToString("d"));
+                Finances.AddExpenses("Built a " + map[x][y].ToString(), map[x][y].GetCost(), date.ToString("d"));
                 OnGameChanged();
                 return true;
             } else
@@ -740,6 +772,12 @@ namespace SimVillage.Model
 
         public void BuildBuilding(Building.Building building, bool inConstructor = false)
         {
+            if (gameOver)
+            {
+                OnGameOver();
+                return;
+            }
+
             bool freeZone = true;
             List<(int, int)> buildingZones = new List<(int, int)>();
             if (building.GetSize().Item1 == 1)
@@ -776,7 +814,7 @@ namespace SimVillage.Model
 
                 if (!inConstructor)
                 {
-                    Finances.addExpenses("Built a " + building.GetType().Name, building.Cost, date.ToString("d"));
+                    Finances.AddExpenses("Built a " + building.GetType().Name, building.Cost, date.ToString("d"));
                     if (calcDistance(map[29][0].Building, building) != -1)
                     {
                         if (building.GetType() == typeof(PowerPlant))
@@ -907,6 +945,13 @@ namespace SimVillage.Model
 
         public void AdvanceTime()
         {
+            if (gameOver)
+            {
+                OnGameOver();
+                return;
+            }
+            CheckGameOver();
+
             DateTime previous_date = date;
             date = date.AddDays(1);
             if (date.Month > previous_date.Month)
@@ -923,7 +968,7 @@ namespace SimVillage.Model
                         }
                     }
                 }
-                Finances.addExpenses("Monthly running expenses", Convert.ToInt32(upkeep), date.ToString("d"));
+                Finances.AddExpenses("Monthly running expenses", Convert.ToInt32(upkeep), date.ToString("d"));
             } else if (date.Year > previous_date.Year)
             {
                 foreach (School school in availableSchools)
@@ -1080,8 +1125,8 @@ namespace SimVillage.Model
                         } else
                             citizen.Home = house;
                         house.MoveIn();
-                        map[house.X][house.Y].addCitizenToZone(citizen);
-                        map[building.X][building.Y].addCitizenToZone(citizen);
+                        map[house.X][house.Y].AddCitizenToZone(citizen);
+                        map[building.X][building.Y].AddCitizenToZone(citizen);
                         building.NewWorker();
                         citizen.WorkPlace = building;
                         citizen.Salary = 500;
@@ -1119,8 +1164,8 @@ namespace SimVillage.Model
                         } else
                             citizen.Home = house;
                         house.MoveIn();
-                        map[house.X][house.Y].addCitizenToZone(citizen);
-                        map[building.X][building.Y].addCitizenToZone(citizen);
+                        map[house.X][house.Y].AddCitizenToZone(citizen);
+                        map[building.X][building.Y].AddCitizenToZone(citizen);
                         building.NewWorker();
                         citizen.WorkPlace = building;
                         citizen.Salary = 500;
@@ -1128,7 +1173,7 @@ namespace SimVillage.Model
                 }
             } else
             {
-                int AVGhappiness = getHappiness() / citizens.Count;
+                int AVGhappiness = GetHappiness() / citizens.Count;
                 Residental house = null!;
                 Zone houseZone = null!;
                 if (availableHouses.Count == 0)
@@ -1235,8 +1280,8 @@ namespace SimVillage.Model
                         citizen.WorkPlace = building;
                         citizen.Salary = 500;
                         citizens.Add(citizen);
-                        map[house.X][house.Y].addCitizenToZone(citizen);
-                        map[building.X][building.Y].addCitizenToZone(citizen);
+                        map[house.X][house.Y].AddCitizenToZone(citizen);
+                        map[building.X][building.Y].AddCitizenToZone(citizen);
                     }
                 }
                 else if (house != null)
@@ -1283,8 +1328,8 @@ namespace SimVillage.Model
                         citizen.WorkPlace = building;
                         citizen.Salary = 500;
                         citizens.Add(citizen);
-                        map[house.X][house.Y].addCitizenToZone(citizen);
-                        map[building.X][building.Y].addCitizenToZone(citizen);
+                        map[house.X][house.Y].AddCitizenToZone(citizen);
+                        map[building.X][building.Y].AddCitizenToZone(citizen);
                     }
                 }
             }
@@ -1293,12 +1338,12 @@ namespace SimVillage.Model
 
         private void OnTimeAdvanced()
         {
-            gameAdvanced?.Invoke(this, EventArgs.Empty);
+            GameAdvanced?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnGameCreated()
         {
-            gameCreated?.Invoke(this, EventArgs.Empty);
+            GameCreated?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnConflictDemolish()
@@ -1309,7 +1354,7 @@ namespace SimVillage.Model
         private void OnGameChanged()
         {
             calcElectricity();
-            gameChanged?.Invoke(this, EventArgs.Empty);
+            GameChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

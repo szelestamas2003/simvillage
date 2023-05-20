@@ -33,6 +33,8 @@ namespace SimVillage
 
         private Uri persistenceViewUri = null!;
 
+        private Uri mainMenuPageUri = null!;
+
         private City city = null!;
 
         public App()
@@ -44,6 +46,7 @@ namespace SimVillage
         {
             city = new City(new Model.Persistence());
             city.ConflictDemolish += new EventHandler(Model_ConflictDemolish);
+            city.GameOver += new EventHandler(Model_GameOver);
 
             viewModel = new SimVillageViewModel(city);
             viewModel.PauseGame += new EventHandler(ViewModel_PauseGame);
@@ -60,19 +63,27 @@ namespace SimVillage
             viewModel.LoadingSlot += new EventHandler<SlotEventArgs>(ViewModel_Loading);
             viewModel.SavingSlot += new EventHandler<SlotEventArgs>(ViewModel_Saving);
 
-            mainWindow = new MainWindow();
-            mainWindow.KeyDown += new KeyEventHandler(OnButtonKeyDown);
-            mainWindow.DataContext = viewModel;
-            mainWindow.Navigate(new MainMenu());
-            mainWindow.Show();
-
             gamePageUri = new Uri("View/GamePage.xaml", UriKind.Relative);
             pausePageUri = new Uri("View/PausePage.xaml", UriKind.Relative);
             persistenceViewUri = new Uri("View/PersistenceView.xaml", UriKind.Relative);
+            mainMenuPageUri = new Uri("View/MainMenu.xaml", UriKind.Relative);
+
+            mainWindow = new MainWindow();
+            mainWindow.KeyDown += new KeyEventHandler(OnButtonKeyDown);
+            mainWindow.DataContext = viewModel;
+            mainWindow.Navigate(mainMenuPageUri);
+            mainWindow.Show();
 
             timer = new Timer();
             timer.Interval = 5000;
             timer.Elapsed += new ElapsedEventHandler(Timer_Tick);
+        }
+
+        private void Model_GameOver(object? sender, EventArgs e)
+        {
+            timer.Stop();
+            MessageBox.Show("You have lost the game!\nReturning to the main menu!", "Game Over", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            mainWindow.Navigate(mainMenuPageUri);
         }
 
         private async void ViewModel_Loading(object? sender, SlotEventArgs e)

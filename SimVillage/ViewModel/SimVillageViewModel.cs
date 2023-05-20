@@ -107,14 +107,14 @@ namespace SimVillage.ViewModel
         public SimVillageViewModel(City model)
         {
             this.model = model;
-            model.gameAdvanced += new EventHandler(Model_GameAdvanced);
-            model.gameChanged += new EventHandler(Model_GameChanged);
-            model.gameCreated += new EventHandler(Model_GameCreated);
+            model.GameAdvanced += new EventHandler(Model_GameAdvanced);
+            model.GameChanged += new EventHandler(Model_GameChanged);
+            model.GameCreated += new EventHandler(Model_GameCreated);
             model.StoredGamesChanged += new EventHandler(Model_StoredGamesChanged);
             Date = "📅 " + model.Date.ToString("yyyy") + " " + model.Date.ToString("M");
             Money = "💲 " + model.GetBudget();
             CitizenCount = model.Citizens != null ? "👤 " + model.Citizens.Count : "👤 0";
-            Happiness = model.Citizens != null ? "🙂 " + model.getHappiness() : "🙂 0";
+            Happiness = model.Citizens != null ? "🙂 " + model.GetHappiness() : "🙂 0";
             Speed = 5;
 
             Fields = new ObservableCollection<Field>();
@@ -300,15 +300,15 @@ namespace SimVillage.ViewModel
                 switch (building.Text)
                 {
                     case "Residental":
-                        if (model.newZone(field.X, field.Y, ZoneType.Residental))
+                        if (model.NewZone(field.X, field.Y, ZoneType.Residental))
                             field.Text = "Residental";
                         break;
                     case "Industrial":
-                        if (model.newZone(field.X, field.Y, ZoneType.Industrial))
+                        if (model.NewZone(field.X, field.Y, ZoneType.Industrial))
                             field.Text = "Industrial";
                         break;
                     case "Store":
-                        if (model.newZone(field.X, field.Y, ZoneType.Store))
+                        if (model.NewZone(field.X, field.Y, ZoneType.Store))
                             field.Text = "Store";
                         break;
                     case "Forest":
@@ -339,7 +339,7 @@ namespace SimVillage.ViewModel
                         model.BuildBuilding(new Stadium(field.X, field.Y));
                         break;
                     case "Demolish":
-                        model.demolishZone(field.X,field.Y);
+                        model.DemolishZone(field.X,field.Y);
                         break;
                 }
             } else
@@ -395,7 +395,7 @@ namespace SimVillage.ViewModel
         {
             CitizenCount = "👤 " +  model.Citizens.Count;
             Money = "💲 " +  model.GetBudget();
-            Happiness = "🙂 " + model.getHappiness();
+            Happiness = "🙂 " + model.GetHappiness();
 
             if(model.GetBudget() < 0)
             {

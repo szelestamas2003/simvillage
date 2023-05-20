@@ -13,6 +13,7 @@
 
         public int Budget { get; private set; }
 
+        public int NegativeBudgetYears { get; set; } = 0;
 
         public Finances(int budget)
         {
@@ -21,13 +22,13 @@
             Incomes = new List<Transaction>();
         }
 
-        public void addExpenses(string name, int cost, string date)
+        public void AddExpenses(string name, int cost, string date)
         {
             Expenses.Add(new Transaction(name, cost, date));
             Budget -= cost;
         }
 
-        public void addIncome(string name, int cost, string date)
+        public void AddIncome(string name, int cost, string date)
         {
             Incomes.Add(new Transaction(name, cost, date));
             Budget += cost;

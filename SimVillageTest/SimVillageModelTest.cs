@@ -7,7 +7,7 @@ namespace SimVillageTest
     [TestClass]
     public class SimVillageModelTest
     {
-        private SimVillage.Model.City model = null!;
+        private City model = null!;
 
         private Mock<Persistence> mock = null!;
 
@@ -40,14 +40,14 @@ namespace SimVillageTest
         [TestMethod]
         public void CantDemolishMainRoad()
         {
-            model.demolishZone(29, 0);
+            model.DemolishZone(29, 0);
             Assert.AreEqual(typeof(Road), model.Map[29][0].Building.GetType());
         }
 
         [TestMethod]
         public void CantBuildOnOccupiedZone()
         {
-            model.newZone(29, 0, ZoneType.Residental);
+            model.NewZone(29, 0, ZoneType.Residental);
             Assert.AreEqual(ZoneType.General, model.Map[29][0].ZoneType);
             model.BuildBuilding(new PowerLine(29, 0));
             Assert.AreEqual(typeof(Road), model.Map[29][0].Building.GetType());
