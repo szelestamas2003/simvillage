@@ -183,7 +183,7 @@ namespace SimVillage.Model
                             if (map[i][j].Building.GetType() == typeof(Forest) && !availableForest)
                             {
                                 Forest f = (Forest)map[i][j].Building;
-                                if (calcDistance(c.Home, map[i][j].Building) < f.GetRadius())
+                                if (DistanceByAir(c.Home, map[i][j].Building) < f.GetRadius())
                                 {
                                     availableForest = true;
                                     Happiness += f.Age;
@@ -201,7 +201,7 @@ namespace SimVillage.Model
                             else if (map[i][j].Building.GetType() == typeof(Industrial))
                             {
                                 Industrial k = (Industrial)map[i][j].Building;
-                                if (calcDistance(c.Home, map[i][j].Building) < k.GetRadius())
+                                if (DistanceByAir(c.Home, map[i][j].Building) < k.GetRadius())
                                 {
                                     Happiness -= 8;
                                 }
@@ -812,6 +812,11 @@ namespace SimVillage.Model
             {
                 return false;
             }
+        }
+        static public double DistanceByAir(Building.Building a, Building.Building b)
+        {
+            double distance = Math.Sqrt((Math.Pow(2, (b.X - a.X)) + Math.Pow(2, (b.Y - a.Y))));
+            return distance;
         }
 
         public void BuildBuilding(Building.Building building, bool inConstructor = false)
