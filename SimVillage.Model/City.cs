@@ -813,7 +813,7 @@ namespace SimVillage.Model
                 return false;
             }
         }
-        static public double DistanceByAir(Building.Building a, Building.Building b)
+        private double DistanceByAir(Building.Building a, Building.Building b)
         {
             double distance = Math.Sqrt((Math.Pow(2, (b.X - a.X)) + Math.Pow(2, (b.Y - a.Y))));
             return distance;
