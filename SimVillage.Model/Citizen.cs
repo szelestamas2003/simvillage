@@ -12,6 +12,8 @@ namespace SimVillage.Model
         public int HadToMove { get; private set; } = 0;
         public Residental Home { get; private set; }
         public Building.Building WorkPlace { get; set; } = null!;
+        public List<double> PaidTaxes { get; private set; }
+        public double Pension { get; private set; }
 
 
         public Citizen(int Age, Residental Home)
@@ -71,6 +73,9 @@ namespace SimVillage.Model
             Pensioner = true;
             Salary = 0;
             WorkPlace = null!;
+            Pension = PaidTaxes.Sum() / PaidTaxes.Count();
+            
+
         }
         public void SetEducation(EducationLevel level)
         {
