@@ -20,14 +20,12 @@ namespace SimVillage.Model.Building
             X = x;
             Y = y;
         }
-        public int GetMaxWorkers() { return MaxWorkers; }
-        public int GetWorkers() {  return Workers; }
-        
-        public void SetMaxWorkers(int MaxWorkers) { this.MaxWorkers =MaxWorkers; }
+
         public void NewWorker()
         {
             Workers++;
         }
+
         public void WorkerLeft()
         {
             Workers--;
@@ -37,6 +35,7 @@ namespace SimVillage.Model.Building
         {
             return Workers < MaxWorkers;
         }
+
         public override String ToString()
         {
             return "Current workers: " + Workers + "\nMaximum workers: " + MaxWorkers + "\nBuilding level " + Density + "\nPower consumption: " + PowerConsumption + "\n";
@@ -45,8 +44,5 @@ namespace SimVillage.Model.Building
         {
             return radius;
         }
-
-
-
     }
 }

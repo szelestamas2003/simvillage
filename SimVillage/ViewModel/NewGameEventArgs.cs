@@ -8,6 +8,6 @@ namespace SimVillage.ViewModel
 {
     public class NewGameEventArgs : EventArgs
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
     }
 }

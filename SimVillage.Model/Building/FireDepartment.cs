@@ -2,8 +2,10 @@
 {
     public class FireDepartment : Building
     {
-        public bool UnitAvailable { get; set; }
+        public bool UnitAvailable { get; private set; } = true;
+
         int Radius = 40;
+
         public FireDepartment(int x, int y)
         {
             PowerConsumption = 45;
@@ -12,17 +14,19 @@
             X = x;
             Y = y;
         }
-        public bool IsAvailable() { return  UnitAvailable; }
+
+        public int getRadius() { return Radius; }
+
         public void SendUnit()
         {
             UnitAvailable = false;
         }
+
         public void UnitArrive()
         {
             UnitAvailable = true;
         }
 
-        public int GetRadius() { return Radius; }
         public override String ToString()
         {
             return "Power consumption: " + PowerConsumption + "\nUnit available: " + UnitAvailable + "\nMaintenance cost: "+ Cost/100 + "\nRadius: "+ Radius;

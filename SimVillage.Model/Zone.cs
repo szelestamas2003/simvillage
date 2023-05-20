@@ -16,12 +16,12 @@ namespace SimVillage.Model
 
         public List<Citizen> Citizens { get; set; }
 
-        public string Info { get { return "Happiness: " + getHappiness(); } }
+        public string Info { get { return "Happiness: " + GetHappiness(); } }
 
         private const int cost = 400;
-        public int getCost() { return cost; }
+        public int GetCost() { return cost; }
 
-        public void addCitizenToZone(Citizen person)
+        public void AddCitizenToZone(Citizen person)
         {
             Citizens.Add(person);
         }
@@ -65,12 +65,12 @@ namespace SimVillage.Model
             }
         }
 
-        public int getHappiness()
+        public int GetHappiness()
         {
             int happiness = 0;
             foreach (Citizen c in Citizens)
             {
-                happiness += c.GetHappiness();
+                happiness += c.Happiness;
             }
             if (Citizens.Count > 0)
             {
