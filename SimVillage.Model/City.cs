@@ -592,7 +592,7 @@ namespace SimVillage.Model
                         {
                             if (!citizen.Pensioner)
                             {
-                                double paid_tax = citizen.GetSalary() * Finances.getTax(ZoneType.Residental) / 100;
+                                double paid_tax = citizen.Salary * Finances.ResidentTax / 100;
                                 if (citizen.Age > 45)
                                 {
                                     citizen.PaidTaxes.Add(paid_tax);
@@ -609,10 +609,10 @@ namespace SimVillage.Model
             }
             tax = Math.Round(tax);
             if (tax != 0)
-                Finances.addIncome("Tax", Convert.ToInt32(tax), date.ToString("d"));
+                Finances.AddIncome("Tax", Convert.ToInt32(tax), date.ToString("d"));
             if(pension != 0)
             {
-                Finances.addExpenses("Pension", Convert.ToInt32(pension), date.ToString("d"));
+                Finances.AddExpenses("Pension", Convert.ToInt32(pension), date.ToString("d"));
             }
         }
 
