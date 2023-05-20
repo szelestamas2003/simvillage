@@ -540,6 +540,7 @@ namespace SimVillage.Model
         private void CollectingTaxes()
         {
             double tax = 0;
+            double pension = 0;
             foreach (List<Zone> rows in map)
             {
                 foreach (Zone zone in rows)
@@ -562,7 +563,16 @@ namespace SimVillage.Model
                     {
                         foreach (Citizen citizen in zone.Citizens)
                         {
-                            tax += citizen.Salary * Finances.ResidentTax / 100;
+                            if (!citizen.Pensioner)
+                            {
+                                double paid_tax = citizen.Salary * Finances.ResidentTax / 100;
+                                citizen.PaidTax.Add(paid_tax);
+                                tax += paid_tax;
+                            }
+                            else
+                            {
+                                pension += citizen.Pension;
+                            }
                         }
                     }
                 }
@@ -570,6 +580,8 @@ namespace SimVillage.Model
             tax = Math.Round(tax);
             if (tax != 0)
                 Finances.AddIncome("Tax", Convert.ToInt32(tax), date.ToString("d"));
+            if (pension != 0)
+                Finances.AddIncome("Pension", Convert.ToInt32(pension), date.ToString("d"));
         }
 
         private void calcElectricity()
