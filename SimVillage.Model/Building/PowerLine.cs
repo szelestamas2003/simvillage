@@ -10,6 +10,8 @@ namespace SimVillage.Model.Building
     {
         public PowerLine(int x, int y)
         {
+            FireChance = 0;
+            IsOnFire = false;
             PowerConsumption = 0;
             Size = (1, 1);
             Cost = 20;

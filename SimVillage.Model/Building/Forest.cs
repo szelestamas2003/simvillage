@@ -6,6 +6,8 @@
         int Radius = 3;
         public Forest(int x, int y)
         {
+            FireChance = 0;
+            IsOnFire = false;
             Age = 0;
             Size = (1, 1);
             PowerConsumption = 3;

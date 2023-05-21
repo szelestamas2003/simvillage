@@ -8,6 +8,8 @@
 
         public School(int x, int y, SchoolTypes type)
         {
+            FireChance = 2;
+            IsOnFire = false;
             MaxStudents = 300;
             PowerConsumption = 50;
             if (type == SchoolTypes.Elementary)

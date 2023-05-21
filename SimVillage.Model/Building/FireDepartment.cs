@@ -8,6 +8,8 @@
 
         public FireDepartment(int x, int y)
         {
+            FireChance = 0;
+            IsOnFire = false;
             PowerConsumption = 45;
             Size = (1, 1);
             Cost = 500;

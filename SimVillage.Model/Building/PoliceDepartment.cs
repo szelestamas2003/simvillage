@@ -11,6 +11,8 @@ namespace SimVillage.Model.Building
         int Radius = 30;
         public PoliceDepartment(int x, int y)
         {
+            FireChance = 5;
+            IsOnFire = false;
             PowerConsumption = 45;
             Size = (1, 1);
             Cost = 600;

@@ -12,6 +12,8 @@ namespace SimVillage.Model.Building
         public int Workers { get; set; }
         public Store(int x, int y)
         {
+            FireChance = 5;
+            IsOnFire = false;
             PowerConsumption = 30;
             Density = 1;
             MaxWorkers = 10;

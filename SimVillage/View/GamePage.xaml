@@ -173,6 +173,18 @@
                                             </Style>
                                         </Button.Style>
                                     </Button>
+                                    <Button Content="Put out fire" Height="auto" Width="auto" Background="OrangeRed" HorizontalAlignment="Left" Margin="5, 0, 0, 5" Padding="10,5,10,5" Command="{Binding ClearFireCommand}" CommandParameter="{Binding Number}">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Fire}" Value="true">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
                                 </StackPanel>
                             </Popup>
                             <Image Source="/View/pixelarts/grass.png"/>
@@ -340,6 +352,10 @@
                                             <DataTrigger Binding="{Binding Text}" Value="Road VL">
                                                 <Setter Property="Visibility" Value="Visible"/>
                                                 <Setter Property="Source" Value="/View/pixelarts/road_t_vl.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Fire}" Value="true">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/fire_t.png"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

@@ -274,8 +274,10 @@ namespace SimVillage.ViewModel
                         Number = i * Width + j,
                         Name = string.Empty,
                         Info = string.Empty,
+                        Fire = false,
                         Clicked = new DelegateCommand(param => OnFieldClicked(Convert.ToInt32(param))),
-                        UpgradeCommand = new DelegateCommand(param => UpgradeZone(Convert.ToInt32(param)))
+                        UpgradeCommand = new DelegateCommand(param => UpgradeZone(Convert.ToInt32(param))),
+                        ClearFireCommand = new DelegateCommand(param => ClearFire(Convert.ToInt32(param)))
                     });
                 }
             }
@@ -290,6 +292,12 @@ namespace SimVillage.ViewModel
         {
             Field field = Fields[v];
             model.UpgradeZone(field.X, field.Y);
+        }
+
+        private void ClearFire(int v)
+        {
+            Field field = Fields[v];
+            model.PutOutFire(field.X, field.Y);
         }
 
         private void OnFieldClicked(int number)
@@ -412,6 +420,7 @@ namespace SimVillage.ViewModel
                 {
                     if (zone.Building != null)
                     {
+                        Fields[zone.X * Width + zone.Y].Fire = zone.Building.IsOnFire;
                         switch (zone.Building)
                         {
                             case Road:

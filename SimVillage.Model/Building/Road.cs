@@ -10,6 +10,8 @@ namespace SimVillage.Model.Building
     {
         public Road(int x, int y)
         {
+            FireChance = 0;
+            IsOnFire = false;
             Size = (1, 1);
             PowerConsumption = 4;
             Cost = 40;

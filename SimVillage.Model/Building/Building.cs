@@ -29,6 +29,8 @@ namespace SimVillage.Model.Building
         public bool IsAccessible { get; set; }
         public int X { get; protected set; }
         public int Y { get; protected set; }
+        public int FireChance { get; protected set; }
+        public bool IsOnFire { get; set; }
 
         public Building((int, int) size, bool occupied, int density, int powerConsumption, int x, int y)
         {

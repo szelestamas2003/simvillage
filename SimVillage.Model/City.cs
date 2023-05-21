@@ -1057,7 +1057,34 @@ namespace SimVillage.Model
             GoToSchool();
             GetJobForUnemployed();
             PeopleMoveIn();
+            CheckFire();
             OnTimeAdvanced();
+        }
+
+        private void CheckFire()
+        {
+            foreach (List<Zone> rows in map)
+            {
+                foreach (Zone zone in rows)
+                {
+                    if (zone.Building != null)
+                    {
+                        Random random = new Random();
+                        bool chance = zone.Building.FireChance / (100.0 * 1.5) > random.NextDouble();
+                        if (chance)
+                        {
+                            zone.Building.IsOnFire = true;
+                        }
+                    }
+                        
+                }
+            }
+        }
+
+        public void PutOutFire(int x, int y)
+        {
+            map[x][y].Building.IsOnFire = false;
+            Finances.AddExpenses("Cleared a fire in a " + map[x][y].ToString(), map[x][y].GetCost(), date.ToString("d"));
         }
 
         private void GoToSchool()

@@ -12,6 +12,8 @@ namespace SimVillage.Model.Building
         public int Inhabitants { get; set; }
         public Residental(int x, int y)
         {
+            FireChance = 2;
+            IsOnFire = false;
             PowerConsumption = 30;
             Density = 1;
             Size = (1, 1);

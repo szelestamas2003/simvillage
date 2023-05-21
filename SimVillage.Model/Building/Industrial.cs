@@ -13,6 +13,8 @@ namespace SimVillage.Model.Building
         public int radius = 6;
         public Industrial(int x, int y)
         {
+            FireChance = 5;
+            IsOnFire = false;
             PowerConsumption = 30;
             Density = 1;
             Size = (1, 1);
