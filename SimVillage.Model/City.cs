@@ -156,9 +156,10 @@ namespace SimVillage.Model
                 
                 Happiness -= c.HadToMove * 10;
                 int work_distance = calcDistance(c.Home, c.WorkPlace);
-                Happiness = +tax_effect;
+                Happiness += tax_effect;
                 work_distance = 15 - work_distance;
                 Happiness += work_distance;
+                Happiness -= Finances.NegativeBudgetYears * 20;
                 Happiness += c.Salary / 10;
                 
                 if (c.EducationLevel == EducationLevel.Basic)
@@ -290,7 +291,7 @@ namespace SimVillage.Model
                         zone.BuildBuilding(building);
                         break;
                     case Residental:
-                        if (((Residental)building).Inhabitans > 0)
+                        if (((Residental)building).Inhabitants > 0)
                             conflict = true;
                         break;
                     case Industrial:
@@ -319,7 +320,7 @@ namespace SimVillage.Model
                         {
                             foreach (Zone zones in rows)
                             {
-                                if (zones.Building != null && zones.Building.GetType() != typeof(Road) && zones.Building.GetType() != typeof(PowerLine) && zones.Building.GetType() != typeof(Forest) && calcDistance(map[29][0].Building, zones.Building) == -1)
+                                if (zones.Building != null && zones.Building.GetType() != typeof(Road) && zones.Building.GetType() != typeof(PowerLine) && zones.Building.GetType() != typeof(Residental) && zones.Building.GetType() != typeof(Industrial) && zones.Building.GetType() != typeof(Store) && zones.Building.GetType() != typeof(Forest) && calcDistance(map[29][0].Building, zones.Building) == -1)
                                 {
                                     zone.BuildBuilding(building);
                                     return;
@@ -1020,6 +1021,8 @@ namespace SimVillage.Model
                 Finances.AddExpenses("Monthly running expenses", Convert.ToInt32(upkeep), date.ToString("d"));
             } else if (date.Year > previous_date.Year)
             {
+                if (Finances.Budget < 0)
+                    Finances.NegativeBudgetYears++;
                 foreach (School school in availableSchools)
                     GiveEducation(school);
 

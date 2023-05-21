@@ -9,7 +9,7 @@ namespace SimVillage.Model.Building
     public class Residental : Building
     {
         public int MaxInhabitants { get; set; }
-        public int Inhabitans { get; set; }
+        public int Inhabitants { get; set; }
         public Residental(int x, int y)
         {
             PowerConsumption = 30;
@@ -22,22 +22,22 @@ namespace SimVillage.Model.Building
 
         public void MoveOut()
         {
-            Inhabitans--;
+            Inhabitants--;
         }
 
         public void MoveIn()
         {
-            Inhabitans++;
+            Inhabitants++;
         }
 
         public bool FreeSpace()
         {
-            return Inhabitans < MaxInhabitants;
+            return Inhabitants < MaxInhabitants;
         }
 
         public override String ToString()
         {
-            return "Current inhabitants: " + Inhabitans + "\nMaximum inhabitants: " + MaxInhabitants + "\nBuilding level " + Density + "\nPower consumption: " + PowerConsumption + "\n";
+            return "Current inhabitants: " + Inhabitants + "\nMaximum inhabitants: " + MaxInhabitants + "\nBuilding level " + Density + "\nPower consumption: " + PowerConsumption + "\n";
 
         }
     }
