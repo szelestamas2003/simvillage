@@ -221,7 +221,7 @@ namespace SimVillage
                     case "/View/pixelarts/road_t.png":
                         canvas.Cursor = Road;
                         break;
-                    case "/View/pixelarts/fire_t.png":
+                    case "/View/pixelarts/bulldozer_t.png":
                         canvas.Cursor = Cursors.Hand;
                         break;
                 }

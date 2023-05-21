@@ -279,7 +279,6 @@ namespace SimVillageTest
         [TestMethod]
         public void EightMoreComeAfterUpgrading()
         {
-
             model.NewZone(29, 4, ZoneType.Residental);
             model.NewZone(28, 3, ZoneType.Industrial);
             model.NewZone(28, 2, ZoneType.Store);
@@ -307,5 +306,335 @@ namespace SimVillageTest
             Assert.AreEqual(7, ((Industrial)model.Map[28][3].Building).Workers);
             Assert.AreEqual(7, ((Store)model.Map[28][2].Building).Workers);
         }
+
+        [TestMethod]
+        public void CantComeMorePeopleIfThereIsNotMoreWorkPlace()
+        {
+            model.NewZone(29, 4, ZoneType.Residental);
+            model.NewZone(28, 3, ZoneType.Industrial);
+            model.NewZone(28, 2, ZoneType.Store);
+            model.BuildBuilding(new Road(29, 1));
+            model.BuildBuilding(new Road(29, 2));
+            model.BuildBuilding(new Road(29, 3));
+            model.BuildBuilding(new PowerPlant(27, 0));
+            for (int i = 0; i < 8; i++)
+            {
+                model.AdvanceTime();
+            }
+            Assert.AreEqual(6, model.Citizens.Count);
+            Assert.AreEqual(6, ((Residental)model.Map[29][4].Building).Inhabitants);
+            Assert.AreEqual(6, ((Residental)model.Map[29][4].Building).MaxInhabitants);
+            Assert.AreEqual(3, ((Industrial)model.Map[28][3].Building).Workers);
+            Assert.AreEqual(3, ((Store)model.Map[28][2].Building).Workers);
+            model.UpgradeZone(29, 4);
+            model.UpgradeZone(29, 4);
+            for (int i = 0; i < 40; i++)
+            {
+                model.AdvanceTime();
+            }
+            Assert.AreEqual(20, model.Citizens.Count);
+            Assert.AreEqual(20, ((Residental)model.Map[29][4].Building).Inhabitants);
+            Assert.AreEqual(30, ((Residental)model.Map[29][4].Building).MaxInhabitants);
+            Assert.AreEqual(10, ((Industrial)model.Map[28][3].Building).Workers);
+            Assert.AreEqual(10, ((Store)model.Map[28][2].Building).Workers);
+        }
+
+        [TestMethod]
+        public void PayServiceCostsOnEndOfMonth()
+        {
+            model.BuildBuilding(new School(29, 1, SchoolTypes.Elementary));
+            do
+            {
+                model.AdvanceTime();
+            } while(model.Date.Month == 1);
+            Assert.AreEqual(2, model.Finances.Expenses.Count);
+        }
+
+        [TestMethod]
+        public void AgeUpPeopleAndForestAtNewYear()
+        {
+            model.NewZone(29, 4, ZoneType.Residental);
+            model.NewZone(28, 3, ZoneType.Industrial);
+            model.NewZone(28, 2, ZoneType.Store);
+            model.BuildBuilding(new Road(29, 1));
+            model.BuildBuilding(new Road(29, 2));
+            model.BuildBuilding(new Road(29, 3));
+            model.BuildBuilding(new PowerPlant(27, 0));
+            do
+            {
+                model.AdvanceTime();
+            } while (model.Date < new DateTime(2001, 12, 31));
+
+            List<int> ages = new List<int>();
+            foreach (Citizen c in model.Citizens)
+                ages.Add(c.Age);
+
+            model.AdvanceTime();
+            for (int i = 0; i < model.Citizens.Count; i++)
+            {
+                Assert.IsTrue(model.Citizens[i].Age == ages[i] + 1);
+            }
+
+            foreach (List<Zone> rows in model.Map)
+            {
+                foreach (Zone zone in rows)
+                {
+                    if (zone.Building?.GetType() == typeof(Forest))
+                    {
+                        Assert.AreEqual(11, ((Forest)zone.Building).Age);
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public void MonthlyExpensesAddedEndOfMonth()
+        {
+            model.BuildBuilding(new Road(0, 0));
+            model.BuildBuilding(new Road(29, 1));
+
+            while (model.Date.Month == 1)
+            {
+                model.AdvanceTime();
+            }
+
+            Assert.IsTrue(12 >= model.Finances.Expenses.Last().Amount);
+        }
+
+        [TestMethod]
+        public void DemolishHouseWithPeopleIfThereIsNoOtherHouse()
+        {
+            model.NewZone(29, 4, ZoneType.Residental);
+            model.NewZone(28, 3, ZoneType.Industrial);
+            model.NewZone(28, 2, ZoneType.Store);
+            model.BuildBuilding(new Road(29, 1));
+            model.BuildBuilding(new Road(29, 2));
+            model.BuildBuilding(new Road(29, 3));
+            model.BuildBuilding(new PowerPlant(27, 0));
+            for (int i = 0; i < 6; i++)
+            {
+                model.AdvanceTime();
+            }
+
+            model.CanDemolish(true);
+            model.DemolishZone(29, 4);
+            Assert.AreEqual(ZoneType.General, model.Map[29][4].ZoneType);
+            Assert.IsNull(model.Map[29][4].Building);
+            Assert.AreEqual(0, model.Citizens.Count);
+            Assert.AreEqual(0, model.Map[29][4].Citizens.Count);
+            Assert.AreEqual(0, model.Map[28][3].Citizens.Count);
+            Assert.AreEqual(0, ((Industrial)model.Map[28][3].Building).Workers);
+            Assert.AreEqual(0, model.Map[28][2].Citizens.Count);
+            Assert.AreEqual(0, ((Store)model.Map[28][2].Building).Workers);
+        }
+
+        [TestMethod]
+        public void DemolishHouseWithPeopleIfThereAreEmptyHouses()
+        {
+            model.NewZone(29, 5, ZoneType.Residental);
+            model.NewZone(28, 4, ZoneType.Residental);
+            model.NewZone(28, 3, ZoneType.Industrial);
+            model.NewZone(28, 2, ZoneType.Store);
+            model.BuildBuilding(new Road(29, 1));
+            model.BuildBuilding(new Road(29, 2));
+            model.BuildBuilding(new Road(29, 3));
+            model.BuildBuilding(new Road(29, 4));
+            model.BuildBuilding(new PowerPlant(27, 0));
+
+            for (int i = 0; i < 6; i++)
+            {
+                model.AdvanceTime();
+            }
+
+            model.CanDemolish(true);
+            model.DemolishZone(29, 5);
+            Assert.AreEqual(6, model.Citizens.Count);
+            Assert.AreEqual(0, model.Map[29][5].Citizens.Count);
+            Assert.AreEqual(6, model.Map[28][4].Citizens.Count);
+            Assert.AreEqual(6, ((Residental)model.Map[28][4].Building).Inhabitants);
+            Assert.AreEqual(3, model.Map[28][3].Citizens.Count);
+            Assert.AreEqual(3, ((Industrial)model.Map[28][3].Building).Workers);
+            Assert.AreEqual(3, model.Map[28][2].Citizens.Count);
+            Assert.AreEqual(3, ((Store)model.Map[28][2].Building).Workers);
+        }
+
+        [TestMethod]
+        public void DemolishHouseWithPeopleIfThereAreHouses()
+        {
+            model.NewZone(29, 5, ZoneType.Residental);
+            model.NewZone(28, 4, ZoneType.Residental);
+            model.NewZone(28, 3, ZoneType.Industrial);
+            model.NewZone(28, 2, ZoneType.Store);
+            model.BuildBuilding(new Road(29, 1));
+            model.BuildBuilding(new Road(29, 2));
+            model.BuildBuilding(new Road(29, 3));
+            model.BuildBuilding(new Road(29, 4));
+            model.BuildBuilding(new PowerPlant(27, 0));
+
+            for (int i = 0; i < 9; i++)
+            {
+                model.AdvanceTime();
+            }
+
+            model.CanDemolish(true);
+            model.DemolishZone(29, 5);
+            Assert.AreEqual(6, model.Citizens.Count);
+            Assert.AreEqual(0, model.Map[29][5].Citizens.Count);
+            Assert.AreEqual(6, model.Map[28][4].Citizens.Count);
+            Assert.AreEqual(6, ((Residental)model.Map[28][4].Building).Inhabitants);
+            Assert.AreEqual(3, model.Map[28][3].Citizens.Count);
+            Assert.AreEqual(3, ((Industrial)model.Map[28][3].Building).Workers);
+            Assert.AreEqual(3, model.Map[28][2].Citizens.Count);
+            Assert.AreEqual(3, ((Store)model.Map[28][2].Building).Workers);
+        }
+
+        [TestMethod]
+        public void DemolishIndustrialWithWorkersIfThereIsNoOtherOne()
+        {
+            model.NewZone(29, 4, ZoneType.Residental);
+            model.NewZone(28, 3, ZoneType.Industrial);
+            model.NewZone(28, 2, ZoneType.Store);
+            model.BuildBuilding(new Road(29, 1));
+            model.BuildBuilding(new Road(29, 2));
+            model.BuildBuilding(new Road(29, 3));
+            model.BuildBuilding(new PowerPlant(27, 0));
+
+            for (int i = 0; i < 6; i++)
+            {
+                model.AdvanceTime();
+            }
+
+            model.CanDemolish(true);
+            model.DemolishZone(28, 3);
+            model.AdvanceTime();
+            Assert.AreEqual(6, model.Citizens.Count);
+            Assert.AreEqual(6, ((Residental)model.Map[29][4].Building).Inhabitants);
+            Assert.AreEqual(0, model.Map[28][3].Citizens.Count);
+            Assert.IsNull(model.Map[28][3].Building);
+            Assert.AreEqual(3, model.Map[28][2].Citizens.Count);
+            Assert.AreEqual(3, ((Store)model.Map[28][2].Building).Workers);
+
+            foreach (Citizen c in model.Citizens)
+            {
+                if (c.WorkPlace?.GetType() != typeof(Store))
+                {
+                    Assert.IsNull(c.WorkPlace);
+                    Assert.AreEqual(0, c.Salary);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void DemolishIndustrialWithWorkersIfThereAreAnotherEmptyOne()
+        {
+            model.NewZone(29, 5, ZoneType.Residental);
+            model.NewZone(28, 3, ZoneType.Industrial);
+            model.NewZone(28, 4, ZoneType.Industrial);
+            model.NewZone(28, 2, ZoneType.Store);
+            model.BuildBuilding(new Road(29, 1));
+            model.BuildBuilding(new Road(29, 2));
+            model.BuildBuilding(new Road(29, 3));
+            model.BuildBuilding(new Road(29, 4));
+            model.BuildBuilding(new PowerPlant(27, 0));
+
+            for (int i = 0; i < 6; i++)
+            {
+                model.AdvanceTime();
+            }
+
+            model.CanDemolish(true);
+            model.DemolishZone(28, 3);
+            Assert.AreEqual(6, model.Citizens.Count);
+            Assert.AreEqual(6, ((Residental)model.Map[29][5].Building).Inhabitants);
+            Assert.AreEqual(0, model.Map[28][3].Citizens.Count);
+            Assert.IsNull(model.Map[28][3].Building);
+            Assert.AreEqual(3, model.Map[28][4].Citizens.Count);
+            Assert.AreEqual(3, ((Industrial)model.Map[28][4].Building).Workers);
+            Assert.AreEqual(3, model.Map[28][2].Citizens.Count);
+            Assert.AreEqual(3, ((Store)model.Map[28][2].Building).Workers);
+
+            foreach (Citizen c in model.Citizens)
+            {
+                if (c.WorkPlace?.GetType() != typeof(Store))
+                {
+                    Assert.AreEqual(model.Map[28][4].Building, c.WorkPlace);
+                    Assert.AreEqual(500, c.Salary);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void DemolishStoreWithWorkersIfThereIsNoOtherOne()
+        {
+            model.NewZone(29, 4, ZoneType.Residental);
+            model.NewZone(28, 3, ZoneType.Industrial);
+            model.NewZone(28, 2, ZoneType.Store);
+            model.BuildBuilding(new Road(29, 1));
+            model.BuildBuilding(new Road(29, 2));
+            model.BuildBuilding(new Road(29, 3));
+            model.BuildBuilding(new PowerPlant(27, 0));
+
+            for (int i = 0; i < 6; i++)
+            {
+                model.AdvanceTime();
+            }
+
+            model.CanDemolish(true);
+            model.DemolishZone(28, 2);
+            Assert.AreEqual(6, model.Citizens.Count);
+            Assert.AreEqual(6, ((Residental)model.Map[29][4].Building).Inhabitants);
+            Assert.AreEqual(0, model.Map[28][2].Citizens.Count);
+            Assert.IsNull(model.Map[28][2].Building);
+            Assert.AreEqual(3, model.Map[28][3].Citizens.Count);
+            Assert.AreEqual(3, ((Industrial)model.Map[28][3].Building).Workers);
+
+            foreach (Citizen c in model.Citizens)
+            {
+                if (c.WorkPlace?.GetType() != typeof(Industrial))
+                {
+                    Assert.IsNull(c.WorkPlace);
+                    Assert.AreEqual(0, c.Salary);
+                }
+            }
+        }
+
+        /*[TestMethod]
+        public void DemolishStoreWithWorkersIfThereAreAnotherEmptyOne()
+        {
+            model.NewZone(29, 5, ZoneType.Residental);
+            model.NewZone(28, 3, ZoneType.Industrial);
+            model.NewZone(28, 4, ZoneType.Store);
+            model.NewZone(28, 2, ZoneType.Store);
+            model.BuildBuilding(new Road(29, 1));
+            model.BuildBuilding(new Road(29, 2));
+            model.BuildBuilding(new Road(29, 3));
+            model.BuildBuilding(new Road(29, 4));
+            model.BuildBuilding(new PowerPlant(27, 0));
+
+            for (int i = 0; i < 6; i++)
+            {
+                model.AdvanceTime();
+            }
+
+            model.CanDemolish(true);
+            model.DemolishZone(28, 4);
+            Assert.AreEqual(6, model.Citizens.Count);
+            Assert.AreEqual(6, ((Residental)model.Map[29][5].Building).Inhabitants);
+            Assert.AreEqual(0, model.Map[28][4].Citizens.Count);
+            Assert.IsNull(model.Map[28][4].Building);
+            Assert.AreEqual(3, model.Map[28][2].Citizens.Count);
+            Assert.AreEqual(3, ((Store)model.Map[28][2].Building).Workers);
+            Assert.AreEqual(3, model.Map[28][3].Citizens.Count);
+            Assert.AreEqual(3, ((Industrial)model.Map[28][3].Building).Workers);
+
+            foreach (Citizen c in model.Citizens)
+            {
+                if (c.WorkPlace?.GetType() != typeof(Industrial))
+                {
+                    Assert.AreEqual(model.Map[28][2].Building, c.WorkPlace);
+                    Assert.AreEqual(500, c.Salary);
+                }
+            }
+        }*/
     }
 }

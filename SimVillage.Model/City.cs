@@ -144,7 +144,7 @@ namespace SimVillage.Model
             {
                 int taxes = 0;
                 taxes += Finances.ResidentTax;
-                if (c.WorkPlace.GetType() == typeof(Industrial))
+                if (c.WorkPlace?.GetType() == typeof(Industrial))
                     taxes += Finances.IndustrialTax;
                 else
                     taxes += Finances.StoreTax;
@@ -919,6 +919,7 @@ namespace SimVillage.Model
         {
             foreach(Citizen citizen in citizens)
             {
+                bool found = false;
                 if (citizen.WorkPlace == null)
                 {
                     int inStores = 0;
@@ -952,6 +953,7 @@ namespace SimVillage.Model
                         {
                             building.NewWorker();
                             citizen.WorkPlace = building;
+                            found = true;
                         }
                     }
                     else
@@ -975,19 +977,23 @@ namespace SimVillage.Model
                         {
                             building.NewWorker();
                             citizen.WorkPlace = building;
+                            found = true;
                         }
                     }
-                    switch (citizen.EducationLevel)
+                    if (found)
                     {
-                        case EducationLevel.Basic:
-                            citizen.Salary = 500;
-                            break;
-                        case EducationLevel.Middle:
-                            citizen.Salary = 1000;
-                            break;
-                        case EducationLevel.Higher:
-                            citizen.Salary = 1500;
-                            break;
+                        switch (citizen.EducationLevel)
+                        {
+                            case EducationLevel.Basic:
+                                citizen.Salary = 500;
+                                break;
+                            case EducationLevel.Middle:
+                                citizen.Salary = 1000;
+                                break;
+                            case EducationLevel.Higher:
+                                citizen.Salary = 1500;
+                                break;
+                        }
                     }
                 }
             }

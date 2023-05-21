@@ -428,7 +428,7 @@
                                                 <Setter Property="Source" Value="/View/pixelarts/fire_department_t.png"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Text}" Value="Demolish">
-                                                <Setter Property="Source" Value="/View/pixelarts/fire_t.png"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/bulldozer_t.png"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

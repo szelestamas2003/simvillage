@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="View\pixelarts\bulldozer_t.png" />
     <None Remove="View\pixelarts\elementary_school_t.png" />
     <None Remove="View\pixelarts\elementary_school_t_l.png" />
     <None Remove="View\pixelarts\elementary_school_t_r.png" />
@@ -16,6 +17,7 @@
     <None Remove="View\pixelarts\factory_3_t.png" />
     <None Remove="View\pixelarts\factory_t.png" />
     <None Remove="View\pixelarts\fire_department_t.png" />
+    <None Remove="View\pixelarts\fire_hat.png" />
     <None Remove="View\pixelarts\fire_t.png" />
     <None Remove="View\pixelarts\forest_1_t.png" />
     <None Remove="View\pixelarts\forest_2_t.png" />
@@ -61,6 +63,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="View\pixelarts\bulldozer_t.png" />
     <Resource Include="View\pixelarts\factory_2_t.png" />
   </ItemGroup>
 
@@ -75,6 +78,7 @@
     <Resource Include="View\pixelarts\factory_1_t.png" />
     <Resource Include="View\pixelarts\factory_3_t.png" />
     <Resource Include="View\pixelarts\fire_department_t.png" />
+    <Resource Include="View\pixelarts\fire_hat.png" />
     <Resource Include="View\pixelarts\fire_t.png" />
     <Resource Include="View\pixelarts\forest_1_t.png" />
     <Resource Include="View\pixelarts\forest_2_t.png" />
