@@ -523,8 +523,13 @@ namespace SimVillage.ViewModel
                                 } else if (roads.Count == 4)
                                     Fields[zone.X * Width + zone.Y].Text = "Road 4";
                                 break;
-                            case Forest:
-                                Fields[zone.X * Width + zone.Y].Text = "Forest";
+                            case Forest f:
+                                if (f.Age < 5)
+                                    Fields[zone.X * Width + zone.Y].Text = "Forest 1";
+                                else if (f.Age < 10)
+                                    Fields[zone.X * Width + zone.Y].Text = "Forest 2";
+                                else
+                                    Fields[zone.X * Width + zone.Y].Text = "Forest 3";
                                 break;
                             case PoliceDepartment:
                                 Fields[zone.X * Width + zone.Y].Text = "Police";
@@ -575,14 +580,29 @@ namespace SimVillage.ViewModel
                                 else
                                     Fields[zone.X * Width + zone.Y].Text = "Stadium BR";
                                 break;
-                            case Residental:
-                                Fields[zone.X * Width + zone.Y].Text = "Residental Building";
+                            case Residental r:
+                                if (r.Density == 1)
+                                    Fields[zone.X * Width + zone.Y].Text = "Residental Building 1";
+                                else if (r.Density == 2)
+                                    Fields[zone.X * Width + zone.Y].Text = "Residental Building 2";
+                                else
+                                    Fields[zone.X * Width + zone.Y].Text = "Residental Building 3";
                                 break;
-                            case Industrial:
-                                Fields[zone.X * Width + zone.Y].Text = "Industrial Building";
+                            case Industrial i:
+                                if (i.Density == 1)
+                                    Fields[zone.X * Width + zone.Y].Text = "Industrial Building 1";
+                                else if (i.Density == 2)
+                                    Fields[zone.X * Width + zone.Y].Text = "Industrial Building 2";
+                                else
+                                    Fields[zone.X * Width + zone.Y].Text = "Industrial Building 3";
                                 break;
-                            case Store:
-                                Fields[zone.X * Width + zone.Y].Text = "Store Building";
+                            case Store s:
+                                if (s.Density == 1)
+                                    Fields[zone.X * Width + zone.Y].Text = "Store Building 1";
+                                else if (s.Density == 2)
+                                    Fields[zone.X * Width + zone.Y].Text = "Store Building 2";
+                                else
+                                    Fields[zone.X * Width + zone.Y].Text = "Store Building 3";
                                 break;
                             default:
                                 Fields[zone.X * Width + zone.Y].Text = string.Empty;

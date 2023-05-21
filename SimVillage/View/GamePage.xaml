@@ -151,14 +151,23 @@
                                             <Style TargetType="Button">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Text}" Value="Industrial Building">
+                                                    <DataTrigger Binding="{Binding Text}" Value="Industrial Building 1">
                                                         <Setter Property="Visibility" Value="Visible"/>
                                                     </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Text}" Value="Residental Building">
+                                                    <DataTrigger Binding="{Binding Text}" Value="Industrial Building 2">
                                                         <Setter Property="Visibility" Value="Visible"/>
                                                     </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Text}" Value="Store Building">
+                                                    <DataTrigger Binding="{Binding Text}" Value="Residental Building 1">
                                                         <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Text}" Value="Residental Building 2">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Text}" Value="Store Building 1">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Text}" Value="Store Building 2">
+                                                    <Setter Property="Visibility" Value="Visible"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -172,21 +181,53 @@
                                     <Style TargetType="Image">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Text}" Value="Industrial Building">
+                                            <DataTrigger Binding="{Binding Text}" Value="Industrial Building 1">
                                                 <Setter Property="Visibility" Value="Visible"/>
-                                                <Setter Property="Source" Value="/View/pixelarts/factory_t.png"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/factory_1_t.png"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding Text}" Value="Store Building">
+                                            <DataTrigger Binding="{Binding Text}" Value="Industrial Building 2">
                                                 <Setter Property="Visibility" Value="Visible"/>
-                                                <Setter Property="Source" Value="/View/pixelarts/shop_t.png"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/factory_2_t.png"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding Text}" Value="Residental Building">
+                                            <DataTrigger Binding="{Binding Text}" Value="Industrial Building 3">
                                                 <Setter Property="Visibility" Value="Visible"/>
-                                                <Setter Property="Source" Value="/View/pixelarts/residental_t.png"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/factory_3_t.png"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding Text}" Value="Forest">
+                                            <DataTrigger Binding="{Binding Text}" Value="Store Building 1">
                                                 <Setter Property="Visibility" Value="Visible"/>
-                                                <Setter Property="Source" Value="/View/pixelarts/forest_t.png"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/shop_1_t.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Store Building 2">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/shop_2_t.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Store Building 3">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/shop_3_t.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Residental Building 1">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/residental_1_t.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Residental Building 2">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/residental_2_t.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Residental Building 3">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/residental_3_t.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Forest 1">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/forest_1_t.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Forest 2">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/forest_2_t.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Text}" Value="Forest 3">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/forest_3_t.png"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Text}" Value="Police">
                                                 <Setter Property="Visibility" Value="Visible"/>
@@ -354,13 +395,13 @@
                                                 <Setter Property="Source" Value="/View/pixelarts/road_t.png"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Text}" Value="Residental">
-                                                <Setter Property="Source" Value="/View/pixelarts/residental_t.png"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/residental_2_t.png"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Text}" Value="Industrial">
-                                                <Setter Property="Source" Value="/View/pixelarts/factory_t.png"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/factory_1_t.png"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Text}" Value="Store">
-                                                <Setter Property="Source" Value="/View/pixelarts/shop_t.png"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/shop_1_t.png"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Text}" Value="Stadium">
                                                 <Setter Property="Source" Value="/View/pixelarts/stadium_t.png"/>
@@ -372,7 +413,7 @@
                                                 <Setter Property="Source" Value="/View/pixelarts/university_t.png"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Text}" Value="Forest">
-                                                <Setter Property="Source" Value="/View/pixelarts/forest_t.png"/>
+                                                <Setter Property="Source" Value="/View/pixelarts/forest_2_t.png"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Text}" Value="School">
                                                 <Setter Property="Source" Value="/View/pixelarts/elementary_school_t.png"/>

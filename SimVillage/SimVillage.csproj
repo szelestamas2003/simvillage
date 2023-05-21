@@ -11,9 +11,15 @@
     <None Remove="View\pixelarts\elementary_school_t.png" />
     <None Remove="View\pixelarts\elementary_school_t_l.png" />
     <None Remove="View\pixelarts\elementary_school_t_r.png" />
+    <None Remove="View\pixelarts\factory_1_t.png" />
+    <None Remove="View\pixelarts\factory_2_t.png" />
+    <None Remove="View\pixelarts\factory_3_t.png" />
     <None Remove="View\pixelarts\factory_t.png" />
     <None Remove="View\pixelarts\fire_department_t.png" />
     <None Remove="View\pixelarts\fire_t.png" />
+    <None Remove="View\pixelarts\forest_1_t.png" />
+    <None Remove="View\pixelarts\forest_2_t.png" />
+    <None Remove="View\pixelarts\forest_3_t.png" />
     <None Remove="View\pixelarts\forest_t.png" />
     <None Remove="View\pixelarts\grass.png" />
     <None Remove="View\pixelarts\police_t.png" />
@@ -23,6 +29,9 @@
     <None Remove="View\pixelarts\power_generator_t_ul.png" />
     <None Remove="View\pixelarts\power_generator_t_ur.png" />
     <None Remove="View\pixelarts\power_line_t.png" />
+    <None Remove="View\pixelarts\residental_1_t.png" />
+    <None Remove="View\pixelarts\residental_2_t.png" />
+    <None Remove="View\pixelarts\residental_3_t.png" />
     <None Remove="View\pixelarts\residental_t.png" />
     <None Remove="View\pixelarts\road_t.png" />
     <None Remove="View\pixelarts\road_t_4.png" />
@@ -35,7 +44,9 @@
     <None Remove="View\pixelarts\road_t_ur.png" />
     <None Remove="View\pixelarts\road_t_vl.png" />
     <None Remove="View\pixelarts\road_t_vr.png" />
-    <None Remove="View\pixelarts\shop_t.png" />
+    <None Remove="View\pixelarts\shop_1_t.png" />
+    <None Remove="View\pixelarts\shop_2_t.png" />
+    <None Remove="View\pixelarts\shop_3_t.png" />
     <None Remove="View\pixelarts\stadium_t.png" />
     <None Remove="View\pixelarts\stadium_t_bl.png" />
     <None Remove="View\pixelarts\stadium_t_br.png" />
@@ -50,6 +61,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="View\pixelarts\factory_2_t.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SimVillage.Model\SimVillage.Model.csproj" />
   </ItemGroup>
 
@@ -57,10 +72,13 @@
     <Resource Include="View\pixelarts\elementary_school_t.png" />
     <Resource Include="View\pixelarts\elementary_school_t_l.png" />
     <Resource Include="View\pixelarts\elementary_school_t_r.png" />
-    <Resource Include="View\pixelarts\factory_t.png" />
+    <Resource Include="View\pixelarts\factory_1_t.png" />
+    <Resource Include="View\pixelarts\factory_3_t.png" />
     <Resource Include="View\pixelarts\fire_department_t.png" />
     <Resource Include="View\pixelarts\fire_t.png" />
-    <Resource Include="View\pixelarts\forest_t.png" />
+    <Resource Include="View\pixelarts\forest_1_t.png" />
+    <Resource Include="View\pixelarts\forest_2_t.png" />
+    <Resource Include="View\pixelarts\forest_3_t.png" />
     <Resource Include="View\pixelarts\grass.png" />
     <Resource Include="View\pixelarts\police_t.png" />
     <Resource Include="View\pixelarts\power_generator_t.png" />
@@ -69,7 +87,9 @@
     <Resource Include="View\pixelarts\power_generator_t_ul.png" />
     <Resource Include="View\pixelarts\power_generator_t_ur.png" />
     <Resource Include="View\pixelarts\power_line_t.png" />
-    <Resource Include="View\pixelarts\residental_t.png" />
+    <Resource Include="View\pixelarts\residental_1_t.png" />
+    <Resource Include="View\pixelarts\residental_2_t.png" />
+    <Resource Include="View\pixelarts\residental_3_t.png" />
     <Resource Include="View\pixelarts\road_t.png" />
     <Resource Include="View\pixelarts\road_t_4.png" />
     <Resource Include="View\pixelarts\road_t_bl.png" />
@@ -81,7 +101,9 @@
     <Resource Include="View\pixelarts\road_t_ur.png" />
     <Resource Include="View\pixelarts\road_t_vl.png" />
     <Resource Include="View\pixelarts\road_t_vr.png" />
-    <Resource Include="View\pixelarts\shop_t.png" />
+    <Resource Include="View\pixelarts\shop_1_t.png" />
+    <Resource Include="View\pixelarts\shop_2_t.png" />
+    <Resource Include="View\pixelarts\shop_3_t.png" />
     <Resource Include="View\pixelarts\stadium_t.png" />
     <Resource Include="View\pixelarts\stadium_t_bl.png" />
     <Resource Include="View\pixelarts\stadium_t_br.png" />

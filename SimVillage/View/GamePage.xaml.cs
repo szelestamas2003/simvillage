@@ -185,16 +185,16 @@ namespace SimVillage
                 string path = source.Substring(source.LastIndexOf(",") + 1);
                 switch (path)
                 {
-                    case "/View/pixelarts/residental_t.png":
+                    case "/View/pixelarts/residental_2_t.png":
                         canvas.Cursor = Residental;
                         break;
-                    case "/View/pixelarts/shop_t.png":
+                    case "/View/pixelarts/shop_1_t.png":
                         canvas.Cursor = Store;
                         break;
                     case "/View/pixelarts/fire_department_t.png":
                         canvas.Cursor = FireDepartment;
                         break;
-                    case "/View/pixelarts/forest_t.png":
+                    case "/View/pixelarts/forest_2_t.png":
                         canvas.Cursor = Forest;
                         break;
                     case "/View/pixelarts/police_t.png":
@@ -203,7 +203,7 @@ namespace SimVillage
                     case "/View/pixelarts/elementary_school_t.png":
                         canvas.Cursor = School;
                         break;
-                    case "/View/pixelarts/factory_t.png":
+                    case "/View/pixelarts/factory_1_t.png":
                         canvas.Cursor = Industrial;
                         break;
                     case "/View/pixelarts/stadium_t.png":
