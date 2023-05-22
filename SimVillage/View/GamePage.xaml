@@ -353,6 +353,15 @@
                                                 <Setter Property="Visibility" Value="Visible"/>
                                                 <Setter Property="Source" Value="/View/pixelarts/road_t_vl.png"/>
                                             </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                            <Image>
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
                                             <DataTrigger Binding="{Binding Fire}" Value="true">
                                                 <Setter Property="Visibility" Value="Visible"/>
                                                 <Setter Property="Source" Value="/View/pixelarts/fire_t.png"/>
