@@ -14,6 +14,7 @@ namespace SimVillage.Model.Building
         {
             FireChance = 2;
             IsOnFire = false;
+            Health = 50;
             PowerConsumption = 30;
             Density = 1;
             Size = (1, 1);
@@ -39,7 +40,7 @@ namespace SimVillage.Model.Building
 
         public override String ToString()
         {
-            return "Current inhabitants: " + Inhabitants + "\nMaximum inhabitants: " + MaxInhabitants + "\nBuilding level " + Density + "\nPower consumption: " + PowerConsumption + "\n";
+            return "Current inhabitants: " + Inhabitants + "\nMaximum inhabitants: " + MaxInhabitants + "\nBuilding level " + Density + "\nPower consumption: " + PowerConsumption + "\nHealth: " + Health + "\n";
 
         }
     }

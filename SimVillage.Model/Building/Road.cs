@@ -12,6 +12,7 @@ namespace SimVillage.Model.Building
         {
             FireChance = 0;
             IsOnFire = false;
+            Health = 50;
             Size = (1, 1);
             PowerConsumption = 4;
             Cost = 40;

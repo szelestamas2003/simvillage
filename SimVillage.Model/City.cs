@@ -1069,11 +1069,23 @@ namespace SimVillage.Model
                 {
                     if (zone.Building != null)
                     {
-                        Random random = new Random();
-                        bool chance = zone.Building.FireChance / (100.0 * 1.5) > random.NextDouble();
-                        if (chance)
+                        if(zone.Building.IsOnFire == false)
                         {
-                            zone.Building.IsOnFire = true;
+                            Random random = new Random();
+                            bool chance = zone.Building.FireChance / (100.0 * 1.5) > random.NextDouble();
+                            if (chance)
+                            {
+                                zone.Building.IsOnFire = true;
+                            }
+                        }
+                        else
+                        {
+                            zone.Building.Health -= 1;
+                            if(zone.Building.Health <= 1)
+                            {
+                                zone.Building.IsOnFire = false;
+                                DemolishZone(zone.Building.X, zone.Building.Y);
+                            }
                         }
                     }
                         
@@ -1083,6 +1095,7 @@ namespace SimVillage.Model
 
         public void PutOutFire(int x, int y)
         {
+            if (map[x][y].Building is null) return;
             map[x][y].Building.IsOnFire = false;
             Finances.AddExpenses("Cleared a fire in a " + map[x][y].ToString(), map[x][y].GetCost(), date.ToString("d"));
         }

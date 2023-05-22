@@ -15,6 +15,7 @@ namespace SimVillage.Model.Building
         {
             FireChance = 5;
             IsOnFire = false;
+            Health = 50;
             PowerConsumption = 30;
             Density = 1;
             Size = (1, 1);
@@ -40,7 +41,7 @@ namespace SimVillage.Model.Building
 
         public override String ToString()
         {
-            return "Current workers: " + Workers + "\nMaximum workers: " + MaxWorkers + "\nBuilding level " + Density + "\nPower consumption: " + PowerConsumption + "\n";
+            return "Current workers: " + Workers + "\nMaximum workers: " + MaxWorkers + "\nBuilding level " + Density + "\nPower consumption: " + PowerConsumption + "\nHealth: " + Health + "\n";
         }
         public int GetRadius()
         {

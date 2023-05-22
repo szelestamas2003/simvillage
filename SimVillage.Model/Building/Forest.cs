@@ -8,6 +8,7 @@
         {
             FireChance = 0;
             IsOnFire = false;
+            Health = 20;
             Age = 0;
             Size = (1, 1);
             PowerConsumption = 3;

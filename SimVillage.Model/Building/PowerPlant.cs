@@ -7,6 +7,7 @@
         {
             FireChance = 5;
             IsOnFire = false;
+            Health = 250;
             PowerConsumption = 0;
             Size = (2, 2);
             Cost = 1000;
@@ -17,7 +18,7 @@
 
         public override String ToString()
         {
-            return "Generated Power: " + GeneratedPower + "\nMaintenance cost: " + Cost / 100;
+            return "Generated Power: " + GeneratedPower + "\nMaintenance cost: " + Cost / 100 + "\nHealth: " + Health + "\n";
         }
 
     }

@@ -13,9 +13,15 @@
             MaxStudents = 300;
             PowerConsumption = 50;
             if (type == SchoolTypes.Elementary)
+            { 
                 Size = (1, 2);
+                Health = 150;
+            }
             else
+            { 
                 Size = (2, 2);
+                Health = 250;
+            }
             Type = type;
             Cost = 600;
             X = x;
@@ -60,7 +66,7 @@
 
         public override String ToString()
         {
-            return "School type: " + Type + "\nCurrent students " + Students.Count + "\nMaximum students: " + MaxStudents + "\nPower consumption: " + PowerConsumption + "\nMaintenance cost: " + Cost / 100;
+            return "School type: " + Type + "\nCurrent students " + Students.Count + "\nMaximum students: " + MaxStudents + "\nPower consumption: " + PowerConsumption + "\nMaintenance cost: " + Cost / 100 + "\nHealth: " + Health + "\n";
         }
     }
 }

@@ -31,6 +31,7 @@ namespace SimVillage.Model.Building
         public int Y { get; protected set; }
         public int FireChance { get; protected set; }
         public bool IsOnFire { get; set; }
+        public int Health { get; set; }
 
         public Building((int, int) size, bool occupied, int density, int powerConsumption, int x, int y)
         {

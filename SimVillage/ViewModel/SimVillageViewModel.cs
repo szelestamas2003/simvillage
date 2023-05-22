@@ -620,6 +620,7 @@ namespace SimVillage.ViewModel
                     }
                     else
                     {
+                        Fields[zone.X * Width + zone.Y].Fire = false;
                         Fields[zone.X * Width + zone.Y].Text = zone.ZoneType switch
                         {
                             ZoneType.Residental => "Residental",
