@@ -11,7 +11,7 @@ namespace SimVillage.Model.Building
         int Radius = 30;
         public Stadium(int x, int y)
         {
-            FireChance = 5;
+            FireChance = 2;
             IsOnFire = false;
             Health = 250;
             PowerConsumption = 60;

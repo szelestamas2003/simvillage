@@ -5,7 +5,7 @@
         int GeneratedPower = 1000;
         public PowerPlant(int x, int y)
         {
-            FireChance = 5;
+            FireChance = 2;
             IsOnFire = false;
             Health = 250;
             PowerConsumption = 0;

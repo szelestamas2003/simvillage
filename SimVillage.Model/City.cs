@@ -155,10 +155,15 @@ namespace SimVillage.Model
                 int Happiness = 0;
                 
                 Happiness -= c.HadToMove * 10;
-                int work_distance = calcDistance(c.Home, c.WorkPlace);
-                Happiness += tax_effect;
-                work_distance = 15 - work_distance;
-                Happiness += work_distance;
+                if (c.WorkPlace == null)
+                    Happiness -= 20;
+                else
+                {
+                    int work_distance = calcDistance(c.Home, c.WorkPlace);
+                    Happiness += tax_effect;
+                    work_distance = 15 - work_distance;
+                    Happiness += work_distance;
+                }
                 Happiness -= Finances.NegativeBudgetYears * 20;
                 Happiness += c.Salary / 10;
                 
@@ -261,7 +266,7 @@ namespace SimVillage.Model
             school.GiveEducation();
         }
 
-        public void DemolishZone(int x, int y)
+        public void DemolishZone(int x, int y, bool fire = false)
         {
             if (y == 0 && x == 29)
                 return;
@@ -306,7 +311,7 @@ namespace SimVillage.Model
                         break;
                 }
             }
-            if (conflict)
+            if (!fire && conflict)
                 OnConflictDemolish();
             if (building != null)
             {
@@ -413,21 +418,22 @@ namespace SimVillage.Model
                         if (citizen.Home == building)
                         {
                             Building.Building workPlace = citizen.WorkPlace;
-                            if (workPlace.GetType() == typeof(Store))
+                            if (workPlace?.GetType() == typeof(Store))
                             {
                                 Store store = (Store)workPlace;
                                 store.WorkerLeft();
                                 if (!availableStores.Contains(store))
                                     availableStores.Add(store);
                             }
-                            else if (workPlace.GetType() == typeof(Industrial))
+                            else if (workPlace?.GetType() == typeof(Industrial))
                             {
                                 Industrial industrial = (Industrial)workPlace;
                                 industrial.WorkerLeft();
                                 if (!availableIndustrials.Contains(industrial))
                                     availableIndustrials.Add(industrial);
                             }
-                            map[workPlace.X][workPlace.Y].RemoveCitizenFromZone(citizen);
+                            if (workPlace != null)
+                                map[workPlace.X][workPlace.Y].RemoveCitizenFromZone(citizen);
                             citizen.MoveOut();
                             PeopleMoveIn(citizen);
                             if (citizen.Home == null)
@@ -1072,7 +1078,7 @@ namespace SimVillage.Model
                         if(zone.Building.IsOnFire == false)
                         {
                             Random random = new Random();
-                            bool chance = zone.Building.FireChance / (100.0 * 1.5) > random.NextDouble();
+                            bool chance = zone.Building.FireChance / 100.0 * 0.2 > random.NextDouble();
                             if (chance)
                             {
                                 zone.Building.IsOnFire = true;
@@ -1084,7 +1090,8 @@ namespace SimVillage.Model
                             if(zone.Building.Health <= 1)
                             {
                                 zone.Building.IsOnFire = false;
-                                DemolishZone(zone.Building.X, zone.Building.Y);
+                                canDemolish = true;
+                                DemolishZone(zone.Building.X, zone.Building.Y, true);
                             }
                         }
                     }
