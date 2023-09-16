@@ -2,7 +2,7 @@
 {
     public class FireDepartment : Building
     {
-        public bool UnitAvailable { get; private set; } = true;
+        public bool UnitAvailable { get; set; } = true;
 
         int Radius = 40;
 

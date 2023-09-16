@@ -493,7 +493,7 @@ namespace SimVillage.Model
             {
                 throw new InvalidOperationException("No data access is provided");
             }
-            GameState g = await dataAccess.loadGame(dataAccess.StoredGames[slot - 1]);
+            GameState g = await dataAccess.LoadGame(dataAccess.StoredGames[slot - 1]);
             cityName = g.Name;
             citizens = g.Citizens;
             Finances = g.Finances;

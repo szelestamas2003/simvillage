@@ -1,11 +1,6 @@
 ﻿using SimVillage.Persistence;
-using System.IO;
 using System.Text.Json;
 using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
-using SimVillage.Model.Building;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace SimVillage.Model
 {
@@ -26,9 +21,10 @@ namespace SimVillage.Model
             {
                 File.Delete(Path.Combine(folder, "slot" + storedgame.Slot.ToString() + "_" + storedgame.Name + ".json"));
             }
-            var options = new JsonSerializerOptions
+            JsonSerializerOptions options = new JsonSerializerOptions
             {
-                WriteIndented = true
+                WriteIndented = true,
+                Converters = { new BuildingConverter(), new CitizenConverter() }
             };
             try
             {
@@ -42,13 +38,18 @@ namespace SimVillage.Model
             }
         }
 
-        public async Task<GameState> loadGame(StoredGame storedgame)
+        public async Task<GameState> LoadGame(StoredGame storedgame)
         {
+            JsonSerializerOptions options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                Converters = { new BuildingConverter(), new CitizenConverter() }
+            };
             try
             {
                 string jsonString = File.ReadAllText(Path.Combine(folder, "slot" + storedgame.Slot.ToString() + "_" + storedgame.Name + ".json"));
                 MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(jsonString));
-                GameState? result = await JsonSerializer.DeserializeAsync<GameState>(stream);
+                GameState? result = await JsonSerializer.DeserializeAsync<GameState>(stream, options);
                 return result == null ? throw new GameStateException() : result;
             }
             catch

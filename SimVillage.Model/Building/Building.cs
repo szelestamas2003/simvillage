@@ -7,17 +7,6 @@ using System.Threading.Tasks;
 
 namespace SimVillage.Model.Building
 {
-    [JsonDerivedType(typeof(FireDepartment), typeDiscriminator: "FireDepartment")]
-    [JsonDerivedType(typeof(Forest), typeDiscriminator: "Forest")]
-    [JsonDerivedType(typeof(Industrial), typeDiscriminator: "Industrial")]
-    [JsonDerivedType(typeof(PoliceDepartment), typeDiscriminator: "PoliceDepartment")]
-    [JsonDerivedType(typeof(PowerLine), typeDiscriminator: "PowerLine")]
-    [JsonDerivedType(typeof(PowerPlant), typeDiscriminator: "PowerPlant")]
-    [JsonDerivedType(typeof(Residental), typeDiscriminator: "Residental")]
-    [JsonDerivedType(typeof(Road), typeDiscriminator: "Road")]
-    [JsonDerivedType(typeof(School), typeDiscriminator: "School")]
-    [JsonDerivedType(typeof(Stadium), typeDiscriminator: "Stadium")]
-    [JsonDerivedType(typeof(Store), typeDiscriminator: "Store")]
     public abstract class Building
     {
         protected (int, int) Size;

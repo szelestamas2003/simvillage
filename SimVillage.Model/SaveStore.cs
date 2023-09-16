@@ -19,5 +19,10 @@ namespace SimVillage.Model
 
             return await Task.Run(() => fileInfo.LastWriteTime);
         }
+
+        public SaveStore()
+        {
+            Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "SimVillage/saves"));
+        }
     }
 }

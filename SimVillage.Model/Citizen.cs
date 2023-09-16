@@ -7,13 +7,13 @@ namespace SimVillage.Model
         public int Age { get; private set; }
         public int Salary { get; set; }
         public EducationLevel EducationLevel { get; set; }
-        public bool Pensioner { get; private set; }
+        public bool Pensioner { get; set; }
         public int Happiness { get; set; }
-        public int HadToMove { get; private set; } = 0;
+        public int HadToMove { get; set; } = 0;
         public Residental Home { get; set; }
         public Building.Building WorkPlace { get; set; } = null!;
         public List<double> PaidTaxes { get; set; } = null!;
-        public double Pension { get; private set; }
+        public double Pension { get; set; }
 
 
         public Citizen(int Age, Residental Home)
