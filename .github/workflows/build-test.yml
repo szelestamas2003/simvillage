@@ -15,9 +15,6 @@ jobs:
     container:
       image: mcr.microsoft.com/dotnet/sdk:8.0
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       - uses: actions/checkout@master
       - run: dotnet --version
       - run: dotnet build SimVillage.Model
@@ -28,9 +25,7 @@ jobs:
     name: Build view
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@master
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -50,9 +45,7 @@ jobs:
     container:
       image: mcr.microsoft.com/dotnet/sdk:8.0
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@master
       - run: dotnet --version
       # Restore NuGet packages to the local .nuget folder (inside the project directory).
       - run: dotnet restore SimVillageTest --packages .nuget
