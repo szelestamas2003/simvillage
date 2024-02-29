@@ -1,12 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
-
   <ItemGroup>
     <None Remove="View\pixelarts\bulldozer_t.png" />
     <None Remove="View\pixelarts\elementary_school_t.png" />
@@ -61,16 +59,13 @@
     <None Remove="View\pixelarts\university_t_ur.png" />
     <None Remove="View\splash.png" />
   </ItemGroup>
-
   <ItemGroup>
     <Resource Include="View\pixelarts\bulldozer_t.png" />
     <Resource Include="View\pixelarts\factory_2_t.png" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\SimVillage.Model\SimVillage.Model.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Resource Include="View\pixelarts\elementary_school_t.png" />
     <Resource Include="View\pixelarts\elementary_school_t_l.png" />
@@ -119,11 +114,9 @@
     <Resource Include="View\pixelarts\university_t_ul.png" />
     <Resource Include="View\pixelarts\university_t_ur.png" />
   </ItemGroup>
-
   <ItemGroup>
     <SplashScreen Include="View\splash.png" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -131,12 +124,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-
 </Project>

@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33502.453
@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimVillage", "SimVillage\Si
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimVillage.Model", "SimVillage.Model\SimVillage.Model.csproj", "{0C6641D5-20C3-4B14-AF90-B60E878FA71B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimVillageTest", "SimVillageTest\SimVillageTest.csproj", "{199CF99B-11B9-4623-A677-D9DD92C97EBF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimVillageTest", "SimVillageTest\SimVillageTest.csproj", "{199CF99B-11B9-4623-A677-D9DD92C97EBF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,54 @@
+name: Build and test SimVillage
+
+on:
+  push:
+    branches:
+      - master
+    
+
+jobs:
+  # Build model
+  # (Uses Linux-based runner, because windows tag is NOT specified.)
+  build_model:
+    name: Build model
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/dotnet/sdk:8.0
+    steps:
+      - run: dotnet --version
+      - run: dotnet build SimVillage.Model
+
+  # Build complete solution
+  # (Uses Windows-based runner, because windows tag IS specified.)
+  build_view:
+    name: Build view
+    runs-on: windows-latest
+    steps:
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Setup MSBuild.exe
+        uses: microsoft/setup-msbuild@v2
+      - run: dotnet --version
+      - run: dotnet build SimVillage.sln
+
+  # Test
+  # (Uses Linux-based runner, because windows tag is NOT specified.)
+  test_model:
+    name: Test model
+    needs: [build_model, build_view]
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/dotnet/sdk:8.0
+    steps: 
+      - run: dotnet --version
+      # Restore NuGet packages to the local .nuget folder (inside the project directory).
+      - run: dotnet restore SimVillageTest --packages .nuget
+      - run: dotnet test SimVillageTest --no-restore
+      # Cache and keep downloaded NuGet dependencies between CI pipelines
+      - name: Cache .nuget packages
+        uses: actions/cache@v3
+        with:
+          key: "unittest-${{ hashFiles('**/package-lock.json') }}"
+          path: ~/.nuget
