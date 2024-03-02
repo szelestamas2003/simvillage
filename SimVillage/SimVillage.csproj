@@ -4,6 +4,7 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+	<ApplicationIcon>View\icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="View\pixelarts\bulldozer_t.png" />
@@ -59,7 +60,12 @@
     <None Remove="View\pixelarts\university_t_ur.png" />
     <None Remove="View\splash.png" />
   </ItemGroup>
-  <ItemGroup>
+
+	<ItemGroup>
+		<Content Include="View\icon.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
     <Resource Include="View\pixelarts\bulldozer_t.png" />
     <Resource Include="View\pixelarts\factory_2_t.png" />
   </ItemGroup>

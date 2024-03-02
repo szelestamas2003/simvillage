@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SimVillage"
         mc:Ignorable="d"
         Title="SimVillage" Background="LightBlue" KeepAlive="True" Loaded="Page_Loaded">
-    <Grid>
+    <Grid x:Name="mainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -83,7 +83,7 @@
         <ItemsControl Grid.Row="1" ItemsSource="{Binding Fields}" x:Name="container" ClipToBounds="True">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas PreviewMouseRightButtonDown="Canvas_MouseDown" Name="canvas" PreviewMouseRightButtonUp="Canvas_MouseUp" MouseMove="Canvas_MouseMove" Width="{Binding CanvasW}" Height="{Binding CanvasH}">
+                    <Canvas PreviewMouseRightButtonDown="Canvas_MouseDown" Name="canvas" PreviewMouseRightButtonUp="Canvas_MouseUp" MouseMove="Canvas_MouseMove" Focusable="True" Width="{Binding CanvasW}" Height="{Binding CanvasH}">
                         <Canvas.Style>
                             <Style TargetType="Canvas">
                                 <Setter Property="Cursor" Value="Hand"/>
@@ -100,7 +100,10 @@
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Command="{Binding Clicked}" CommandParameter="{Binding Number}" Padding="0" Height="64" Width="64">
+                    <Border Padding="0" Height="64" Width="64">
+                        <Border.InputBindings>
+                            <MouseBinding MouseAction="LeftClick" Command="{Binding Clicked}" CommandParameter="{Binding Number}"/>
+                        </Border.InputBindings>
                         <Grid>
                             <Popup IsOpen="{Binding IsClicked}" AllowsTransparency="True">
                                 <Popup.Style>
@@ -371,8 +374,8 @@
                                 </Image.Style>
                             </Image>
                         </Grid>
-                        <Button.Style>
-                            <Style TargetType="Button">
+                        <Border.Style>
+                            <Style TargetType="Border">
                                 <Setter Property="BorderThickness" Value="0"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Text}" Value="Industrial">
@@ -389,8 +392,8 @@
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </Button.Style>
-                    </Button>
+                        </Border.Style>
+                    </Border>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

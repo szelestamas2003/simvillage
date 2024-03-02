@@ -8,7 +8,7 @@ namespace SimVillage.Model.Building
 {
     public class Stadium : Building
     {
-        int Radius = 30;
+        const int Radius = 30;
         public Stadium(int x, int y)
         {
             FireChance = 2;
@@ -21,7 +21,7 @@ namespace SimVillage.Model.Building
             Y = y;
         }
 
-        public int GetRadius() { return Radius; }
+        public static int GetRadius() { return Radius; }
 
         public override String ToString()
         {

@@ -3,7 +3,7 @@
     public class Forest : Building
     {
         public int Age { get; set; }
-        int Radius = 3;
+        const int Radius = 3;
         public Forest(int x, int y)
         {
             FireChance = 0;
@@ -19,7 +19,7 @@
             
         }
 
-        public int GetRadius() { return Radius; }
+        public static int GetRadius() { return Radius; }
 
         public void AgeUp()
         {

@@ -1,19 +1,9 @@
 ﻿using SimVillage.ViewModel;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SimVillage
 {
@@ -38,6 +28,8 @@ namespace SimVillage
         Canvas canvas = null!;
         Point StartPos { get; set; }
         TranslateTransform Translate { get; set; }
+        double canvasTranslateY = 0;
+        double canvasTranslateX = 0;
         public GamePage()
         {
             InitializeComponent();
@@ -49,10 +41,10 @@ namespace SimVillage
         {
             if (e.Key == Key.D)
             {
-                if (Translate.X - 64 > -canvas.Width * 2 / 3 + 4 * 64)
+                if (Translate.X - 64 > canvasTranslateX)
                     Translate.X -= 64;
                 else
-                    Translate.X = -canvas.Width * 2 / 3 + 4 * 64;
+                    Translate.X = canvasTranslateX;
             }
             else if (e.Key == Key.A)
             {
@@ -70,10 +62,10 @@ namespace SimVillage
             }
             else if (e.Key == Key.S)
             {
-                if (Translate.Y - 64 > -canvas.Height * 2 / 3 + 44)
+                if (Translate.Y - 64 > canvasTranslateY)
                     Translate.Y -= 64;
                 else
-                    Translate.Y = -canvas.Height * 2 / 3 + 44;
+                    Translate.Y = canvasTranslateY;
             }
         }
 
@@ -90,14 +82,14 @@ namespace SimVillage
                 Point p = e.GetPosition(container);
                 Vector diff = p - StartPos;
                 StartPos = p;
-                if (Translate.X + diff.X < -canvas.Width * 2 / 3 + 4 * 64)
-                    Translate.X = -canvas.Width * 2 / 3 + 4 * 64;
+                if (Translate.X + diff.X < canvasTranslateX)
+                    Translate.X = canvasTranslateX;
                 else if (Translate.X + diff.X > 0)
                     Translate.X = 0;
                 else
                     Translate.X += diff.X;
-                if (Translate.Y + diff.Y < -canvas.Height * 2 / 3 + 44)
-                    Translate.Y = -canvas.Height * 2 / 3 + 44;
+                if (Translate.Y + diff.Y < canvasTranslateY)
+                    Translate.Y = canvasTranslateY;
                 else if (Translate.Y + diff.Y > 0)
                     Translate.Y = 0;
                 else
@@ -171,7 +163,20 @@ namespace SimVillage
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             canvas = FindChild<Canvas>(container, "canvas");
-            Translate.Y = -canvas.Height * 2 / 3 + 44;
+            Keyboard.Focus(canvas);
+            double windowHeight = System.Windows.SystemParameters.PrimaryScreenHeight;
+            double windowWidth = System.Windows.SystemParameters.PrimaryScreenWidth;
+            double occupiedHeight = 0;
+            for (int i = 0; i < mainGrid.RowDefinitions.Count; i++)
+            {
+                if (Grid.GetRow(container) != i)
+                {
+                    occupiedHeight += mainGrid.RowDefinitions[i].ActualHeight;
+                }
+            }
+            canvasTranslateY = windowHeight - canvas.Height - occupiedHeight;
+            canvasTranslateX = windowWidth - canvas.Width;
+            Translate.Y = canvasTranslateY;
             canvas.RenderTransform = Translate;
         }
 

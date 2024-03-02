@@ -152,12 +152,13 @@ namespace SimVillage.Model
                 bool availableForest = false;
                 bool availableStadium = false;
                 bool availablePolice = false;
+                bool availableIndustrial = false;
                 int Happiness = 0;
-                
+
                 Happiness -= c.HadToMove * 10;
                 if (c.WorkPlace == null)
                     Happiness -= 20;
-                else
+                else if (c.Home != null)
                 {
                     int work_distance = calcDistance(c.Home, c.WorkPlace);
                     Happiness += tax_effect;
@@ -166,99 +167,299 @@ namespace SimVillage.Model
                 }
                 Happiness -= Finances.NegativeBudgetYears * 20;
                 Happiness += c.Salary / 10;
-                
+
                 if (c.EducationLevel == EducationLevel.Basic)
-                {
                     Happiness -= 5;
-                }
                 else if (c.EducationLevel == EducationLevel.Middle)
-                {
                     Happiness += 5;
-                }
                 else
-                {
                     Happiness += 10;
-                }
-                
-                for (int i = 0; i < mapHeight; i++)
+
+                if (c.Home != null)
                 {
-                    for(int j = 0; j < mapWidth; j++)
+                    int j = 0;
+                    int homeY = c.Home.Y;
+                    int homeX = c.Home.X;
+                    for (int step = 1; step <= Stadium.GetRadius() && !availableStadium; step++)
                     {
-                        if (map[i][j].Building != null)
+                        for (int i = 0; i < step + j && !availableStadium; i++)
                         {
-                            if (map[i][j].Building.GetType() == typeof(Forest) && !availableForest)
+                            if (c.Home != null && homeX >= 0 && homeX < mapHeight && ++homeY < mapWidth && homeY >= 0 && map[homeX][homeY].Building?.GetType() == typeof(Stadium))
                             {
-                                Forest f = (Forest)map[i][j].Building;
-                                if (DistanceByAir(c.Home, map[i][j].Building) < f.GetRadius())
-                                {
-                                    availableForest = true;
-                                    Happiness += f.Age;
-                                }
+                                Happiness += 15;
+                                availableStadium = true;
                             }
-                            else if (map[i][j].Building.GetType() == typeof(Stadium) && !availableStadium)
-                            {
-                                Stadium s = (Stadium)map[i][j].Building;
-                                if (calcDistance(c.Home, map[i][j].Building) < s.GetRadius())
-                                {
-                                    availableStadium = true;
-                                    Happiness += 15;
-                                }
-                            }
-                            else if (map[i][j].Building.GetType() == typeof(Industrial))
-                            {
-                                Industrial k = (Industrial)map[i][j].Building;
-                                if (DistanceByAir(c.Home, map[i][j].Building) < k.GetRadius())
-                                {
-                                    Happiness -= 8;
-                                }
-                            }
-                            else if (map[i][j].Building.GetType() == typeof(PoliceDepartment) && !availablePolice)
-                            {
-                                PoliceDepartment p = (PoliceDepartment)map[i][j].Building;
-                                if (calcDistance(c.Home, map[i][j].Building) < p.GetRadius())
-                                {
-                                    availablePolice = true;
-                                    Happiness += 7;
-                                }
+                        }
 
-                            }
-                            if(Happiness < 0)
-                                Happiness = 0;
-                            if(Happiness > 100)
-                                Happiness = 100;
-
-                            if (!c.Pensioner && Happiness < 5 && !remove.Contains(c))
+                        for (int i = 0; i < step + j && !availableStadium; i++)
+                        {
+                            if (c.Home != null && ++homeX < mapHeight && homeX >= 0 && homeY < mapWidth && homeY >= 0 && map[homeX][homeY].Building?.GetType() == typeof(Stadium))
                             {
-                                c.Home.MoveOut();
-                                if (c.Home.FreeSpace())
-                                    availableHouses.Add(c.Home);
-                                if (c.WorkPlace.GetType() == typeof(Store))
-                                {
-                                    Store store = (Store)c.WorkPlace;
-                                    store.WorkerLeft();
-                                    if (store.FreeSpace())
-                                        availableStores.Add(store);
-                                } else
-                                {
-                                    Industrial industrial = (Industrial)c.WorkPlace;
-                                    industrial.WorkerLeft();
-                                    if (industrial.FreeSpace())
-                                        availableIndustrials.Add(industrial);
-                                }
-                                map[c.Home.X][c.Home.Y].RemoveCitizenFromZone(c);
-                                map[c.WorkPlace.X][c.WorkPlace.Y].RemoveCitizenFromZone(c);
-                                c.MoveOut();
-                                remove.Add(c);
+                                Happiness += 15;
+                                availableStadium = true;
                             }
-                            c.Happiness = Happiness;
-                            total_happiness += Happiness;
+                        }
+                        j++;
+                        for (int i = 0; i < step + j && !availableStadium; i++)
+                        {
+                            if (c.Home != null && --homeY >= 0 && homeY < mapWidth && homeX >= 0 && homeX < mapHeight && map[homeX][homeY].Building?.GetType() == typeof(Stadium))
+                            {
+                                Happiness += 15;
+                                availableStadium = true;
+                            }
+                        }
+
+                        for (int i = 0; i < step + j && !availableStadium; i++)
+                        {
+                            if (c.Home != null && --homeX >= 0 && homeX < mapHeight && homeY < mapWidth && homeY >= 0 && map[homeX][homeY].Building?.GetType() == typeof(Stadium))
+                            {
+                                Happiness += 15;
+                                availableStadium = true;
+                            }
+                        }
+                    }
+                    for (int i = 0; i < Stadium.GetRadius() * 2 && !availableStadium; i++)
+                    {
+                        if (c.Home != null && ++homeY < mapWidth && homeY >= 0 && homeX >= 0 && homeX < mapHeight && map[homeX][homeY].Building?.GetType() == typeof(Stadium))
+                        {
+                            Happiness += 15;
+                            availableStadium = true;
                         }
                     }
                 }
-                
+
+                if (c.Home != null)
+                {
+                    int j = 0;
+                    int homeY = c.Home.Y;
+                    int homeX = c.Home.X;
+                    for (int step = 1; step <= Industrial.GetRadius() && !availableIndustrial; step++)
+                    {
+                        for (int i = 0; i < step + j && !availableIndustrial; i++)
+                        {
+                            if (c.Home != null && ++homeY < mapWidth && homeY >= 0 && homeX >= 0 && homeX < mapHeight && map[homeX][homeY].Building?.GetType() == typeof(Industrial))
+                            {
+                                Happiness -= 8;
+                                availableIndustrial = true;
+                            }
+                        }
+
+                        for (int i = 0; i < step + j && !availableIndustrial; i++)
+                        {
+                            if (c.Home != null && ++homeX < mapHeight && homeX >= 0 && homeY >= 0 && homeY < mapWidth && map[homeX][homeY].Building?.GetType() == typeof(Industrial))
+                            {
+                                Happiness -= 8;
+                                availableIndustrial = true;
+                            }
+                        }
+                        j++;
+                        for (int i = 0; i < step + j && !availableIndustrial; i++)
+                        {
+                            if (c.Home != null && --homeY >= 0 && homeY < mapWidth && homeX < mapHeight && homeX >= 0 && map[homeX][homeY].Building?.GetType() == typeof(Industrial))
+                            {
+                                Happiness -= 8;
+                                availableIndustrial = true;
+                            }
+                        }
+
+                        for (int i = 0; i < step + j && !availableIndustrial; i++)
+                        {
+                            if (c.Home != null && --homeX >= 0 && homeX < mapHeight && homeY >= 0 && homeY < mapWidth && map[homeX][homeY].Building?.GetType() == typeof(Industrial))
+                            {
+                                Happiness -= 8;
+                                availableIndustrial = true;
+                            }
+                        }
+                    }
+                    for (int i = 0; i < Industrial.GetRadius() * 2 && !availableIndustrial; i++)
+                    {
+                        if (c.Home != null && ++homeY < mapWidth && homeY >= 0 && homeX < mapHeight && homeX >= 0 && map[homeX][homeY].Building?.GetType() == typeof(Industrial))
+                        {
+                            Happiness -= 8;
+                            availableIndustrial = true;
+                        }
+                    }
+                }
+
+                if (c.Home != null)
+                {
+                    int j = 0;
+                    int homeY = c.Home.Y;
+                    int homeX = c.Home.X;
+                    for (int step = 1; step <= PoliceDepartment.GetRadius() && !availablePolice; step++)
+                    {
+                        for (int i = 0; i < step + j && !availablePolice; i++)
+                        {
+                            if (c.Home != null && ++homeY < mapWidth && homeY >= 0 && homeX >= 0 && homeX < mapHeight && map[homeX][homeY].Building?.GetType() == typeof(PoliceDepartment))
+                            {
+                                Happiness += 7;
+                                availablePolice = true;
+                            }
+                        }
+
+                        for (int i = 0; i < step + j && !availablePolice; i++)
+                        {
+                            if (c.Home != null && ++homeX < mapHeight && homeX >= 0 && homeY >= 0 && homeY < mapWidth && map[homeX][homeY].Building?.GetType() == typeof(PoliceDepartment))
+                            {
+                                Happiness += 7;
+                                availablePolice = true;
+                            }
+                        }
+                        j++;
+                        for (int i = 0; i < step + j && !availablePolice; i++)
+                        {
+                            if (c.Home != null && --homeY >= 0 && homeX >= 0 && homeY < mapWidth && homeX < mapHeight && map[homeX][homeY].Building?.GetType() == typeof(PoliceDepartment))
+                            {
+                                Happiness += 7;
+                                availablePolice = true;
+                            }
+                        }
+
+                        for (int i = 0; i < step + j && !availablePolice; i++)
+                        {
+                            if (c.Home != null && --homeX >= 0 && homeX < mapHeight && homeY < mapWidth && homeY >= 0 && map[homeX][homeY].Building?.GetType() == typeof(PoliceDepartment))
+                            {
+                                Happiness += 7;
+                                availablePolice = true;
+                            }
+                        }
+                    }
+                    for (int i = 0; i < PoliceDepartment.GetRadius() * 2 && !availablePolice; i++)
+                    {
+                        if (c.Home != null && ++homeY < mapWidth && homeY >= 0 && homeX >= 0 && homeX < mapHeight && map[homeX][homeY].Building?.GetType() == typeof(PoliceDepartment))
+                        {
+                            Happiness += 7;
+                            availablePolice = true;
+                        }
+                    }
+                }
+
+                if (c.Home != null)
+                {
+                    int j = 0;
+                    int homeY = c.Home.Y;
+                    int homeX = c.Home.X;
+                    for (int step = 1; step <= Forest.GetRadius() && !availableForest; step++)
+                    {
+                        for (int i = 0; i < step + j && !availableForest; i++)
+                        {
+                            if (c.Home != null && ++homeY < mapWidth && homeY >= 0 && homeX >= 0 && homeX < mapHeight && map[homeX][homeY].Building?.GetType() == typeof(Forest) && !BuildingBlocksSight(c.Home.X, c.Home.Y, homeX, homeY))
+                            {
+                                Forest f = (Forest)map[homeX][homeY].Building;
+                                Happiness += f.Age;
+                                availableForest = true;
+                            }
+                        }
+
+                        for (int i = 0; i < step + j && !availableForest; i++)
+                        {
+                            if (c.Home != null && ++homeX < mapHeight && homeX >= 0 && homeY >= 0 && homeY < mapWidth && map[homeX][homeY].Building?.GetType() == typeof(Forest) && !BuildingBlocksSight(c.Home.X, c.Home.Y, homeX, homeY))
+                            {
+                                Forest f = (Forest)map[homeX][homeY].Building;
+                                Happiness += f.Age;
+                                availableForest = true;
+                            }
+                        }
+                        j++;
+                        for (int i = 0; i < step + j && !availableForest; i++)
+                        {
+                            if (c.Home != null && --homeY >= 0 && homeY < mapWidth && homeX < mapHeight && homeX >= 0 && map[homeX][homeY].Building?.GetType() == typeof(Forest) && !BuildingBlocksSight(c.Home.X, c.Home.Y, homeX, homeY))
+                            {
+                                Forest f = (Forest)map[homeX][homeY].Building;
+                                Happiness += f.Age;
+                                availableForest = true;
+                            }
+                        }
+
+                        for (int i = 0; i < step + j && !availableForest; i++)
+                        {
+                            if (c.Home != null && --homeX >= 0 && homeX < mapHeight && homeY < mapWidth && homeY >= 0 && map[homeX][homeY].Building?.GetType() == typeof(Forest) && !BuildingBlocksSight(c.Home.X, c.Home.Y, homeX, homeY))
+                            {
+                                Forest f = (Forest)map[homeX][homeY].Building;
+                                Happiness += f.Age;
+                                availableForest = true;
+                            }
+                        }
+                    }
+                    for (int i = 0; i < Forest.GetRadius() * 2 && !availableForest; i++)
+                    {
+                        if (c.Home != null && ++homeY < mapWidth && homeY >= 0 && homeX >= 0 && homeX < mapHeight && map[homeX][homeY].Building?.GetType() == typeof(Forest) && !BuildingBlocksSight(c.Home.X, c.Home.Y, homeX, homeY))
+                        {
+                            Forest f = (Forest)map[homeX][homeY].Building;
+                            Happiness += f.Age;
+                            availableForest = true;
+                        }
+                    }
+                }
+
+                if (Happiness < 0)
+                    Happiness = 0;
+                else if (Happiness > 100)
+                    Happiness = 100;
+
+                if (!c.Pensioner && Happiness <= 5)
+                {
+                    c.Home?.MoveOut();
+                    if (c.Home != null && c.Home.FreeSpace())
+                        availableHouses.Add(c.Home);
+                    if (c.WorkPlace?.GetType() == typeof(Store))
+                    {
+                        Store store = (Store)c.WorkPlace;
+                        store.WorkerLeft();
+                        if (store.FreeSpace())
+                            availableStores.Add(store);
+                    }
+                    else if (c.WorkPlace?.GetType() == typeof(Industrial))
+                    {
+                        Industrial industrial = (Industrial)c.WorkPlace;
+                        industrial.WorkerLeft();
+                        if (industrial.FreeSpace())
+                            availableIndustrials.Add(industrial);
+                    }
+                    if (c.Home != null)
+                        map[c.Home.X][c.Home.Y].RemoveCitizenFromZone(c);
+                    if (c.WorkPlace != null)
+                        map[c.WorkPlace.X][c.WorkPlace.Y].RemoveCitizenFromZone(c);
+                    c.MoveOut();
+                    remove.Add(c);
+                }
+                c.Happiness = Happiness;
+                total_happiness += Happiness;
             }
             citizens.RemoveAll(c => remove.Contains(c));
             return total_happiness;
+        }
+        private bool BuildingBlocksSight(int startX, int startY, int endX, int endY)
+        {
+            int dx = Math.Abs(endX - startX);
+            int dy = Math.Abs(endY - startY);
+            int x = startX;
+            int y = startY;
+            int sx = startX < endX ? 1 : -1;
+            int sy = startY < endY ? 1 : -1;
+            int err = dx - dy;
+
+            while (x != endX || y != endY)
+            {
+                if (map[x][y].Building != null)
+                {
+                    return true;
+                }
+
+                int err2 = 2 * err;
+                if (err2 > -dy)
+                {
+                    err -= dy;
+                    x += sx;
+                }
+                if (err2 < dx)
+                {
+                    err += dx;
+                    y += sy;
+                }
+            }
+
+            return false;
         }
 
         private void GiveEducation(School school)
@@ -287,7 +488,7 @@ namespace SimVillage.Model
                         zone.DowngradeZone();
                         foreach (Citizen citizen in citizens)
                         {
-                            if (calcDistance(citizen.Home, citizen.WorkPlace) == -1)
+                            if (citizen.WorkPlace != null && calcDistance(citizen.Home, citizen.WorkPlace) == -1)
                             {
                                 conflict = true;
                                 break;
@@ -378,9 +579,10 @@ namespace SimVillage.Model
                 List<Citizen> CitizensLeft = new List<Citizen>();
                 if (building!.GetType() == typeof(Road))
                 {
+                    List<Citizen> mayMoveInAgain = new List<Citizen>();
                     foreach (Citizen citizen in Citizens)
                     {
-                        if (calcDistance(citizen.Home!, citizen.WorkPlace) == -1)
+                        if (citizen.WorkPlace != null && calcDistance(citizen.Home!, citizen.WorkPlace) == -1)
                         {
                             Building.Building workPlace = citizen.WorkPlace;
                             workPlace.IsAccessible = false;
@@ -404,20 +606,26 @@ namespace SimVillage.Model
                                 availableHouses.Add(citizen.Home);
                             map[citizen.Home.X][citizen.Home.Y].RemoveCitizenFromZone(citizen);
                             citizen.MoveOut();
-                            PeopleMoveIn(citizen);
-                            if (citizen.Home == null)
-                                CitizensLeft.Add(citizen);
-                            else
-                                citizen.PlusHadToMove();
+                            mayMoveInAgain.Add(citizen);
                         }
                     }
-                } else if (building!.GetType() == typeof(Residental))
+                    foreach (Citizen c in mayMoveInAgain)
+                    {
+                        PeopleMoveIn(c);
+                        if (c.Home == null)
+                            CitizensLeft.Add(c);
+                        else
+                            c.PlusHadToMove();
+                    }
+                }
+                else if (building!.GetType() == typeof(Residental))
                 {
-                    foreach (Citizen citizen in Citizens)
+                    List<Citizen> mayMoveInAgain = new List<Citizen>();
+                    foreach (Citizen citizen in citizens)
                     {
                         if (citizen.Home == building)
                         {
-                            Building.Building workPlace = citizen.WorkPlace;
+                            Building.Building? workPlace = citizen.WorkPlace;
                             if (workPlace?.GetType() == typeof(Store))
                             {
                                 Store store = (Store)workPlace;
@@ -435,24 +643,19 @@ namespace SimVillage.Model
                             if (workPlace != null)
                                 map[workPlace.X][workPlace.Y].RemoveCitizenFromZone(citizen);
                             citizen.MoveOut();
-                            PeopleMoveIn(citizen);
-                            if (citizen.Home == null)
-                                CitizensLeft.Add(citizen);
-                            else
-                                citizen.PlusHadToMove();
+                            mayMoveInAgain.Add(citizen);
                         }
                     }
-                } else if (building!.GetType() == typeof(Industrial))
-                {
-                    foreach (Citizen citizen in Citizens)
+                    foreach (Citizen c in mayMoveInAgain)
                     {
-                        if (citizen.WorkPlace == building)
-                        {
-                            citizen.WorkPlace = null!;
-                            citizen.Salary = 0;
-                        }
+                        PeopleMoveIn(c);
+                        if (c.Home == null)
+                            CitizensLeft.Add(c);
+                        else
+                            c.PlusHadToMove();
                     }
-                } else
+                }
+                else if (building!.GetType() == typeof(Industrial))
                 {
                     foreach (Citizen citizen in Citizens)
                     {
@@ -463,8 +666,19 @@ namespace SimVillage.Model
                         }
                     }
                 }
-                Finances.AddExpenses("Demolished a " + zone.ToString() + " and you had conflict with people", building!.Cost / 2, date.ToString("d"));
+                else
+                {
+                    foreach (Citizen citizen in Citizens)
+                    {
+                        if (citizen.WorkPlace == building)
+                        {
+                            citizen.WorkPlace = null!;
+                            citizen.Salary = 0;
+                        }
+                    }
+                }
                 citizens.RemoveAll(i => CitizensLeft.Contains(i));
+                Finances.AddExpenses("Demolished a " + zone.ToString() + " and you had conflict with people", building!.Cost / 2, date.ToString("d"));
                 canDemolish = false;
             }
             OnGameChanged();
@@ -1050,8 +1264,8 @@ namespace SimVillage.Model
                 foreach (Citizen citizen in citizens)
                 {
                     Residental home = citizen.Home;
-                    Building.Building workPlace = citizen.WorkPlace;
-                    if (!citizen.AgeUp())
+                    Building.Building? workPlace = citizen.WorkPlace;
+                    if (!citizen.AgeUp() && workPlace != null)
                     {
                         map[workPlace.X][workPlace.Y].RemoveCitizenFromZone(citizen);
                         map[home.X][home.Y].RemoveCitizenFromZone(citizen);

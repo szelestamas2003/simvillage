@@ -4,7 +4,7 @@
     {
         public bool UnitAvailable { get; set; } = true;
 
-        int Radius = 40;
+        const int Radius = 40;
 
         public FireDepartment(int x, int y)
         {
@@ -17,7 +17,7 @@
             Y = y;
         }
 
-        public int getRadius() { return Radius; }
+        public static int getRadius() { return Radius; }
 
         public void SendUnit()
         {

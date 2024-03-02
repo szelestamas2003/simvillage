@@ -10,7 +10,7 @@ namespace SimVillage.Model.Building
     {
         public int MaxWorkers { get; set; }
         public int Workers { get; set; }
-        public int radius = 6;
+        const int radius = 6;
         public Industrial(int x, int y)
         {
             FireChance = 5;
@@ -43,7 +43,7 @@ namespace SimVillage.Model.Building
         {
             return "Current workers: " + Workers + "\nMaximum workers: " + MaxWorkers + "\nBuilding level " + Density + "\nPower consumption: " + PowerConsumption + "\nHealth: " + Health + "\n";
         }
-        public int GetRadius()
+        public static int GetRadius()
         {
             return radius;
         }
