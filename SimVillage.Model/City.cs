@@ -84,6 +84,7 @@ namespace SimVillage.Model
         public void NewGame(string name)
         {
             cityName = name;
+            date = new DateTime(2000, 1, 1);
             Finances = new Finances(5000);
             citizens = new List<Citizen>();
             availableStores = new List<Store>();
@@ -918,6 +919,7 @@ namespace SimVillage.Model
 
         private void distancesFromTo(Building.Building from, Building.Building current, Building.Building to, List<int> distances, HashSet<Road> visited, int n)
         {
+            if (current == null) return;
             bool found = false;
             List<(int, int)> buildingZones = new List<(int, int)>();
             if (current.GetSize().Item1 == 1)
@@ -1033,11 +1035,6 @@ namespace SimVillage.Model
             {
                 return false;
             }
-        }
-        private double DistanceByAir(Building.Building a, Building.Building b)
-        {
-            double distance = Math.Sqrt((Math.Pow(2, (b.X - a.X)) + Math.Pow(2, (b.Y - a.Y))));
-            return distance;
         }
 
         public void BuildBuilding(Building.Building building, bool inConstructor = false)
@@ -1319,6 +1316,7 @@ namespace SimVillage.Model
             if (map[x][y].Building is null) return;
             map[x][y].Building.IsOnFire = false;
             Finances.AddExpenses("Cleared a fire in a " + map[x][y].ToString(), map[x][y].GetCost(), date.ToString("d"));
+            OnGameChanged();
         }
 
         private void GoToSchool()

@@ -404,8 +404,9 @@ namespace SimVillage.ViewModel
             CitizenCount = "👤 " +  model.Citizens.Count;
             Money = "💲 " +  model.GetBudget();
             Happiness = "🙂 " + model.GetHappiness();
+            Date = "📅 " + model.Date.ToString("yyyy") + " " + model.Date.ToString("M");
 
-            if(model.GetBudget() < 0)
+            if (model.GetBudget() < 0)
             {
                 IsMoneyNegative = true;
             }
@@ -640,6 +641,7 @@ namespace SimVillage.ViewModel
             OnPropertyChanged(nameof(Money));
             OnPropertyChanged(nameof(Fields));
             OnPropertyChanged(nameof(Happiness));
+            OnPropertyChanged(nameof(Date));
         }
 
         private void Model_GameCreated(object? sender, EventArgs e)
